@@ -12,5 +12,5 @@ import renderer from 'react-test-renderer';
 const sum = require('../sum');
 
 it('renders correctly', () => {
-  expect(sum(1, 2)).toBe(3);
+  renderer.create(<App />);
 });
