@@ -45,7 +45,7 @@ const App = () => {
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
                 screen and then come back to see your edits.
                 Does circle ci run now.
-                Does circle ci run now 2.
+                Does circle ci run now 2..
               </Text>
             </View>
             <View style={styles.sectionContainer}>

@@ -17,7 +17,7 @@ jobs:
             - v1-dependencies-node-
       - run:
           name: Install dependencies
-          command: yarn install
+          command: npm install
       - save_cache:
           name: Save node modules
           paths:
@@ -35,7 +35,7 @@ jobs:
             - v1-dependencies-node-
       - run:
           name: Run tests
-          command: yarn ci:test # this command will be added to/found in your package.json scripts
+          command: npm run ci:test # this command will be added to/found in your package.json scripts
 
 workflows:
   version: 2
