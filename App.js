@@ -24,7 +24,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
+const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -44,7 +44,8 @@ const App: () => React$Node = () => {
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
                 screen and then come back to see your edits.
-                Does circle ci run now
+                Does circle ci run now.
+                Does circle ci run now 2.
               </Text>
             </View>
             <View style={styles.sectionContainer}>
