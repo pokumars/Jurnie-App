@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FastImage from 'react-native-fast-image';
+
 import HomeScreen from './HomeScreen';
 import MyTripsScreen from './MyTripsScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import ProfileScreen from './ProfileScreen';
-import { NAVIGATION_ROUTE } from '../constants';
+
+import { COLOR, NAVIGATION_ROUTE } from '../constants';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,11 +19,34 @@ const MainTabScreen = ({ navigation }) => {
       initialRouteName={NAVIGATION_ROUTE.HOME}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          return <View style={styles.test} />;
+          let imageSource;
+
+          switch (route.name) {
+            case NAVIGATION_ROUTE.HOME:
+              imageSource = focused ? require('../assets/icons/homeActive.png') : require('../assets/icons/home.png')
+              break;
+            case NAVIGATION_ROUTE.MY_TRIPS:
+              imageSource = focused ? require('../assets/icons/myTripsActive.png') : require('../assets/icons/myTrips.png')
+              break;
+            case NAVIGATION_ROUTE.LEADERBOARD:
+              imageSource = focused ? require('../assets/icons/leaderboardActive.png') : require('../assets/icons/leaderboard.png')
+              break;
+            case NAVIGATION_ROUTE.PROFILE:
+              imageSource = focused ? require('../assets/icons/profileActive.png') : require('../assets/icons/profile.png')
+              break;
+            default:
+              imageSource = null;
+          }
+          return (
+            <Image
+              source={imageSource}
+              style={styles.test}
+            />
+          );
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: COLOR.STEEL_BLUE,
         inactiveTintColor: 'gray',
       }}
     >
@@ -58,9 +84,8 @@ const MainTabScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   test: {
-    backgroundColor: 'red',
     width: 24,
-    height: 24
+    height: 24,
   }
 })
 
