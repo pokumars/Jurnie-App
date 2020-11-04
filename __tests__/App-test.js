@@ -3,12 +3,14 @@
  */
 
 import 'react-native';
-import React from 'react';
-import App from '../App';
 
+import App from '../App';
+import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
+const sum = require('../sum');
+
 it('renders correctly', () => {
-  renderer.create(<App />);
+  expect(sum(1, 2)).toBe(3);
 });
