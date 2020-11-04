@@ -40,7 +40,7 @@ const MainTabScreen = ({ navigation }) => {
           return (
             <Image
               source={imageSource}
-              style={styles.test}
+              style={styles.tabBarIcon}
             />
           );
         },
@@ -83,7 +83,7 @@ const MainTabScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  test: {
+  tabBarIcon: {
     width: 24,
     height: 24,
   }
