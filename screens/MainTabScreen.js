@@ -6,28 +6,29 @@ import HomeScreen from './HomeScreen';
 import MyTripsScreen from './MyTripsScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import ProfileScreen from './ProfileScreen';
+import { NAVIGATION_ROUTE } from '../constants';
 
 const Tab = createBottomTabNavigator();
 
 const MainTabScreen = ({ navigation }) => {
   return (
     <Tab.Navigator
-      initialRouteName={"Home"}
+      initialRouteName={NAVIGATION_ROUTE.HOME}
       tabBarOptions={{
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
       }}
     >
       <Tab.Screen
-        name="Home"
+        name={NAVIGATION_ROUTE.HOME}
         component={HomeScreen}
         options={{
-          tabBarLabel: "Home"
+          tabBarLabel: NAVIGATION_ROUTE.HOME
         }}
       />
-      <Tab.Screen name="MyTrips" component={MyTripsScreen} />
-      <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name={NAVIGATION_ROUTE.MY_TRIPS} component={MyTripsScreen} />
+      <Tab.Screen name={NAVIGATION_ROUTE.LEADERBOARD} component={LeaderboardScreen} />
+      <Tab.Screen name={NAVIGATION_ROUTE.PROFILE} component={ProfileScreen} />
     </Tab.Navigator>
     )
 };
