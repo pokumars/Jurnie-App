@@ -6,23 +6,23 @@
  * @flow strict-local
  */
 
-import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
   Colors,
   DebugInstructions,
+  Header,
+  LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import React from 'react';
 
 const App = () => {
   return (
@@ -46,6 +46,7 @@ const App = () => {
                 screen and then come back to see your edits.
                 Does circle ci run now.
                 Does circle ci run now 2..
+
               </Text>
             </View>
             <View style={styles.sectionContainer}>
