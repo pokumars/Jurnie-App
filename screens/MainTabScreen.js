@@ -10,6 +10,7 @@ import LeaderboardScreen from './LeaderboardScreen';
 import ProfileScreen from './ProfileScreen';
 
 import { COLOR, NAVIGATION_ROUTE } from '../constants';
+import { tabBarImageNameFormat } from '../helpers';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,8 +38,9 @@ const MainTabScreen = ({ navigation }) => {
             default:
               imageSource = null;
           }
+
           return (
-            <Image
+            <FastImage
               source={imageSource}
               style={styles.tabBarIcon}
             />

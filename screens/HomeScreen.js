@@ -7,7 +7,6 @@ const HomeScreen = ({
 }) => (
     <View>
         <Text>HomeScreen</Text>
-        <Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}  style={{ width: 24, height: 24 }}/>
     </View>
 );
 
