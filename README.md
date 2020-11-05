@@ -15,7 +15,7 @@ feelings based outside the vehicle
   - Open the `android` directory using Android Studio
   - Run the project in Android Studio
 - In iOS
-  - ```cd ios && pod install``
+  - ```cd ios && pod install```
   - ```cd .. && npm start```
   - Open the `ios/MoprimRN.xcworkspace` file using Xcode
   - Run the project in Xcode
