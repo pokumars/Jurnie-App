@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>457597546685-t4i86pab3cveb2e6li7hdgnu9u6bf130.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.457597546685-t4i86pab3cveb2e6li7hdgnu9u6bf130</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBRgn6YD40nAb1UOXBwv-v2nT8XQqlXl-8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>457597546685</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.moprimApp</string>
+	<key>PROJECT_ID</key>
+	<string>journeyapplicatio</string>
+	<key>STORAGE_BUCKET</key>
+	<string>journeyapplicatio.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:457597546685:ios:b1ad60680c7d8059f687d4</string>
+	<key>DATABASE_URL</key>
+	<string>https://journeyapplicatio.firebaseio.com</string>
+</dict>
+</plist>
