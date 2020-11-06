@@ -27,7 +27,8 @@ function login({navigation}) {
     auth()
       .signInWithEmailAndPassword('a9@gmail.com', 'llll1111')
       .then(() => {
-        console.log('User account created & signed in!');
+        console.log('User account created & signed in!'),
+          navigation.dispatch(StackActions.replace('Main'));
         //navigation.dispatch(StackActions.replace('Profile'));
       })
       .catch((error) => {
@@ -54,10 +55,6 @@ function login({navigation}) {
         value={pass}
         onChangeText={setpass}></TextInput>
 
-      <Button
-        title="Replace with Bottom"
-        onPress={() => navigation.dispatch(StackActions.replace('Main'))}
-      />
       <Button title="Login" onPress={() => Authentication()} />
       <Text></Text>
     </View>
