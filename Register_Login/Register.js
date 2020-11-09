@@ -25,10 +25,10 @@ function register({navigation}) {
 
   const Authentication = () => {
     auth()
-      .createUserWithEmailAndPassword('a9@gmail.com', 'llll1111')
+      .createUserWithEmailAndPassword(email, pass)
       .then(() => {
-        console.log('User account created & signed in!');
-        //navigation.dispatch(StackActions.replace('Profile'));
+        console.log('User account created & signed in!'),
+          navigation.dispatch(StackActions.replace('Login'));
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
@@ -53,13 +53,12 @@ function register({navigation}) {
         placeholder="Pass"
         value={pass}
         onChangeText={setpass}></TextInput>
-
-      <Button
-        title="Move to Screen"
-        onPress={() => navigation.dispatch(StackActions.replace('Main'))}
-      />
       <Button title="Register" onPress={() => Authentication()} />
       <Text></Text>
+      <Button
+        title="Move to Login"
+        onPress={() => navigation.dispatch(StackActions.replace('Login'))}
+      />
     </View>
   );
 }

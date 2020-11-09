@@ -25,7 +25,7 @@ function login({navigation}) {
 
   const Authentication = () => {
     auth()
-      .signInWithEmailAndPassword('a9@gmail.com', 'llll1111')
+      .signInWithEmailAndPassword(email, pass)
       .then(() => {
         console.log('User account created & signed in!'),
           navigation.dispatch(StackActions.replace('Main'));
@@ -57,6 +57,10 @@ function login({navigation}) {
 
       <Button title="Login" onPress={() => Authentication()} />
       <Text></Text>
+      <Button
+        title="Go to Register"
+        onPress={() => navigation.dispatch(StackActions.replace('Register'))}
+      />
     </View>
   );
 }
