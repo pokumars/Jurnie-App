@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 
-import {Icon} from 'react-native-elements';
 import {NavigationContainer} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
