@@ -1,6 +1,6 @@
 package com.moprimapp;
 
-import android.app.Application;
+import androidx.multidex.MultiDexApplication;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -27,7 +27,7 @@ import fi.moprim.tmd.sdk.model.TmdError;
 import fi.moprim.tmd.sdk.model.TmdInitListener;
 
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
