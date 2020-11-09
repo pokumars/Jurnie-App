@@ -57,3 +57,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# sdk key
+android/app/src/main/res/values/sdk_key.xml

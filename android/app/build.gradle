@@ -185,6 +185,17 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    implementation files('libs/tmd-sdk-0.3.5.aar')// Moprim's sdk
+    // SDK minimal dependencies
+    def aws_version = "2.19.0"
+    runtimeOnly group: 'com.amazonaws', name: 'aws-android-sdk-core', version: "$aws_version"
+    runtimeOnly group: 'com.amazonaws', name: 'aws-android-sdk-apigateway-core', version: "$aws_version"
+    runtimeOnly 'org.greenrobot:eventbus:3.1.1'
+    runtimeOnly 'com.evernote:android-job:1.2.6'
+    runtimeOnly 'com.google.android.gms:play-services-gcm:17.0.0'
+    runtimeOnly 'com.google.android.gms:play-services-location:17.1.0'
+    runtimeOnly group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    runtimeOnly group: 'com.mkobos', name: 'pca_transform', version: '1.0.2'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

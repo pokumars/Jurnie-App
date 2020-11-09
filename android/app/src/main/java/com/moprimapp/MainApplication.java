@@ -11,6 +11,22 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import android.app.PendingIntent;
+import android.util.Log;
+import android.app.IntentService;
+import android.content.Intent;
+
+import fi.moprim.tmd.sdk.TMD;
+import fi.moprim.tmd.sdk.TmdCloudApi;
+import fi.moprim.tmd.sdk.TmdUtils;
+import fi.moprim.tmd.sdk.model.Result;
+import fi.moprim.tmd.sdk.model.TmdActivity;
+import fi.moprim.tmd.sdk.model.TmdUploadMetadata;
+import fi.moprim.tmd.sdk.TmdCoreConfigurationBuilder;
+import fi.moprim.tmd.sdk.model.TmdError;
+import fi.moprim.tmd.sdk.model.TmdInitListener;
+
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -45,6 +61,29 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+    TmdCoreConfigurationBuilder builder = new TmdCoreConfigurationBuilder(this)
+              .setSdkConfigEndPoint(getString(R.string.tmd_sdk_config_endpoint))
+              .setSdkConfigKey(getString(R.string.tmd_sdk_config_key));
+      // TMD sdk initialization
+      TMD.init(this, builder.build(), new TmdInitListener() {
+          @Override
+          public void onTmdInitFailed(TmdError tmdError) {
+              Log.e(MainApplication.class.getSimpleName(), "Initialisation failed: " + tmdError.name());
+          }
+
+          @Override
+          public void onTmdInitSuccessful(String s) {
+              // s is the current installation ID, we'll put the UUID as the same just to demonstrate how to use the method
+              // replace with your own user id in production
+              // TMD.setUUID(s);
+              Log.i(MainApplication.class.getSimpleName(), "Initialization successful with id: " + s);
+              Intent intent = new Intent(MainApplication.this, TmdUploadIntentService.class);
+              PendingIntent callbackIntent = PendingIntent.getService(MainApplication.this, 0, intent,
+                      PendingIntent.FLAG_UPDATE_CURRENT);
+              TmdCloudApi.setUploadCallbackIntent(callbackIntent);
+          }
+      });
   }
 
   /**
