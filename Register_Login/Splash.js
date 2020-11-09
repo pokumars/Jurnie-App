@@ -32,7 +32,7 @@ const SplashLoader = ({navigation}) => {
 
   return (
     <View style={{alignContent: 'center', alignItems: 'center'}}>
-      <Text>Splash!!!!!! wait 2s</Text>
+      <Text>Splash Screen wait 2s</Text>
       <LottieView
         style={{
           width: 50,
