@@ -36,9 +36,8 @@ const styles = StyleSheet.create({
     paddingLeft: 25
   },
   detailText:{
-    fontSize: 20,
+    fontSize: 18,
     color: color.USERNAME_BLUE,
-
   }
 });
 
