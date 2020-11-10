@@ -1,12 +1,13 @@
 //import libraries
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import color from '../../constants/color';
 
 /**
- * @param {Boolean} textFirst - True means Text on the left, icon on right. False is opposite.
- * @param {string} btnImage - the image source of a react native <Image />
- * @param {string} btnText - text that goes with the icon
- * @param {function} onPress - function when pressed
+ * @param {Boolean} prop.textFirst - True means Text on the left, icon on right. False is opposite.
+ * @param {string} prop.btnImage - the image source of a react native <Image />
+ * @param {string} prop.btnText - text that goes with the icon
+ * @param {function} prop.onPress - function when pressed
  */
 const IconTextBorderlessBtn = ({textFirst, btnImage, btnText, onPress, }) => {
 return (
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 15,
-    color: '#4A86AC',
+    color: color.STEEL_BLUE,
     paddingHorizontal: 5
   },
   container:{
