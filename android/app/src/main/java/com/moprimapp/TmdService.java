@@ -1,5 +1,7 @@
 package com.moprimapp;
 
+import android.os.IBinder;
+import android.app.Service;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,8 +9,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -18,13 +21,14 @@ import fi.moprim.tmd.sdk.TMD;
 
 
 public class TmdService extends Service {
+    private static final String NOTIFICATION_CHANNEL_ID = "com.moprimapp.channel";
+    private static final int NOTIFICATION_ID = 0101;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.handler.post(this.runnableCode); // Starting the interval
         // Turning into a foreground service
         createNotificationChannel(); // Creating channel for API 26+
-        notification = buildNotification(getString(R.string.service_is_running));
+        Notification notification = buildNotification(getString(R.string.service_is_running));
         Context context = getApplicationContext();
         TMD.startForeground(context, NOTIFICATION_ID, notification);
         return START_STICKY;
@@ -40,9 +44,8 @@ public class TmdService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
 
         notificationBuilder.setWhen(System.currentTimeMillis());
-        notificationBuilder.setSmallIcon(android.R.drawable.ic_pysical_activity);
-        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-        notificationBuilder.setContentTitle("TMD demo");
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        notificationBuilder.setContentTitle("Jurnie M");
         notificationBuilder.setContentText(notificationText);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
