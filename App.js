@@ -5,6 +5,7 @@
  * @format
  * @flow strict-local
  */
+import 'react-native-gesture-handler';
 
 import {
   Colors,
@@ -22,25 +23,33 @@ import {
   View,
 } from 'react-native';
 
-import React from 'react';
 import MainTabScreen from './screens/MainTabScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+import React from 'react';
+import SplashLoader from './Register_Login/Splash';
+import {createStackNavigator} from '@react-navigation/stack';
+import login from './Register_Login/Login';
+import register from './Register_Login/Register';
+
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.safeAreaView}>
-        <MainTabScreen />
-      </SafeAreaView>
+      <Stack.Navigator>
+        <Stack.Screen name="Splash" component={SplashLoader} />
+        <Stack.Screen name="Login" component={login} />
+        <Stack.Screen name="Register" component={register} />
+        <Stack.Screen name="Main" component={MainTabScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default App;

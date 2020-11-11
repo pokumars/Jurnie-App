@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "457597546685",
+    "firebase_url": "https://journeyapplicatio.firebaseio.com",
+    "project_id": "journeyapplicatio",
+    "storage_bucket": "journeyapplicatio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457597546685:android:000384cbbcd5a40ef687d4",
+        "android_client_info": {
+          "package_name": "com.moprimapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457597546685-04i4giarf5r39td5sei3b9l0kivra5ht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG61rtk-WCQgNFqRBXaszYQagXzkbGjPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457597546685-04i4giarf5r39td5sei3b9l0kivra5ht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

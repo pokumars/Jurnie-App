@@ -1,5 +1,5 @@
-import NavigationRoute from './navigationRoutes';
 import Color from './color';
+import NavigationRoute from './navigationRoutes';
 
 export const NAVIGATION_ROUTE = NavigationRoute;
 export const COLOR = Color;
