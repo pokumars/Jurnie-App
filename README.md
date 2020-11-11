@@ -1,6 +1,8 @@
 # Jurnie-App
 React Native application for Detecting types of mobility and collecting feedback
 
+### [Demo]()
+
 ### Work Challenge
 - Build an app that allows the commuter easily annotate the journeys with
 videos, images and text
