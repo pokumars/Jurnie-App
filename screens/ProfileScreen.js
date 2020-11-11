@@ -51,7 +51,7 @@ const ProfileScreen = ({navigation}) => {
       </View>
       <View style= {styles.userDetails}>
         <ProfileUserDetail title= 'Username' detail='ngolo_kante' />
-        <ProfileUserDetail title= 'Email' detail={'smth_smth@email.com'} />
+        <ProfileUserDetail title= 'Email' detail={auth().currentUser.email} />
         <Button
               onPress={() => console.log('update details clicked')}
               title="change username or password"
@@ -63,18 +63,12 @@ const ProfileScreen = ({navigation}) => {
         <TitleText>Badges &amp; Achievements</TitleText>
         <View style={styles.badgesContainer} >
           <Badge multiple={31} badgeImage={require('../assets/icons/log-out.png')} />
-          <Badge multiple={5} badgeImage={require('../assets/icons/home.png')} />
-          <Badge multiple={130} badgeImage={require('../assets/icons/profile.png')} />
+          <Badge multiple={3} badgeImage={require('../assets/icons/home.png')} />
+          <Badge multiple={125} badgeImage={require('../assets/icons/profile.png')} />
           <Badge badgeImage={require('../assets/icons/settings-outline.png')} />
         </View>
       </View>
-      
-      {/*
-      <View style={styles.main}>
-        <Text>ProfileScreen,,{auth().currentUser.email}</Text>
-        <Button title="Sign-out" onPress={() => Sign_out()} />
-      </View>
-      */}
+    
       </ScrollView>
     </View>
 

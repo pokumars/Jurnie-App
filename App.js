@@ -35,10 +35,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/*
         <Stack.Screen name="Login" component={login} />
         <Stack.Screen name="Register" component={register} />
-        */}
         <Stack.Screen name="Main" component={MainTabScreen} />
       </Stack.Navigator>
     </NavigationContainer>
