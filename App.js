@@ -43,10 +43,8 @@ const App = () => {
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-                Does circle ci run now.
-                Does circle ci run now 2..
-
+                screen and then come back to see your edits. Does circle ci run
+                now. Does circle ci run now 2..
               </Text>
             </View>
             <View style={styles.sectionContainer}>

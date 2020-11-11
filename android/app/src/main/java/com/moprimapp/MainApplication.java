@@ -1,5 +1,6 @@
 package com.moprimapp;
 
+import com.moprimapp.TmdApiPackage;
 import androidx.multidex.MultiDexApplication;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -41,7 +42,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-            packages.add(new TmdApiPackage());
+          packages.add(new TmdApiPackage());
 
           return packages;
         }
