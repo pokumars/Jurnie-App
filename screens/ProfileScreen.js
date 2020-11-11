@@ -23,6 +23,11 @@ const ProfileScreen = ({navigation}) => {
       );*/
       console.log('Sign_out clicked')
   };
+  /* 
+  User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
+ "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
+ "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
+ "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
 
   return (
     <View style={styles.screen}>
@@ -50,7 +55,7 @@ const ProfileScreen = ({navigation}) => {
         />
       </View>
       <View style= {styles.userDetails}>
-        <ProfileUserDetail title= 'Username' detail='ngolo_kante' />
+        <ProfileUserDetail title= 'Username' detail='ngolo_kante'{/*auth().currentUser.displayName*/} />
         <ProfileUserDetail title= 'Email' detail={auth().currentUser.email} />
         <Button
               onPress={() => console.log('update details clicked')}
