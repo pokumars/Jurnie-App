@@ -1,5 +1,9 @@
 export default {
+  HAWAIIAN_TAN: '#914F15',
   JUMBO: '#7B7980',
+  MANGO_TANGO: '#D47500',
+  MINE_SHAFT: '#333',
+  RAJAH: '#F2B86E',
   STEEL_BLUE: '#4A86AC',
   BLACK: '#000000',
   ORANGE_CAR: '#FAB660',
