@@ -39,7 +39,9 @@ const HomeScreen = ({ navigation }) => {
   );
 
   const renderWriteFeedbackButton = () => (
-    <TouchableOpacity style={GLOBAL_STYLE.CENTER}>
+    <TouchableOpacity
+      onPress={onWriteFeedbackButtonPress}
+      style={GLOBAL_STYLE.CENTER}>
       <View style={[styles.feedbackButton, GLOBAL_STYLE.CENTER]}>
         <FastImage
           source={require('../assets/icons/feedback-royal-blue.png')}
@@ -49,6 +51,8 @@ const HomeScreen = ({ navigation }) => {
       <Text style={styles.feedbackButtonLabel}>Write feedback</Text>
     </TouchableOpacity>
   );
+
+  const onWriteFeedbackButtonPress = () => {};
 
   return (
     <View style={[styles.container, GLOBAL_STYLE.DEFAULT_CONTAINER]}>
