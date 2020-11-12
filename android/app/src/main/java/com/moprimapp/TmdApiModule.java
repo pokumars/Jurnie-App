@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import android.widget.Toast;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -41,6 +42,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startTmdService() {
         // Starting the TMD as a foreground service
+        Toast.makeText(getReactApplicationContext(), "starting service", Toast.LENGTH_SHORT).show();
         this.reactContext.startService(new Intent(this.reactContext, TmdService.class));
     }
 
