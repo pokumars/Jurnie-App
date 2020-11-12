@@ -121,7 +121,8 @@ function login({navigation}) {
             placeholder="Pass"
             maxLength={15}
             value={pass}
-            onChangeText={setpass}></TextInput>
+            onChangeText={setpass}
+          />
         </View>
         <View
           style={{

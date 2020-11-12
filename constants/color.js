@@ -6,3 +6,4 @@ export default {
   BACKGROUND_GRAY: '#F3F2F7',
   USERNAME_BLUE: '#1C75D5'  
 }
+

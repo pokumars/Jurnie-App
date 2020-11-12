@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { COLOR, NAVIGATION_ROUTE } from '../../constants';
+import {COLOR, NAVIGATION_ROUTE} from '../../constants';
 
-function CustomizedTabBar({ state, descriptors, navigation }) {
+function CustomizedTabBar({state, descriptors, navigation}) {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
   if (focusedOptions.tabBarVisible === false) {
@@ -11,9 +11,9 @@ function CustomizedTabBar({ state, descriptors, navigation }) {
   }
 
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={{flexDirection: 'row'}}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
+        const {options} = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
@@ -46,16 +46,24 @@ function CustomizedTabBar({ state, descriptors, navigation }) {
 
         switch (route.name) {
           case NAVIGATION_ROUTE.HOME:
-            imageSource = isFocused ? require('../../assets/icons/homeActive.png') : require('../../assets/icons/home.png')
+            imageSource = isFocused
+              ? require('../../assets/icons/homeActive.png')
+              : require('../../assets/icons/home.png');
             break;
           case NAVIGATION_ROUTE.MY_TRIPS:
-            imageSource = isFocused ? require('../../assets/icons/myTripsActive.png') : require('../../assets/icons/myTrips.png')
+            imageSource = isFocused
+              ? require('../../assets/icons/myTripsActive.png')
+              : require('../../assets/icons/myTrips.png');
             break;
           case NAVIGATION_ROUTE.LEADERBOARD:
-            imageSource = isFocused ? require('../../assets/icons/leaderboardActive.png') : require('../../assets/icons/leaderboard.png')
+            imageSource = isFocused
+              ? require('../../assets/icons/leaderboardActive.png')
+              : require('../../assets/icons/leaderboard.png');
             break;
           case NAVIGATION_ROUTE.PROFILE:
-            imageSource = isFocused ? require('../../assets/icons/profileActive.png') : require('../../assets/icons/profile.png')
+            imageSource = isFocused
+              ? require('../../assets/icons/profileActive.png')
+              : require('../../assets/icons/profile.png');
             break;
           default:
             imageSource = null;
@@ -64,24 +72,19 @@ function CustomizedTabBar({ state, descriptors, navigation }) {
         return (
           <TouchableOpacity
             accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             key={route.name}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={styles.tab}
-          >
-            <FastImage
-              source={imageSource}
-              style={styles.tabBarIcon}
-            />
+            style={styles.tab}>
+            <FastImage source={imageSource} style={styles.tabBarIcon} />
             <Text
               style={[
                 styles.tabLabel,
-                { color: isFocused ? COLOR.STEEL_BLUE : COLOR.JUMBO }
-              ]}
-            >
+                {color: isFocused ? COLOR.STEEL_BLUE : COLOR.JUMBO},
+              ]}>
               {label.toUpperCase()}
             </Text>
           </TouchableOpacity>
@@ -105,8 +108,8 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 12,
     fontWeight: '700',
-    textAlign: 'center'
-  }
-})
+    textAlign: 'center',
+  },
+});
 
 export default CustomizedTabBar;

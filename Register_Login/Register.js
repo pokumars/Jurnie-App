@@ -153,7 +153,8 @@ function register({navigation}) {
             placeholder="password"
             maxLength={15}
             value={pass}
-            onChangeText={setpass}></TextInput>
+            onChangeText={setpass}
+          />
         </View>
         <View
           style={{
@@ -177,7 +178,8 @@ function register({navigation}) {
             placeholder="Confirm password"
             maxLength={15}
             value={confirmPass}
-            onChangeText={setConfirmPass}></TextInput>
+            onChangeText={setConfirmPass}
+          />
         </View>
         <View
           style={{

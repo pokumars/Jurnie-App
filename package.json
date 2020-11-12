@@ -9,6 +9,7 @@
     "test": "jest",
     "clear_jest": "jest --clearCache",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "ci:test": "jest"
   },
   "dependencies": {
