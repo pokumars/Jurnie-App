@@ -1,4 +1,9 @@
 export default {
   JUMBO: '#7B7980',
   STEEL_BLUE: '#4A86AC',
-};
+  BLACK: '#000000',
+  ORANGE_CAR: '#FAB660',
+  BACKGROUND_GRAY: '#F3F2F7',
+  USERNAME_BLUE: '#1C75D5'  
+}
+
