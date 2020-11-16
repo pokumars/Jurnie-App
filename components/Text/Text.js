@@ -1,7 +1,7 @@
 import { Dimensions, Platform } from 'react-native';
 import styled from 'styled-components/native';
 
-import { Black } from '../Colors';
+import { Black, MineShaft } from '../Colors';
 import { StackS } from '../Spacing';
 
 const ScreenWidth = Math.round(Dimensions.get('window').width);
@@ -24,4 +24,9 @@ export const SubtitleText = styled.Text`
 
 export const BoldText = styled.Text`
   font-weight: 700;
+`;
+
+export const BigText = styled.Text`
+  color: ${(props) => props.color || MineShaft};
+  font-size: ${TextL}px;
 `;

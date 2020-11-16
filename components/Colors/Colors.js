@@ -1,4 +1,7 @@
 export const Black = '#000';
+export const Emperor = '#555';
+export const Fire = '#AA2E00';
+export const Grenadier = '#D43900';
 export const HawaiianTan = '#914F15';
 export const Jumbo = '#7B7980';
 export const MangoTango = '#D47500';
