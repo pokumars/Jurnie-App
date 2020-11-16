@@ -7,6 +7,7 @@ import HomeScreen from './HomeScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import MyTripsScreen from './MyTripsScreen';
 import ProfileScreen from './ProfileScreen';
+import TestScreen from './TestScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
@@ -39,6 +40,11 @@ const MainTabScreen = ({navigation}) => {
               imageSource = focused
                 ? require('../assets/icons/profileActive.png')
                 : require('../assets/icons/profile.png');
+              break;
+            case NAVIGATION_ROUTE.TEST:
+              imageSource = focused
+                ? require('../assets/icons/homeActive.png')
+                : require('../assets/icons/home.png');
               break;
             default:
               imageSource = null;
@@ -76,6 +82,13 @@ const MainTabScreen = ({navigation}) => {
         component={ProfileScreen}
         options={{
           tabBarLabel: NAVIGATION_ROUTE.PROFILE,
+        }}
+      />
+      <Tab.Screen
+        name={NAVIGATION_ROUTE.TEST}
+        component={TestScreen}
+        options={{
+          tabBarLabel: NAVIGATION_ROUTE.TEST,
         }}
       />
     </Tab.Navigator>

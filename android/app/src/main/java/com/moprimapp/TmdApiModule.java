@@ -7,16 +7,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import android.widget.Toast;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 import fi.moprim.tmd.sdk.TMD;
 import fi.moprim.tmd.sdk.TmdCloudApi;
@@ -53,4 +45,33 @@ public class TmdApiModule extends ReactContextBaseJavaModule {
         this.reactContext.stopService(new Intent(this.reactContext, TmdService.class));
     }
 
+    @ReactMethod
+    public void isTmdRunning() {
+        TMD.isTmdRunning();
+    }
+
 }
+
+// DeviceEventEmitters: List of eventNames 
+/* 
+*  DownloadResult - use this to get Tmd Acitivity results from moprim cloud
+** DownloadResult.NoResultError - returns error message if the result has errror
+**               .HasResultError
+                 .HasResultMessage
+                 .TmdActivity
+* TmdStatus - checks whether TMD is running or not
+**       . isTmdRunning
+ 
+* Usage Example: 
+         
+         useEffect(() => {
+    DeviceEventEmitter.addListener('DownloadResult', (event) => {
+      console.log(
+        'TmdData:',
+        event.NoResultError,
+        event.HasResultError,
+        event.HasResultMessage,
+      );
+    });
+  });
+*/
