@@ -1,3 +1,1 @@
-import {tabBarImageNameFormat} from './textFormat';
-
-export {tabBarImageNameFormat};
+export * from './textFormat';
