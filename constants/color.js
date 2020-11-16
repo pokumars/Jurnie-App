@@ -6,8 +6,8 @@ export default {
   RAJAH: '#F2B86E',
   STEEL_BLUE: '#4A86AC',
   BLACK: '#000000',
-  ORANGE_CAR: '#FAB660',
-  BACKGROUND_GRAY: '#F3F2F7',
+  SaffronMango: '#FAB660',
+  Whisper: '#F3F2F7',
   USERNAME_BLUE: '#1C75D5',
   WHITE: '#FFF',
 };

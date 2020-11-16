@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   badgeMultipleText: {
     fontSize: 12,
-    color: color.ORANGE_CAR,
+    color: color.SaffronMango,
     padding: 5,
   },
   badgeMultipleContainer: {

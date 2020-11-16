@@ -15,7 +15,7 @@ import { GLOBAL_STYLE } from 'app-constants';
  */
 
 const TransportTile = (props) => {
-  const { backgroundColor, size, source } = props;
+  const { backgroundColor, size = 42, source } = props;
   const iconSize = (size * 5) / 6;
   return (
     <View
