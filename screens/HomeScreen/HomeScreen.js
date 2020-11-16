@@ -93,7 +93,7 @@ const FeedbackButton = ({ onPress }) => (
   <FeedbackButtonWrapper {...{ onPress }}>
     <FeedbackButtonContainer>
       <Icon
-        size={FeedbackIconSize}
+        size={{ width: FeedbackIconSize, height: FeedbackIconSize }}
         source={require('assets/icons/feedback.png')}
         tintColor={RoyalBlue}
       />
