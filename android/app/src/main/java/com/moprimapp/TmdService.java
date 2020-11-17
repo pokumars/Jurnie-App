@@ -95,12 +95,15 @@ public class TmdService extends Service {
                         }
 
                         if (!downloadResult.getResult().isEmpty()) {
+                            // array collection of TmdActivities
                             WritableNativeArray array = new WritableNativeArray();
-                            WritableMap activityMap = Arguments.createMap();
+
                             for (TmdActivity tmdActivity : downloadResult.getResult()) {
                                 long timeStart = tmdActivity.getTimestampStart();
                                 long timeEnd = tmdActivity.getTimestampEnd();
                                 String activity = tmdActivity.getActivity();
+                                // map collection of an activity information
+                                WritableMap activityMap = Arguments.createMap();
 
                                 activityMap.putString("timeStart", String.format(Locale.ENGLISH, "%s",
                                         SIMPLE_DATE_FORMAT.format(new Date(timeStart))));

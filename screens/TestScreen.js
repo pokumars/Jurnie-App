@@ -22,9 +22,10 @@ const TestScreen = ({navigation}) => {
         event.NoResultError,
         event.HasResultError,
         event.HasResultMessage,
+        event.TmdActivity,
       );
     });
-  });
+  }, []);
 
   const toggleTmdService = () => () => {
     if (!tmdIsRunning) {
