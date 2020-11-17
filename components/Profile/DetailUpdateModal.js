@@ -5,10 +5,10 @@ import color from '../../constants/color';
 
 /**
  * 
- * @param {string} prop.toggleDetailModal Title of the detail e.g username
- * @param {string} prop.modalVisible Title of the detail e.g username
- * @param {string} prop.originalDetail the user detail e.g pokumars
- * @param {Boolean} prop.onConfirm can the user change that detail
+ * @param {string} prop.toggleDetailModal function that toggles visible or invisible
+ * @param {string} prop.modalVisible Actual Boolean being toggled in parent
+ * @param {string} prop.originalDetail the original detail (username)
+ * @param {Boolean} prop.onConfirm what to do when the user clicks save
  * 
  */
 // create a component
@@ -18,7 +18,6 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
   const legalChars = /[a-zA-Z0-9_-]/; // allow letters, numbers, and underscores
 
   const updateUserDetails = () => {
-    //console.log("original detail ", originalDetail);
     if(detail.length < 5){
       setErrorMessage("The username must be longer than 5 characters")
       return
@@ -32,7 +31,7 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
       console.log("username unchanged ")
       return
     }
-    
+
     //if all is good
     onConfirm(detail)
     setDetail("")
