@@ -82,7 +82,6 @@ const LastTripCard = styled(DefaultCard)`
   align-items: center;
   background-color: ${Rajah};
   justify-content: space-between;
-  padding: ${InlineM}px;
 `;
 
 const MeansOfTransportText = styled(BoldText)`
@@ -94,7 +93,7 @@ const FeedbackButton = ({ onPress }) => (
   <FeedbackButtonWrapper {...{ onPress }}>
     <FeedbackButtonContainer>
       <Icon
-        size={FeedbackIconSize}
+        size={{ width: FeedbackIconSize, height: FeedbackIconSize }}
         source={require('assets/icons/feedback.png')}
         tintColor={RoyalBlue}
       />
@@ -155,9 +154,7 @@ const YourPosition = ({}) => (
   </>
 );
 
-const YourPositionCard = styled(DefaultCard)`
-  padding: ${InlineM}px;
-`;
+const YourPositionCard = styled(DefaultCard)``;
 
 const UserInfo = styled.View`
   ${Row};

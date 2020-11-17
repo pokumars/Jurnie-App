@@ -10,10 +10,10 @@ import FastImage from 'react-native-fast-image';
  *
  */
 
-const Avatar = ({ size, source }) => (
+const Avatar = ({ size, source, style = null }) => (
   <FastImage
     {...{ source }}
-    style={{ width: size, height: size, borderRadius: size / 2 }}
+    style={{ width: size, height: size, borderRadius: size / 2, ...style }}
   />
 );
 
