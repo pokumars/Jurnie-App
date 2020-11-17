@@ -4,6 +4,7 @@ export default {
   BLACK: '#000000',
   ORANGE_CAR: '#FAB660',
   BACKGROUND_GRAY: '#F3F2F7',
-  USERNAME_BLUE: '#1C75D5'  
+  USERNAME_BLUE: '#1C75D5',
+  ERR_RED: "#e52d27"  
 }
 

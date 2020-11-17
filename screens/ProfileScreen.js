@@ -17,13 +17,17 @@ import TitleText from '../components/TitleText';
 import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
 import {createStackNavigator} from '@react-navigation/stack';
+import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
 
 const ProfileScreen = ({navigation}) => {
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  const [username, setUsername] =useState(auth().currentUser.displayName)
+
   //TODO: if a user has a profile pic, use that else use the profile icon
   const profilePicUrl =
     'https://ohe-test-image-upload-1.s3.amazonaws.com/44e97045-fd97-4882-8ed1-942934d6bee4.png';
   const profilePicPlaceholderTruth = false;
-  const Sign_out = () => {
+  const signOut = () => {
     auth()
       .signOut()
       .then(
@@ -32,6 +36,16 @@ const ProfileScreen = ({navigation}) => {
       );
     console.log('Sign_out clicked');
   };
+
+  const updateUsername= (newUsername) => {
+    console.log("ProfileScreen received this", newUsername)
+    auth().currentUser.updateProfile({displayName: newUsername}).then((data) => {
+      console.log("confirmation from Firebase");
+      setUsername(newUsername);
+    })
+  }
+
+  
   /* 
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
@@ -52,7 +66,7 @@ const ProfileScreen = ({navigation}) => {
             textFirst={true}
             btnText="Logout"
             btnImage={require('../assets/icons/log-out.png')}
-            onPress={() => Sign_out()}
+            onPress={() => signOut()}
           />
         </View>
         <View style={styles.profilePicContainer}>
@@ -61,21 +75,31 @@ const ProfileScreen = ({navigation}) => {
               style={styles.profilePic}
               source={
                 profilePicPlaceholderTruth
-                  ? {uri: profilePic}
+                  ? {uri: profilePicUrl}
                   : require('../assets/icons/profile.png')
               }
             />
           </View>
           <Button
-            onPress={() => console.log('change profile pic clicked')}
+            onPress={() => console.log("chnage profile pic clicked")}
             title="Change Pic"
             color={color.STEEL_BLUE}
             accessibilityLabel="Change profile picture"
           />
         </View>
         <View style={styles.userDetails}>
-          <ProfileUserDetail title="Username" detail="ngolo_kante" />
+          <ProfileUserDetail title="Username"
+            onPress={() => setDetailModalVisible(true)}
+            detail={username}
+            changeable={true}
+          />
           <ProfileUserDetail title="Email" detail={auth().currentUser.email} />
+          <DetailUpdateModal
+          modalVisible={detailModalVisible}
+          toggleDetailModal={()=> setDetailModalVisible(false)}
+          originalDetail={auth().currentUser.displayName}
+          onConfirm={updateUsername}
+          />
           <Button
             onPress={() => console.log('update details clicked')}
             title="change username or password"

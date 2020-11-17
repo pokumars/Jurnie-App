@@ -1,17 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import color from '../../constants/color';
 /**
  * 
  * @param {string} prop.title Title of the detail e.g username
  * @param {string} prop.detail the user detail e.g pokumars
+ * @param {Boolean} prop.changeable can the user change that detail
+ * 
  */
-const ProfileUserDetail = ({title, detail}) => {
+const ProfileUserDetail = ({title, detail, changeable, onPress}) => {
+  
+
 return (
   <View style={styles.container} >
     <Text style={styles.title}>{title}</Text>
-    <View style={styles.detailContainer} >
-      <Text style={styles.detailText} >{detail}</Text>
+    <View style={styles.buttonAndDetail}>
+      <View style={styles.detailContainer} >
+        <Text style={styles.detailText} >{detail}</Text>
+      </View>
+      {changeable &&
+      <Button style={styles.saveBtn}
+       title="change"
+       onPress={onPress}
+       accessibilityLabel={`Save new ${detail}` }/>}
     </View>
   </View>
 )
@@ -33,11 +44,21 @@ const styles = StyleSheet.create({
     backgroundColor: color.BACKGROUND_GRAY,
     borderRadius: 5,
     padding: 5,
-    paddingLeft: 25
+    paddingLeft: 25,
+    flex: 1,
+    marginHorizontal: 10,
   },
   detailText:{
     fontSize: 18,
     color: color.USERNAME_BLUE,
+  },
+  buttonAndDetail: {
+    flexDirection: 'row',
+    width: '100%'
+
+  },
+  saveBtn: {
+    marginHorizontal: '5px'
   }
 });
 

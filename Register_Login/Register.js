@@ -51,7 +51,7 @@ function register({navigation}) {
       (email.length > 8 || email.length < 8)
     ) {
       Toast.show({
-        text1: 'Password length is less than 8 charachters',
+        text1: 'Password length is less than 8 characters',
       });
     } else if (
       email.length < 8 &&
