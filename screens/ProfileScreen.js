@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Button,
   Image,
@@ -16,12 +17,11 @@ import {StackActions} from '@react-navigation/native';
 import TitleText from '../components/TitleText';
 import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
-import {createStackNavigator} from '@react-navigation/stack';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
 
 const ProfileScreen = ({navigation}) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-  const [username, setUsername] =useState(auth().currentUser.displayName)
+  const [username, setUsername] = useState(auth().currentUser.displayName);
 
   //TODO: if a user has a profile pic, use that else use the profile icon
   const profilePicUrl =
@@ -37,16 +37,17 @@ const ProfileScreen = ({navigation}) => {
     console.log('Sign_out clicked');
   };
 
-  const updateUsername= (newUsername) => {
-    console.log("ProfileScreen received this", newUsername)
-    auth().currentUser.updateProfile({displayName: newUsername}).then((data) => {
-      console.log("confirmation from Firebase");
-      setUsername(newUsername);
-    })
-  }
+  const updateUsername = (newUsername) => {
+    console.log('ProfileScreen received this', newUsername);
+    auth()
+      .currentUser.updateProfile({displayName: newUsername})
+      .then((data) => {
+        console.log('confirmation from Firebase');
+        setUsername(newUsername);
+      });
+  };
 
-  
-  /* 
+  /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
@@ -81,24 +82,25 @@ const ProfileScreen = ({navigation}) => {
             />
           </View>
           <Button
-            onPress={() => console.log("chnage profile pic clicked")}
+            onPress={() => console.log('chnage profile pic clicked')}
             title="Change Pic"
             color={color.STEEL_BLUE}
             accessibilityLabel="Change profile picture"
           />
         </View>
         <View style={styles.userDetails}>
-          <ProfileUserDetail title="Username"
+          <ProfileUserDetail
+            title="Username"
             onPress={() => setDetailModalVisible(true)}
             detail={username}
             changeable={true}
           />
           <ProfileUserDetail title="Email" detail={auth().currentUser.email} />
           <DetailUpdateModal
-          modalVisible={detailModalVisible}
-          toggleDetailModal={()=> setDetailModalVisible(false)}
-          originalDetail={auth().currentUser.displayName}
-          onConfirm={updateUsername}
+            modalVisible={detailModalVisible}
+            toggleDetailModal={() => setDetailModalVisible(false)}
+            originalDetail={auth().currentUser.displayName}
+            onConfirm={updateUsername}
           />
           <Button
             onPress={() => console.log('update details clicked')}

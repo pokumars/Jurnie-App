@@ -1,10 +1,7 @@
+/* eslint-disable prettier/prettier */
 import {
   Button,
   Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,27 +9,28 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
-import {createStackNavigator} from '@react-navigation/stack';
+import { generate as generateUsername } from '../helpers/randomUsernameGenerator'
 
 const user = auth().currentUser;
 console.log('User info for provider: ', user);
-let defaultString = '@gmail.com';
 function register({navigation}) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
   const [confirmPass, setConfirmPass] = React.useState('');
+  const randomUsername = generateUsername();
 
   const Authentication = () => {
     if (pass === confirmPass && email.length > 8) {
       auth()
         .createUserWithEmailAndPassword(email, pass)
         .then(() => {
-          console.log('User account created & signed in!'),
-            navigation.dispatch(StackActions.replace('Main'));
+          console.log('User account created & signed in!');
+          auth().currentUser.updateProfile({displayName: randomUsername})
+          .then(() => navigation.dispatch(StackActions.replace('Main')));
+
         })
         .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
@@ -83,9 +81,9 @@ function register({navigation}) {
           <Image
             source={require('../assets/moprim.png')}
             style={{
-              width: 170,
-              height: 170,
-              borderRadius: 100,
+              width: 150,
+              height: 150,
+              borderRadius: 75,
               backgroundColor: '#000000',
             }}
           />
@@ -190,7 +188,10 @@ function register({navigation}) {
           <Button title="Register" onPress={() => Authentication()} />
         </View>
       </View>
-
+    </View>
+  );
+}
+/*
       <View style={{flex: 1}}>
         <Text style={{alignSelf: 'center', color: 'white'}}>
           Or use one of your social accounts
@@ -247,9 +248,5 @@ function register({navigation}) {
             <Text style={{color: '#1E90FF'}}>Login</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
-  );
-}
-
+      </View> */
 export default register;
