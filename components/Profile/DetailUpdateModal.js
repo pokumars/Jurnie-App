@@ -22,10 +22,12 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
     if (detail.length < 5){
       setErrorMessage('The username must be longer than 5 characters');
       return;
-    } else if (!legalChars.test(detail)){
+    }
+    if (!legalChars.test(detail)){
       setErrorMessage('The username can only contain letters, numbers and underscores');
       return;
-    } else if (originalDetail === detail){
+    }
+    if (originalDetail === detail){
       setErrorMessage('');
       setDetail('');
       toggleDetailModal();
@@ -34,10 +36,11 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
     }
 
     //if all is good
-    onConfirm(detail);
-    setDetail('');
-    toggleDetailModal();
-    console.log('new username is ', detail);
+    onConfirm(detail).then(() => {
+      setDetail('');
+      toggleDetailModal();
+      console.log('new username is ', detail);
+    });
   };
   const cancelChange = () => {
     toggleDetailModal();
@@ -57,7 +60,7 @@ return (
     <View style={styles.container}>
       <Text style={styles.errorMessage} >{errorMessage}</Text>
       <TextInput style={styles.input}
-        onChangeText={(text) => setDetail(text)}
+        onChangeText={setDetail}
         placeholder="username"
       />
       <View style={styles.buttonsContainer}>
