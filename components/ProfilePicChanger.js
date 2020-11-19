@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Button, Alert, Modal } from 'react-native';
-import { v4 as uuidv4 } from 'uuid';
 import ImagePicker from 'react-native-image-picker';
 import globalStyles from '../constants/globalStyle';
 import color from '../constants/color';
+import { uploadProfileImage } from '../helpers/firebaseStorage';
 
 const ImagePickerComponent = ({visible, toggleVisibility}) => {
-  const [selectedImage, setSelectedImage] = useState()
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const pickImageHandler= () => {
     const options= {
@@ -34,6 +34,13 @@ const ImagePickerComponent = ({visible, toggleVisibility}) => {
     toggleVisibility();
     setSelectedImage(null)
   }
+  const saveImageHandler = () => {
+    console.log('save image clicked')
+    uploadProfileImage(selectedImage).then(() => {
+      toggleVisibility();
+      setSelectedImage(null)
+    })
+  }
 
 
   return (
@@ -41,10 +48,7 @@ const ImagePickerComponent = ({visible, toggleVisibility}) => {
     animationType="slide"
     visible={visible}
     presentationStyle="fullScreen"
-    onRequestClose={() => {
-      toggleVisibility();
-      Alert.alert('Image change aborted');
-    }}>
+    onRequestClose={cancelHandler}>
       
       <View style= {[globalStyles.CENTER, styles.container]}>
         {/* dont show pick image button when an image has been picked.
@@ -71,7 +75,7 @@ const ImagePickerComponent = ({visible, toggleVisibility}) => {
                 <Button
                   title="save"
                   color={color.STEEL_BLUE}
-                  onPress={() =>console.log('save image clicked')}
+                  onPress={saveImageHandler}
                 />
               </View>
               <View style={styles.button}>
