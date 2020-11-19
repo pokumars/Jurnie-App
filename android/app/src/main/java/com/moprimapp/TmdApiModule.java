@@ -11,6 +11,8 @@ import com.facebook.react.bridge.ReadableMap;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
+import java.lang.Thread;
+import android.os.Looper;
 
 import fi.moprim.tmd.sdk.TMD;
 import fi.moprim.tmd.sdk.TmdCloudApi;
@@ -46,11 +48,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule {
         TMD.stop(this.reactContext);
         this.reactContext.stopService(new Intent(this.reactContext, TmdService.class));
     }
-
-    @ReactMethod
-    public void isTmdRunning() {
-        TMD.isTmdRunning();
-    }
+    
 
 }
 

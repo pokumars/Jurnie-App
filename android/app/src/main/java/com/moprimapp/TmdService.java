@@ -71,62 +71,70 @@ public class TmdService extends Service {
         public  void run() {
             try {
                 Looper.prepare();
-                Date date = Calendar.getInstance().getTime();
+                Calendar cal = Calendar.getInstance();
+                //cal.add(Calendar.DATE, -1);
+                Date date = cal.getTime();
+               // Result<TmdUploadMetadata> uploadResult = TmdCloudApi.uploadData(getApplicationContext());
                 // fetching data for a specific date
                 Result<List<TmdActivity>> downloadResult = TmdCloudApi.fetchData(getApplicationContext(), date);
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        params = Arguments.createMap();
                         ReactContext reactContext = ((MainApplication)getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
-
-                        if (!downloadResult.hasResult()) {
-                            params.putString("NoResultError", "TMD could not retrieve any results: (" + downloadResult.getError().name() + ", " + downloadResult.getMessage() + ")");
-                            dispatchEvent(reactContext, "DownloadResult", params);
-
-                        }
-                        if (downloadResult.hasError()) {
-                            params.putString("HasResultError", downloadResult.getError().name());
-                            dispatchEvent(reactContext, "DownloadResult", params);
-                        }
-                        if (downloadResult.hasMessage()) {
-                            params.putString("HasResultMessage", downloadResult.getMessage());
-                            dispatchEvent(reactContext, "DownloadResult", params);
-                        }
+                        params = Arguments.createMap();
+                        WritableNativeArray array = new WritableNativeArray();
 
                         if (!downloadResult.getResult().isEmpty()) {
                             // array collection of TmdActivities
-                            WritableNativeArray array = new WritableNativeArray();
 
                             for (TmdActivity tmdActivity : downloadResult.getResult()) {
                                 long timeStart = tmdActivity.getTimestampStart();
                                 long timeEnd = tmdActivity.getTimestampEnd();
+                                long id = tmdActivity.getId();
                                 String activity = tmdActivity.getActivity();
                                 // map collection of an activity information
                                 WritableMap activityMap = Arguments.createMap();
 
+                                activityMap.putString("id", String.format(Locale.ENGLISH, "%s",
+                                        id));
                                 activityMap.putString("timeStart", String.format(Locale.ENGLISH, "%s",
                                         SIMPLE_DATE_FORMAT.format(new Date(timeStart))));
                                 activityMap.putString("timeEnd", String.format(Locale.ENGLISH, "%s",
                                         SIMPLE_DATE_FORMAT.format(new Date(timeEnd))));
                                 activityMap.putString("duration", String.format(Locale.ENGLISH, "%s",
-                                        SIMPLE_DATE_FORMAT.format(TmdUtils.getDuration((timeEnd - timeStart) / 1000.))));
-                                activityMap.putString("Activity type", activity);
-                                activityMap.putDouble("Co2", tmdActivity.getCo2());
-                                activityMap.putDouble("distance_m", tmdActivity.getDistance());
+                                        TmdUtils.getDuration((timeEnd - timeStart) / 1000.)));
+                                activityMap.putString("activityType", activity);
+                                activityMap.putDouble("co2", tmdActivity.getCo2());
+                                activityMap.putDouble("distance", tmdActivity.getDistance());
                                 activityMap.putString("destination", tmdActivity.getDestination());
-                                activityMap.putDouble("speed_km/h", tmdActivity.getSpeed());
+                                activityMap.putDouble("speed", tmdActivity.getSpeed());
+                                activityMap.putString("origin", tmdActivity.getOrigin());
+                                activityMap.putString("polyline", tmdActivity.getPolyline());
+                                activityMap.putString("metadata", tmdActivity.getMetadata());
+
                                 array.pushMap(activityMap);
 
                             }
+                            params.putString("resultStr", downloadResult.toString());
                             params.putArray("TmdActivity", array );
-                            dispatchEvent(reactContext, "DownloadResult", params);
                         }
+
+                        if (!downloadResult.hasResult()) {
+                            params.putString("NoResultError", "TMD could not retrieve any results: (" + downloadResult.getError().name() + ", " + downloadResult.getMessage() + ")");
+                        }
+                        if (downloadResult.hasError()) {
+                            params.putString("HasResultError", downloadResult.getError().name());
+                        }
+                        if (downloadResult.hasMessage()) {
+                            params.putString("HasResultMessage", downloadResult.getMessage());
+                        }
+
+                        dispatchEvent(reactContext, "DownloadResult", params);
                     }
                 },3000);
                 Looper.loop();
             } catch (Exception e) {
-
+                 
             }
         }
     };

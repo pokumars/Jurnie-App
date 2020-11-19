@@ -78,7 +78,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           public void onTmdInitSuccessful(String s) {
               // s is the current installation ID, we'll put the UUID as the same just to demonstrate how to use the method
               // replace with your own user id in production
-              // TMD.setUUID(s);
+              TMD.setUUID(s);
               Log.i(MainApplication.class.getSimpleName(), "Initialization successful with id: " + s);
               Intent intent = new Intent(MainApplication.this, TmdUploadIntentService.class);
               PendingIntent callbackIntent = PendingIntent.getService(MainApplication.this, 0, intent,
