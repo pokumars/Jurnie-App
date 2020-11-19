@@ -4,8 +4,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
@@ -17,6 +15,7 @@ import {StackActions} from '@react-navigation/native';
 import TitleText from '../components/TitleText';
 import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
+import { v4 as uuidv4 } from 'uuid';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
 
 const ProfileScreen = ({navigation}) => {
@@ -52,7 +51,7 @@ const ProfileScreen = ({navigation}) => {
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
  "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
-
+ //TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
   return (
     <View style={styles.screen}>
       <ScrollView>
