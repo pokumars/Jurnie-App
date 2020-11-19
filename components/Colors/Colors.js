@@ -1,0 +1,15 @@
+export const Black = '#000';
+export const Emperor = '#555';
+export const Fire = '#AA2E00';
+export const Grenadier = '#D43900';
+export const HawaiianTan = '#914F15';
+export const Jumbo = '#7B7980';
+export const MangoTango = '#D47500';
+export const Mariner = '#1C75D5';
+export const MineShaft = '#333';
+export const Rajah = '#F2B86E';
+export const RoyalBlue = '#3455DB';
+export const SaffronMango = '#FAB660';
+export const SteelBlue = '#4A86AC';
+export const Whisper = '#F3F2F7';
+export const White = '#FFF';

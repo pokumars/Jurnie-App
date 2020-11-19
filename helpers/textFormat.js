@@ -1,4 +1,4 @@
-const tabBarImageNameFormat = (tabName, focused) => {
+export const tabBarImageNameFormat = (tabName, focused) => {
   if (typeof tabName !== 'string' && typeof focused !== 'boolean') {
     return '';
   }
@@ -13,4 +13,10 @@ const tabBarImageNameFormat = (tabName, focused) => {
   return result;
 };
 
-export {tabBarImageNameFormat};
+export const formatScore = (input) => {
+  if (typeof input !== 'number') return '';
+
+  const stringInput = input.toString();
+  const result = stringInput.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // If the number of digits in a number are more than 3, for every 3 digits, add a dot
+  return result;
+};

@@ -38,7 +38,7 @@ const ProfileScreen = ({navigation}) => {
 
   const updateUsername = (newUsername) => {
     console.log('ProfileScreen received this', newUsername);
-    auth()
+    return auth()
       .currentUser.updateProfile({displayName: newUsername})
       .then((data) => {
         console.log('confirmation from Firebase');
