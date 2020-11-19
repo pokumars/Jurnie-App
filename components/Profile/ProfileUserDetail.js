@@ -8,35 +8,26 @@ import color from '../../constants/color';
  * @param {Boolean} prop.changeable can the user change that detail
  * 
  */
-<<<<<<< HEAD
 const ProfileUserDetail = ({title, detail, changeable, onPress}) => {
   
 
-return (
-  <View style={styles.container} >
-    <Text style={styles.title}>{title}</Text>
-    <View style={styles.buttonAndDetail}>
-      <View style={styles.detailContainer} >
-        <Text style={styles.detailText} >{detail}</Text>
-      </View>
-      {changeable &&
-      <Button style={styles.saveBtn}
-       title="change"
-       onPress={onPress}
-       accessibilityLabel={`Save new ${detail}` }/>}
-=======
-const ProfileUserDetail = ({ title, detail }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailText}>{detail}</Text>
+      <View style={styles.buttonAndDetail}>
+        <View style={styles.detailContainer} >
+          <Text style={styles.detailText} >{detail}</Text>
+        </View>
+        {changeable &&
+          <Button style={styles.saveBtn}
+            title="change"
+            onPress={onPress}
+            accessibilityLabel={`Save new ${detail}`} />}
       </View>
->>>>>>> master
     </View>
-  );
-};
-
+  )
+  };
+  
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -54,17 +45,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     paddingLeft: 25,
-<<<<<<< HEAD
     flex: 1,
     marginHorizontal: 10,
-=======
->>>>>>> master
+
   },
   detailText: {
     fontSize: 18,
     color: color.USERNAME_BLUE,
   },
-<<<<<<< HEAD
   buttonAndDetail: {
     flexDirection: 'row',
     width: '100%'
@@ -73,8 +61,6 @@ const styles = StyleSheet.create({
   saveBtn: {
     marginHorizontal: '5px'
   }
-=======
->>>>>>> master
 });
 
 export default ProfileUserDetail;
