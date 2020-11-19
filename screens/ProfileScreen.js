@@ -17,14 +17,18 @@ import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
 import { v4 as uuidv4 } from 'uuid';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
+import ProfilePicChanger from '../components/ProfilePicChanger';
+import globalStyles from '../constants/globalStyle';
 
 const ProfileScreen = ({navigation}) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
+  const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
+  const [profilePic, setProfilePic] = useState(false);
+  const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
 
   //TODO: if a user has a profile pic, use that else use the profile icon
-  const profilePicUrl =
-    'https://ohe-test-image-upload-1.s3.amazonaws.com/44e97045-fd97-4882-8ed1-942934d6bee4.png';
+ 
   const profilePicPlaceholderTruth = false;
   const signOut = () => {
     auth()
@@ -69,19 +73,24 @@ const ProfileScreen = ({navigation}) => {
             onPress={() => signOut()}
           />
         </View>
-        <View style={styles.profilePicContainer}>
-          <View style={styles.profilePicView}>
+        <ProfilePicChanger
+          visible={changingPicModalVisible}
+          toggleVisibility={()=>setChangingPicModalVisible(false)}
+        />
+       
+        <View style={globalStyles.profilePicContainer}>
+          <View style={globalStyles.profilePicView}>
             <Image
-              style={styles.profilePic}
+              style={globalStyles.profilePic}
               source={
-                profilePicPlaceholderTruth
+                profilePicUrl
                   ? {uri: profilePicUrl}
                   : require('../assets/icons/profile.png')
               }
             />
           </View>
           <Button
-            onPress={() => console.log('chnage profile pic clicked')}
+            onPress={() => setChangingPicModalVisible(true)}
             title="Change Pic"
             color={color.STEEL_BLUE}
             accessibilityLabel="Change profile picture"
@@ -128,6 +137,7 @@ const ProfileScreen = ({navigation}) => {
             />
           </View>
         </View>
+        
       </ScrollView>
     </View>
   );
@@ -152,11 +162,6 @@ const styles = StyleSheet.create({
 
     padding: 5,
   },
-  profilePicContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   profilePicView: {
     height: 150,
     width: 150,
@@ -170,6 +175,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  
   userDetails: {
     alignItems: 'center',
     justifyContent: 'center',
