@@ -19,15 +19,6 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
   const legalChars = /^[a-zA-Z0-9_-]*$/; // allow letters, numbers, and underscores
 
   const updateUserDetails = () => {
-<<<<<<< HEAD
-    if (detail.length < 5) {
-      setErrorMessage('The username must be longer than 5 characters');
-      return;
-    } else if (!legalChars.test(detail)){
-      setErrorMessage('The username can only contain letters, numbers and underscores');
-      return;
-    } else if (originalDetail === detail){
-=======
     if (detail.length < 5){
       setErrorMessage('The username must be longer than 5 characters');
       return;
@@ -37,7 +28,6 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
       return;
     }
     if (originalDetail === detail){
->>>>>>> features/profile-picture1
       setErrorMessage('');
       setDetail('');
       toggleDetailModal();
@@ -46,18 +36,11 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
     }
 
     //if all is good
-<<<<<<< HEAD
-    onConfirm(detail);
-    setDetail('');
-    toggleDetailModal();
-    console.log('new username is ', detail);
-=======
     onConfirm(detail).then(() => {
       setDetail('');
       toggleDetailModal();
       console.log('new username is ', detail);
     });
->>>>>>> features/profile-picture1
   };
   const cancelChange = () => {
     toggleDetailModal();
