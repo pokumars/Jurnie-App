@@ -1,6 +1,6 @@
 // import libraries
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import color from '../../constants/color';
 
 /**
@@ -12,10 +12,7 @@ import color from '../../constants/color';
 const IconTextBorderlessBtn = ({ textFirst, btnImage, btnText, onPress }) => {
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        { flexDirection: textFirst ? 'row' : 'row-reverse' },
-      ]}
+      style={[styles.container, { flexDirection: textFirst ? 'row' : 'row-reverse' }]}
       onPress={() => onPress()}>
       <Text style={styles.actionText}> {btnText}</Text>
       <Image source={btnImage} style={styles.actionIcons} />

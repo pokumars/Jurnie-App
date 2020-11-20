@@ -10,18 +10,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {StackActions} from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
+
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const user = auth().currentUser;
 console.log('User info for provider: ', user);
-let defaultString = '@gmail.com';
-function register({navigation}) {
+const defaultString = '@gmail.com';
+function register({ navigation }) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
   const [confirmPass, setConfirmPass] = React.useState('');
@@ -45,19 +45,11 @@ function register({navigation}) {
 
           console.error(error);
         });
-    } else if (
-      pass.length < 8 &&
-      pass === confirmPass &&
-      (email.length > 8 || email.length < 8)
-    ) {
+    } else if (pass.length < 8 && pass === confirmPass && (email.length > 8 || email.length < 8)) {
       Toast.show({
         text1: 'Password length is less than 8 charachters',
       });
-    } else if (
-      email.length < 8 &&
-      pass === confirmPass &&
-      (pass.length > 8 || pass.length < 8)
-    ) {
+    } else if (email.length < 8 && pass === confirmPass && (pass.length > 8 || pass.length < 8)) {
       Toast.show({
         text1: 'Email is incorrect',
       });
@@ -77,9 +69,9 @@ function register({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#000000'}}>
-      <View style={{flex: 1}}>
-        <View style={{alignSelf: 'center', backgroundColor: '#000000'}}>
+    <View style={{ flex: 1, backgroundColor: '#000000' }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ alignSelf: 'center', backgroundColor: '#000000' }}>
           <Image
             source={require('../assets/moprim.png')}
             style={{
@@ -104,7 +96,7 @@ function register({navigation}) {
           alignItems: 'center',
           alignContent: 'center',
         }}>
-        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Create account</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Create account</Text>
         <Text>Please fill-in your Email and Password</Text>
 
         <View
@@ -125,7 +117,7 @@ function register({navigation}) {
             }}
           />
           <TextInput
-            style={{width: 200, marginStart: 5}}
+            style={{ width: 200, marginStart: 5 }}
             placeholder="email"
             value={email}
             onChangeText={setemail}
@@ -149,7 +141,7 @@ function register({navigation}) {
             }}
           />
           <TextInput
-            style={{width: 200, marginStart: 5}}
+            style={{ width: 200, marginStart: 5 }}
             placeholder="password"
             maxLength={15}
             value={pass}
@@ -174,7 +166,7 @@ function register({navigation}) {
             }}
           />
           <TextInput
-            style={{width: 200, marginStart: 5}}
+            style={{ width: 200, marginStart: 5 }}
             placeholder="Confirm password"
             maxLength={15}
             value={confirmPass}
@@ -191,8 +183,8 @@ function register({navigation}) {
         </View>
       </View>
 
-      <View style={{flex: 1}}>
-        <Text style={{alignSelf: 'center', color: 'white'}}>
+      <View style={{ flex: 1 }}>
+        <Text style={{ alignSelf: 'center', color: 'white' }}>
           Or use one of your social accounts
         </Text>
         <View
@@ -211,7 +203,7 @@ function register({navigation}) {
             }}>
             <Image
               source={require('../assets/icons/twitter.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
             />
           </View>
 
@@ -222,7 +214,7 @@ function register({navigation}) {
             }}>
             <Image
               source={require('../assets/icons/gmail.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
             />
           </View>
 
@@ -234,17 +226,16 @@ function register({navigation}) {
             }}>
             <Image
               source={require('../assets/icons/faceb.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
             />
           </View>
         </View>
-        <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
-          <Text style={{color: 'white'}}>Already have an Account</Text>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+          <Text style={{ color: 'white' }}>Already have an Account</Text>
           <TouchableOpacity
-            style={{marginStart: 5}}
+            style={{ marginStart: 5 }}
             onPress={() => navigation.dispatch(StackActions.replace('Login'))}>
-            <Text style={{color: '#1E90FF'}}>Login</Text>
+            <Text style={{ color: '#1E90FF' }}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>

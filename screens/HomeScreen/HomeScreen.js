@@ -64,10 +64,7 @@ const LastTrip = ({ onWriteFeedbackButtonPress }) => (
     <SubtitleText>LAST TRIP</SubtitleText>
     <LastTripCard>
       <MeansOfTransportText>On Bus</MeansOfTransportText>
-      <TransportTile
-        source={require('assets/icons/bus-white.png')}
-        backgroundColor={HawaiianTan}
-      />
+      <TransportTile source={require('assets/icons/bus-white.png')} backgroundColor={HawaiianTan} />
       <FeedbackButton onPress={onWriteFeedbackButtonPress} />
     </LastTripCard>
   </LastTripContainer>
@@ -130,8 +127,7 @@ const YourPosition = ({}) => (
         <Avatar
           size={InlineXL}
           source={{
-            uri:
-              'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+            uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
           }}
         />
         <UserNameText>Test</UserNameText>

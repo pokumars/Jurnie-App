@@ -1,25 +1,17 @@
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
+import { Button, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
 
+import { StackActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import { createStackNavigator } from '@react-navigation/stack';
 import Badge from '../components/Profile/Badge';
 import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
 import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
-import {StackActions} from '@react-navigation/native';
 import TitleText from '../components/TitleText';
-import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
-import {createStackNavigator} from '@react-navigation/stack';
 
-const ProfileScreen = ({navigation}) => {
-  //TODO: if a user has a profile pic, use that else use the profile icon
+const ProfileScreen = ({ navigation }) => {
+  // TODO: if a user has a profile pic, use that else use the profile icon
   const profilePicUrl =
     'https://ohe-test-image-upload-1.s3.amazonaws.com/44e97045-fd97-4882-8ed1-942934d6bee4.png';
   const profilePicPlaceholderTruth = false;
@@ -28,7 +20,7 @@ const ProfileScreen = ({navigation}) => {
       .signOut()
       .then(
         () => console.log('User signed out!'),
-        navigation.dispatch(StackActions.replace('Login')),
+        navigation.dispatch(StackActions.replace('Login'))
       );
     console.log('Sign_out clicked');
   };
@@ -49,7 +41,7 @@ const ProfileScreen = ({navigation}) => {
             onPress={() => console.log('settings clicked')}
           />
           <IconTextBorderlessBtn
-            textFirst={true}
+            textFirst
             btnText="Logout"
             btnImage={require('../assets/icons/log-out.png')}
             onPress={() => Sign_out()}
@@ -61,7 +53,7 @@ const ProfileScreen = ({navigation}) => {
               style={styles.profilePic}
               source={
                 profilePicPlaceholderTruth
-                  ? {uri: profilePic}
+                  ? { uri: profilePic }
                   : require('../assets/icons/profile.png')
               }
             />
@@ -86,29 +78,18 @@ const ProfileScreen = ({navigation}) => {
         <View style={styles.badgesAchievementsContainer}>
           <TitleText>Badges &amp; Achievements</TitleText>
           <View style={styles.badgesContainer}>
-            <Badge
-              multiple={31}
-              badgeImage={require('../assets/icons/log-out.png')}
-            />
-            <Badge
-              multiple={3}
-              badgeImage={require('../assets/icons/home.png')}
-            />
-            <Badge
-              multiple={125}
-              badgeImage={require('../assets/icons/profile.png')}
-            />
-            <Badge
-              badgeImage={require('../assets/icons/settings-outline.png')}
-            />
+            <Badge multiple={31} badgeImage={require('../assets/icons/log-out.png')} />
+            <Badge multiple={3} badgeImage={require('../assets/icons/home.png')} />
+            <Badge multiple={125} badgeImage={require('../assets/icons/profile.png')} />
+            <Badge badgeImage={require('../assets/icons/settings-outline.png')} />
           </View>
         </View>
       </ScrollView>
     </View>
   );
 };
-//TODO: clicking on profile picture lets you view it
-//TODO: button for change profile picture
+// TODO: clicking on profile picture lets you view it
+// TODO: button for change profile picture
 
 const styles = StyleSheet.create({
   screen: {
