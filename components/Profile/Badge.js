@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import color from '../../constants/color';
 
 /**
@@ -9,7 +9,7 @@ import color from '../../constants/color';
  * either require('../../logo.png') or {uri: 'https://smth.dev/logo.png'}
  *
  */
-const Badge = ({ multiple, badgeImage }) => {
+const Badge = ({multiple, badgeImage}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.badgeImage} source={badgeImage} />

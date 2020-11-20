@@ -32,7 +32,7 @@ const ProfileScreen = ({navigation}) => {
       );
     console.log('Sign_out clicked');
   };
-  /* 
+  /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",

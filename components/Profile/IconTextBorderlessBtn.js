@@ -1,6 +1,6 @@
 // import libraries
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import color from '../../constants/color';
 
 /**
