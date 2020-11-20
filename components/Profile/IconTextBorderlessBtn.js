@@ -1,4 +1,4 @@
-//import libraries
+// import libraries
 import React from 'react';
 import {Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import color from '../../constants/color';
@@ -9,12 +9,12 @@ import color from '../../constants/color';
  * @param {string} prop.btnText - text that goes with the icon
  * @param {function} prop.onPress - function when pressed
  */
-const IconTextBorderlessBtn = ({textFirst, btnImage, btnText, onPress}) => {
+const IconTextBorderlessBtn = ({ textFirst, btnImage, btnText, onPress }) => {
   return (
     <TouchableOpacity
       style={[
         styles.container,
-        {flexDirection: textFirst ? 'row' : 'row-reverse'},
+        { flexDirection: textFirst ? 'row' : 'row-reverse' },
       ]}
       onPress={() => onPress()}>
       <Text style={styles.actionText}> {btnText}</Text>
@@ -23,7 +23,6 @@ const IconTextBorderlessBtn = ({textFirst, btnImage, btnText, onPress}) => {
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   actionIcons: {
     height: 25,
@@ -40,5 +39,4 @@ const styles = StyleSheet.create({
   logoutContainer: {},
 });
 
-//make this component available to the app
 export default IconTextBorderlessBtn;

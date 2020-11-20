@@ -6,7 +6,7 @@ import color from '../../constants/color';
  * @param {string} prop.title Title of the detail e.g username
  * @param {string} prop.detail the user detail e.g pokumars
  */
-const ProfileUserDetail = ({title, detail}) => {
+const ProfileUserDetail = ({ title, detail }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   detailContainer: {
     borderWidth: 1,
     borderColor: color.BLACK,
-    backgroundColor: color.BACKGROUND_GRAY,
+    backgroundColor: color.Whisper,
     borderRadius: 5,
     padding: 5,
     paddingLeft: 25,

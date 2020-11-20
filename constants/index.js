@@ -1,5 +1,9 @@
 import Color from './color';
-import NavigationRoute from './navigationRoutes';
+import GlobalStyle from './globalStyle';
+import MeansOfTransport from './transport';
+import NavigationRoute from './navigationRoute';
 
-export const NAVIGATION_ROUTE = NavigationRoute;
 export const COLOR = Color;
+export const GLOBAL_STYLE = GlobalStyle;
+export const MEANS_OF_TRANSPORT = MeansOfTransport;
+export const NAVIGATION_ROUTE = NavigationRoute;

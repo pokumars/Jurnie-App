@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {COLOR, NAVIGATION_ROUTE} from '../../constants';
+import { COLOR, GLOBAL_STYLE, NAVIGATION_ROUTE } from 'app-constants';
 
-function CustomizedTabBar({state, descriptors, navigation}) {
+function CustomizedTabBar({ state, descriptors, navigation }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
   if (focusedOptions.tabBarVisible === false) {
@@ -11,9 +11,9 @@ function CustomizedTabBar({state, descriptors, navigation}) {
   }
 
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={[styles.tabBar, GLOBAL_STYLE.ROW]}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
@@ -72,7 +72,7 @@ function CustomizedTabBar({state, descriptors, navigation}) {
         return (
           <TouchableOpacity
             accessibilityRole="button"
-            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             key={route.name}
             testID={options.tabBarTestID}
@@ -83,7 +83,7 @@ function CustomizedTabBar({state, descriptors, navigation}) {
             <Text
               style={[
                 styles.tabLabel,
-                {color: isFocused ? COLOR.STEEL_BLUE : COLOR.JUMBO},
+                { color: isFocused ? COLOR.STEEL_BLUE : COLOR.JUMBO },
               ]}>
               {label.toUpperCase()}
             </Text>
@@ -95,6 +95,9 @@ function CustomizedTabBar({state, descriptors, navigation}) {
 }
 
 const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: COLOR.WHITE,
+  },
   tab: {
     flex: 1,
     alignItems: 'center',
