@@ -1,22 +1,22 @@
 import {
   Button,
-  StyleSheet,
-  Text,
-  View,
   Image,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import React, {useState} from 'react';
 
-import {StackActions} from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
-import {createStackNavigator} from '@react-navigation/stack';
-import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
-import color from '../constants/color';
-import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
-import TitleText from '../components/TitleText';
 import Badge from '../components/Profile/Badge';
+import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
+import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
+import {StackActions} from '@react-navigation/native';
+import TitleText from '../components/TitleText';
+import auth from '@react-native-firebase/auth';
+import color from '../constants/color';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const ProfileScreen = ({navigation}) => {
   //TODO: if a user has a profile pic, use that else use the profile icon
@@ -24,12 +24,12 @@ const ProfileScreen = ({navigation}) => {
     'https://ohe-test-image-upload-1.s3.amazonaws.com/44e97045-fd97-4882-8ed1-942934d6bee4.png';
   const profilePicPlaceholderTruth = false;
   const Sign_out = () => {
-    /*auth()
+    auth()
       .signOut()
       .then(
         () => console.log('User signed out!'),
         navigation.dispatch(StackActions.replace('Login')),
-      );*/
+      );
     console.log('Sign_out clicked');
   };
   /*
