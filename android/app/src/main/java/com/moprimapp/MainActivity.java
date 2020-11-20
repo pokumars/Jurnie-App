@@ -1,14 +1,21 @@
 package com.moprimapp;
 
 import com.facebook.react.ReactActivity;
-import android.os.Bundle;
-import android.os.Handler;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import androidx.annotation.Nullable;
 import android.app.Service;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +23,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,26 +33,16 @@ import java.lang.Thread;
 import android.os.Looper;
 import java.lang.Exception;
 import java.util.Arrays;
-
 import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import fi.moprim.tmd.sdk.TMD;
-import fi.moprim.tmd.sdk.TmdCloudApi;
-import fi.moprim.tmd.sdk.TmdUtils;
-import fi.moprim.tmd.sdk.model.Result;
-import fi.moprim.tmd.sdk.model.TmdActivity;
-import fi.moprim.tmd.sdk.model.TmdUploadMetadata;
 
 public class MainActivity extends ReactActivity {
   private static final String NOTIFICATION_CHANNEL_ID = "com.moprimapp.channel";
@@ -55,6 +50,9 @@ public class MainActivity extends ReactActivity {
   private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
   private static final int TMD_PERMISSIONS_REQUEST_LOCATION = 1210;
   private static final int TMD_PERMISSION_REQUEST_ACTIVITY = 1211;
+  public static final String ACTION_START_TMD_FOREGROUND_SERVICE = "com.moprimapp.ACTION_START_TMD_FOREGROUND_SERVICE";
+
+  private ReactContext reactContext;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +60,14 @@ public class MainActivity extends ReactActivity {
     requestLocationPermission();
     requestPhysicalActivityPermission();
 
-
     Notification notification = buildNotification(getString(R.string.service_is_running));
     Context context = getApplicationContext();
-    //TMD.startForeground(context, NOTIFICATION_ID, notification);
+    TMD.startForeground(context, NOTIFICATION_ID, notification);
+    IntentFilter intentFilter = new IntentFilter(ACTION_START_TMD_FOREGROUND_SERVICE);
+    registerReceiver(startTMDReceiver, intentFilter);
+
+    //reactContext = ((MainApplication)getApplication()).getReactNativeHost().getReactInstanceManager().getCurrentReactContext();
+    //isTmdRunning();
 
     super.onCreate(savedInstanceState);
   }
@@ -79,7 +81,24 @@ public class MainActivity extends ReactActivity {
     return "moprimApp";
   }
 
-  private Notification buildNotification(String notificationText) {
+  private BroadcastReceiver startTMDReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      createNotificationChannel();
+      Notification notification = buildNotification(getString(R.string.service_is_running));
+
+      TMD.startForeground(getApplicationContext(), NOTIFICATION_ID, notification);
+      Toast.makeText(getApplicationContext(), "TMD is running ACTION_START_TMD_FOREGROUND_SERVICE", Toast.LENGTH_SHORT).show();
+    }
+  };
+
+  @Override
+  public void onDestroy() {
+    unregisterReceiver(startTMDReceiver);
+    super.onDestroy();
+  }
+
+  public Notification buildNotification(String notificationText) {
     // Create notification builder.
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
 
@@ -101,7 +120,7 @@ public class MainActivity extends ReactActivity {
     return notificationBuilder.build();
   }
 
-  private void createNotificationChannel() {
+  public void createNotificationChannel() {
     // Create the NotificationChannel, but only on API 26+ because
     // the NotificationChannel class is new and not in the support library
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -197,5 +216,20 @@ public class MainActivity extends ReactActivity {
                 TMD_PERMISSIONS_REQUEST_LOCATION);
       }
     }
+  }
+
+  private void isTmdRunning() {
+    Boolean tmdIsRunning = TMD.isTmdRunning();
+    WritableMap params = Arguments.createMap();
+    params.putBoolean("isTmdRunning", tmdIsRunning);
+    dispatchEvent(reactContext, "TmdStatus", params);
+  }
+
+  private void dispatchEvent(ReactContext reactContext,
+                             String eventName,
+                             @Nullable WritableMap params) {
+    reactContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
   }
 }

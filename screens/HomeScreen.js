@@ -1,3 +1,4 @@
+/*
 import React, {useState, useEffect} from 'react';
 import {Text, View, Button} from 'react-native';
 import color from '../constants/color';
@@ -12,6 +13,22 @@ const HomeScreen = ({navigation}) => {
     DeviceEventEmitter.addListener('TmdStatus', (event) => {
       console.log('tmd status:', event.isTmdRunning);
     });
+  }, []);
+
+  useEffect(() => {
+    try {
+      TmdApi.fetchTmdData(
+        (activities, str) => {
+          console.log('Tmd success', activities);
+          setActivity(str);
+        },
+        (err) => {
+          console.log('Tmd error', err);
+        },
+      );
+    } catch (e) {
+      console.log('error', e.message);
+    }
   }, []);
 
   useEffect(() => {
@@ -51,8 +68,26 @@ const HomeScreen = ({navigation}) => {
         accessibilityLabel="start or stop TMD service"
       />
       <Text>{activity}</Text>
+      <Button
+        onPress={() =>
+          TmdApi.fetchTmdData(
+            (activities, str) => {
+              console.log('Tmd success', activities);
+              setActivity(str);
+            },
+            (err) => {
+              console.log('Tmd error', err);
+            },
+          )
+        }
+        title="fetch"
+        color={color.STEEL_BLUE}
+        accessibilityLabel="fetch data"
+      />
+      <Text>{activity}</Text>
     </View>
   );
 };
 
 export default HomeScreen;
+*/
