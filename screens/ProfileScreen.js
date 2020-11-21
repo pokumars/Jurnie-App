@@ -54,11 +54,11 @@ const ProfileScreen = ({navigation}) => {
   const getOldProfileImageRef= () => {
     console.log('profilePicUrl---------', profilePicUrl)
     // Todo: change test%2F to profilePics%2F . Also remember to remove test from storageRef in file helpers\firebaseStorage.js in 2 places there
-    console.log('attempt at ref--------------', profilePicUrl.split('?').shift().split('test%2F').pop())
+    console.log('attempt at ref--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
     
     //to delete the old profile pic, we must get the ref from the url.
     if(profilePicUrl!== null ){
-      return profilePicUrl.split('?').shift().split('test%2F').pop()
+      return profilePicUrl.split('?').shift().split('profilePics%2F').pop()
     }
     return ""
   }

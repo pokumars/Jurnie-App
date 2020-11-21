@@ -8,7 +8,7 @@ const profilePicStorageRef = firebase
   .storage('gs://journeyapplicatio.appspot.com/profilePics');
 
 const deleteOldProfileImage = (filename) => {
-  const oldProfilePicRef = profilePicStorageRef.ref(`test/${filename}`);
+  const oldProfilePicRef = profilePicStorageRef.ref(`${filename}`);
   oldProfilePicRef
     .delete()
     .then(function () {
@@ -35,7 +35,7 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
   const filename = `${uuid}.${fileExtension}`;
   // console.log('filename----', filename);
 
-  const storageRef = profilePicStorageRef.ref(`test/${filename}`);
+  const storageRef = profilePicStorageRef.ref(`${filename}`);
 
   const task = storageRef.putFile(imageURI);
 
