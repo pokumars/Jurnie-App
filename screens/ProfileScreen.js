@@ -24,7 +24,6 @@ const ProfileScreen = ({navigation}) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
-  const [profilePic, setProfilePic] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
 
   //TODO: if a user has a profile pic, use that else use the profile icon
@@ -49,13 +48,17 @@ const ProfileScreen = ({navigation}) => {
         setUsername(newUsername);
       });
   };
+  const renderNewProfilePic = (newPicUrl) => {
+    console.log('setNewProfilePic---------',newPicUrl);
+    setProfilePicUrl(newPicUrl);
+  }
 
   /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
  "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
- //TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
+ // TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
   return (
     <View style={styles.screen}>
       <ScrollView>
@@ -76,6 +79,7 @@ const ProfileScreen = ({navigation}) => {
         <ProfilePicChanger
           visible={changingPicModalVisible}
           toggleVisibility={()=>setChangingPicModalVisible(false)}
+          update={renderNewProfilePic}
         />
        
         <View style={globalStyles.profilePicContainer}>
@@ -142,8 +146,7 @@ const ProfileScreen = ({navigation}) => {
     </View>
   );
 };
-//TODO: clicking on profile picture lets you view it
-//TODO: button for change profile picture
+// TODO: clicking on profile picture lets you view it
 
 const styles = StyleSheet.create({
   screen: {

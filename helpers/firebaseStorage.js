@@ -5,30 +5,32 @@ import { generate as generateName } from './randomUsernameGenerator';
 import auth from '@react-native-firebase/auth';
 
 
-const profilePicStorage = firebase.app().storage('gs://journeyapplicatio.appspot.com/profilePics');
+const profilePicStorageRef = firebase.app().storage('gs://journeyapplicatio.appspot.com/profilePics');
 
 /**
  *
  * @param {string|any} imageURI image uri to be uploaded
+ * @param {string|any} originalFilename name of the file gotten from image-picker
+ *  so we can get the file extension from it
  *@returns url of where the image is stored
  */
-const uploadProfileImage = (imageURI) => {
-  const fileExtension = imageURI.split('.').pop();
-  console.log('fileExtension----', fileExtension);
+const uploadProfileImage = (imageURI, originalFilename) => {
+  const fileExtension = originalFilename.split('.').pop();
+  //console.log('fileExtension-------', fileExtension);
   // only because uuid was havinge rrors so I use the random username generator
   const uuid = generateName();
 
   const filename = `${uuid}.${fileExtension}`;
-  console.log('filename----', filename);
+  //console.log('filename----', filename);
 
-  const storageRef = profilePicStorage.ref(`test/${filename}`);
+  const storageRef = profilePicStorageRef.ref(`test/${filename}`);
 
   const task = storageRef.putFile(imageURI);
 
   task.on(
     'state_changed',
     (taskSnapshot) => {
-      console.log(`snapshot: ${taskSnapshot.state}`);
+      //console.log(`snapshot: ${taskSnapshot.state}`);
       console.log(
         `progress: ${(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100} % transferred`
       );
@@ -36,19 +38,29 @@ const uploadProfileImage = (imageURI) => {
     (error) => {
       console.log('image upload error', error.toString());
     },
-    () => {//after completion of upload
-      storageRef.getDownloadURL()
-      .then((downloadURL)=> {
+    () => {
+      // after completion of upload
+      console.log('after completion of upload-------------------------------------');
+      storageRef.getDownloadURL().then((downloadURL) => {
         console.log('File available at', downloadURL);
-        return auth()
-      .currentUser.updateProfile({photoURL: downloadURL})
-      })
+        auth().currentUser.updateProfile({ photoURL: downloadURL });
+      });
     }
   );
 
-  return task.then(() => {
-    console.log('Image uploaded to the bucket!');
+
+  return task.then((snapshot) => {
+    //console.log('Image uploaded to the bucket!');
+    //console.log('letsSee---', snapshot);
+    console.log('task.then((-------------------------------------');
+    return storageRef.getDownloadURL();
+    //return "the return from upload.then............................. sending-------"
   });
 };
+
+
+const deleteOldProfileImage = () => {
+
+}
 
 export { uploadProfileImage };

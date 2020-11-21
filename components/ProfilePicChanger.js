@@ -6,14 +6,13 @@ import globalStyles from '../constants/globalStyle';
 import color from '../constants/color';
 import { uploadProfileImage } from '../helpers/firebaseStorage';
 
-const ImagePickerComponent = ({visible, toggleVisibility}) => {
+const ImagePickerComponent = ({visible, toggleVisibility, update}) => {
+  //selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null)
 
   const pickImageHandler= () => {
     const options= {
       title: "Pick an Image",
-      maxWidth: 800,
-      maxHeight: 600,
       noData: true
     }
   
@@ -24,8 +23,8 @@ const ImagePickerComponent = ({visible, toggleVisibility}) => {
       } else if(response.error){
         console.log("Image Error------" , response.error)
       } else {
-        console.log('Image: ', response)
-        setSelectedImage(response.uri)
+        //console.log('Image: ----------------', response)
+        setSelectedImage(response)
         //onImagePicked({ uri: response.uri })
       }
     })
@@ -36,10 +35,22 @@ const ImagePickerComponent = ({visible, toggleVisibility}) => {
   }
   const saveImageHandler = () => {
     console.log('save image clicked')
-    uploadProfileImage(selectedImage).then(() => {
+    //console.log('saveImageHandler: ----------------selectedImage', selectedImage)
+    uploadProfileImage(selectedImage.uri, selectedImage.fileName)
+      .then((downloadUrl) =>{
+        console.log('return value in modal after upload-------------------------', downloadUrl)
+        toggleVisibility();
+        setSelectedImage(null);
+        update(downloadUrl)
+      })
+    
+    
+    /*.then((smth) => {
+      console.log('smth-----', smth)
       toggleVisibility();
-      setSelectedImage(null)
-    })
+      setSelectedImage(null);
+      update(smth)
+    })*/
   }
 
 
@@ -65,9 +76,8 @@ const ImagePickerComponent = ({visible, toggleVisibility}) => {
             <View style= {[globalStyles.profilePicContainer, ]}>
               <View style= {globalStyles.profilePicView}>
               <Image
-                source={{ uri: selectedImage }}
+                source={{ uri: selectedImage.uri }}
                 style={globalStyles.profilePic}
-                resizeMode='contain'
               />
             </View>
             <View style={styles.buttonsContainer}>
