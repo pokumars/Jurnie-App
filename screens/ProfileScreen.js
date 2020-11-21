@@ -24,8 +24,6 @@ const ProfileScreen = ({navigation}) => {
   const [username, setUsername] = useState(auth().currentUser.displayName);
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
-
-  //TODO: if a user has a profile pic, use that else use the profile icon
  
   const profilePicPlaceholderTruth = false;
   const signOut = () => {
@@ -53,7 +51,6 @@ const ProfileScreen = ({navigation}) => {
   }
   const getOldProfileImageRef= () => {
     console.log('profilePicUrl---------', profilePicUrl)
-    // Todo: change test%2F to profilePics%2F . Also remember to remove test from storageRef in file helpers\firebaseStorage.js in 2 places there
     console.log('attempt at ref--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
     
     //to delete the old profile pic, we must get the ref from the url.

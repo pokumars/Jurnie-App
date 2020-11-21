@@ -28,12 +28,10 @@ const deleteOldProfileImage = (filename) => {
  */
 const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
   const fileExtension = originalFilename.split('.').pop();
-  // console.log('fileExtension-------', fileExtension);
-  // only because uuid was havinge rrors so I use the random username generator
+  // using generateName(); only because uuid was having rrors so I use the random username generator
   const uuid = generateName();
 
   const filename = `${uuid}.${fileExtension}`;
-  // console.log('filename----', filename);
 
   const storageRef = profilePicStorageRef.ref(`${filename}`);
 
@@ -52,7 +50,6 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
     },
     () => {
       // after completion of upload
-      console.log('after completion of upload-------------------------------------');
       storageRef.getDownloadURL().then((downloadURL) => {
         console.log('File available at', downloadURL);
         auth().currentUser.updateProfile({ photoURL: downloadURL });
@@ -62,11 +59,7 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
   );
 
   return task.then((snapshot) => {
-    //console.log('Image uploaded to the bucket!');
-    //console.log('letsSee---', snapshot);
-    console.log('task.then((-------------------------------------');
     return storageRef.getDownloadURL();
-    //return "the return from upload.then............................. sending-------"
   });
 };
 

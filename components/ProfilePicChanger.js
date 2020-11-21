@@ -18,14 +18,12 @@ const ImagePickerComponent = ({visible, toggleVisibility, update, oldProfileImag
   
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
         Alert.alert('You did not select any image');
       } else if(response.error){
         console.log("Image Error------" , response.error)
+        Alert.alert('There was an error somewhere');
       } else {
-        //console.log('Image: ----------------', response)
         setSelectedImage(response)
-        //onImagePicked({ uri: response.uri })
       }
     })
   }
@@ -33,24 +31,18 @@ const ImagePickerComponent = ({visible, toggleVisibility, update, oldProfileImag
     toggleVisibility();
     setSelectedImage(null)
   }
+  
   const saveImageHandler = () => {
-    console.log('save image clicked')
-    //console.log('saveImageHandler: ----------------selectedImage', selectedImage)
+    /* TODO: when the image is saving to firebase, we should have a 
+  loading screen so that it doesnt appear unresponive to the user while it waits */
+
     uploadProfileImage(selectedImage.uri, selectedImage.fileName, oldProfileImageRef)
       .then((downloadUrl) =>{
-        console.log('return value in modal after upload-------------------------', downloadUrl)
+        // console.log('return value in modal after upload-------------------------', downloadUrl)
         toggleVisibility();
         setSelectedImage(null);
         update(downloadUrl)
       })
-    
-    
-    /*.then((smth) => {
-      console.log('smth-----', smth)
-      toggleVisibility();
-      setSelectedImage(null);
-      update(smth)
-    })*/
   }
 
 
