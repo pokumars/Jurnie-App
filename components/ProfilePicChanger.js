@@ -6,7 +6,7 @@ import globalStyles from '../constants/globalStyle';
 import color from '../constants/color';
 import { uploadProfileImage } from '../helpers/firebaseStorage';
 
-const ImagePickerComponent = ({visible, toggleVisibility, update}) => {
+const ImagePickerComponent = ({visible, toggleVisibility, update, oldProfileImageRef}) => {
   //selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null)
 
@@ -36,7 +36,7 @@ const ImagePickerComponent = ({visible, toggleVisibility, update}) => {
   const saveImageHandler = () => {
     console.log('save image clicked')
     //console.log('saveImageHandler: ----------------selectedImage', selectedImage)
-    uploadProfileImage(selectedImage.uri, selectedImage.fileName)
+    uploadProfileImage(selectedImage.uri, selectedImage.fileName, oldProfileImageRef)
       .then((downloadUrl) =>{
         console.log('return value in modal after upload-------------------------', downloadUrl)
         toggleVisibility();
