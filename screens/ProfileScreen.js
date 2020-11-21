@@ -15,7 +15,6 @@ import {StackActions} from '@react-navigation/native';
 import TitleText from '../components/TitleText';
 import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
-import { v4 as uuidv4 } from 'uuid';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
 import ProfilePicChanger from '../components/ProfilePicChanger';
 import globalStyles from '../constants/globalStyle';
@@ -52,6 +51,17 @@ const ProfileScreen = ({navigation}) => {
     console.log('setNewProfilePic---------',newPicUrl);
     setProfilePicUrl(newPicUrl);
   }
+  const getOldProfileImageRef= () => {
+    console.log('profilePicUrl---------', profilePicUrl)
+    // Todo: change test%2F to profilePics%2F . Also remember to remove test from storageRef in file helpers\firebaseStorage.js in 2 places there
+    console.log('attempt at ref--------------', profilePicUrl.split('?').shift().split('test%2F').pop())
+    
+    //to delete the old profile pic, we must get the ref from the url.
+    if(profilePicUrl!== null ){
+      return profilePicUrl.split('?').shift().split('test%2F').pop()
+    }
+    return ""
+  }
 
   /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
@@ -80,6 +90,7 @@ const ProfileScreen = ({navigation}) => {
           visible={changingPicModalVisible}
           toggleVisibility={()=>setChangingPicModalVisible(false)}
           update={renderNewProfilePic}
+          oldProfileImageRef={getOldProfileImageRef()}
         />
        
         <View style={globalStyles.profilePicContainer}>
