@@ -1,3 +1,3 @@
 export default () => ({
-  currentUser: {idToken: 'mocked-id-token'},
+  currentUser: { idToken: 'mocked-id-token' },
 });

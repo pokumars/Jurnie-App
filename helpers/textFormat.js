@@ -4,12 +4,9 @@ export const tabBarImageNameFormat = (tabName, focused) => {
   }
 
   const joinedName = tabName.replace(' ', '');
-  const lowercaseFirstLetterName =
-    joinedName.charAt(0).toLowerCase() + joinedName.slice(1);
+  const lowercaseFirstLetterName = joinedName.charAt(0).toLowerCase() + joinedName.slice(1);
 
-  const result = focused
-    ? `${lowercaseFirstLetterName}Active`
-    : lowercaseFirstLetterName;
+  const result = focused ? `${lowercaseFirstLetterName}Active` : lowercaseFirstLetterName;
   return result;
 };
 

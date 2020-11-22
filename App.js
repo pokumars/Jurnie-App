@@ -14,20 +14,13 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 
-import MainTabScreen from './screens/MainTabScreen';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import SplashLoader from './Register_Login/Splash';
-import {createStackNavigator} from '@react-navigation/stack';
+import MainTabScreen from './screens/MainTabScreen';
 import login from './Register_Login/Login';
 import register from './Register_Login/Register';
 

@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 
+import { StackActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import { createStackNavigator } from '@react-navigation/stack';
 import Badge from '../components/Profile/Badge';
 import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
 import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
-import {StackActions} from '@react-navigation/native';
 import TitleText from '../components/TitleText';
-import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
 import ProfilePicChanger from '../components/ProfilePicChanger';
@@ -31,7 +32,7 @@ const ProfileScreen = ({navigation}) => {
       .signOut()
       .then(
         () => console.log('User signed out!'),
-        navigation.dispatch(StackActions.replace('Login')),
+        navigation.dispatch(StackActions.replace('Login'))
       );
     console.log('Sign_out clicked');
   };
@@ -77,7 +78,7 @@ const ProfileScreen = ({navigation}) => {
             onPress={() => console.log('settings clicked')}
           />
           <IconTextBorderlessBtn
-            textFirst={true}
+            textFirst
             btnText="Logout"
             btnImage={require('../assets/icons/log-out.png')}
             onPress={() => signOut()}
@@ -132,21 +133,10 @@ const ProfileScreen = ({navigation}) => {
         <View style={styles.badgesAchievementsContainer}>
           <TitleText>Badges &amp; Achievements</TitleText>
           <View style={styles.badgesContainer}>
-            <Badge
-              multiple={31}
-              badgeImage={require('../assets/icons/log-out.png')}
-            />
-            <Badge
-              multiple={3}
-              badgeImage={require('../assets/icons/home.png')}
-            />
-            <Badge
-              multiple={125}
-              badgeImage={require('../assets/icons/profile.png')}
-            />
-            <Badge
-              badgeImage={require('../assets/icons/settings-outline.png')}
-            />
+            <Badge multiple={31} badgeImage={require('../assets/icons/log-out.png')} />
+            <Badge multiple={3} badgeImage={require('../assets/icons/home.png')} />
+            <Badge multiple={125} badgeImage={require('../assets/icons/profile.png')} />
+            <Badge badgeImage={require('../assets/icons/settings-outline.png')} />
           </View>
         </View>
         

@@ -33,8 +33,9 @@
         <service
             android:name=".TmdUploadIntentService"
             android:exported="false" />
-        <service android:name=".TmdTaskService" />
-        <service android:name=".TmdService" />
+        <service
+            android:name=".LaunchTMDService"
+            android:exported="false" />
         <uses-library android:name ="org.apache.http.legacy" android:required ="false"/>
     </application>
 
