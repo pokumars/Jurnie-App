@@ -33,8 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.List;
+import org.json.JSONArray;
 import java.lang.Exception;
-import com.moprimapp.MainActivity;
 
 import fi.moprim.tmd.sdk.TMD;
 import fi.moprim.tmd.sdk.TmdCloudApi;
@@ -97,7 +97,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @ReactMethod
     public void stopTmdService() {
-        // stops TMD sdk and terminates TmdService component
+        // stops TMD service
         TMD.stop(this.reactContext);
     }
 
@@ -146,9 +146,14 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                             activityMap.putString("destination", tmdActivity.getDestination());
                             activityMap.putDouble("speed", tmdActivity.getSpeed());
                             activityMap.putString("origin", tmdActivity.getOrigin());
-                            activityMap.putString("polyline", tmdActivity.getPolyline());
                             activityMap.putString("metadata", tmdActivity.getMetadata());
 
+                            String polyline = tmdActivity.getPolyline();
+
+                            // decodes the polyine into JSONArray of coordinates
+                            JSONArray decodedPolyline = TmdUtils.polylineDecode(polyline);
+
+                            activityMap.putString("decodedPolyline", decodedPolyline.toString());
                             activitiesArray.pushMap(activityMap);
                         }
                     }
@@ -217,7 +222,6 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @Override
     public void onHostResume() {
-
     }
 
     @Override
@@ -227,7 +231,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @Override
     public void onHostDestroy() {
-
+        reactContext.unregisterReceiver(startTmdReceiver);
     }
 
 }
