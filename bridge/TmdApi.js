@@ -1,5 +1,5 @@
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 
-const {TmdApi} = NativeModules;
+const { TmdApi } = NativeModules;
 
 export default TmdApi;

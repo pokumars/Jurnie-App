@@ -3,4 +3,11 @@
     <string name="service_is_running">TMD is running</string>
     <string name="channel_description">TMD</string>
     <string name="channel_name">TMD</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="title_location_permission">Location permission</string>
+    <string name="text_location_permission">Location permission is required to run this app</string>
+    <string name="action_upload">Upload</string>
+    <string name="ok">OK</string>
+    <string name="title_physical_activity_needed">Physical activity permission required</string>
+    <string name="physical_activity_permission_required">Physical activity is required to run this app to function</string>
 </resources>

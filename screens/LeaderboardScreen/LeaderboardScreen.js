@@ -23,78 +23,67 @@ import { formatScore } from 'helpers';
 const LeaderboardScreen = ({ navigation }) => {
   const [data, setData] = useState([
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test1',
       name: 'Very Long Long Long Name',
       score: 123456,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test2',
       name: 'Zakaria',
       score: 10345,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test3',
       name: 'Tamanji',
       score: 1213,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test4',
       name: 'Oheneba',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test5',
       name: 'Very Long Name',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test6',
       name: 'Very Long Name',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test7',
       name: 'Very Long Name',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test8',
       name: 'Very Long Name',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test9',
       name: 'Very Long Name',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test10',
       name: 'Very Long Name',
       score: 43,
     },
     {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       id: 'test11',
       name: 'Very Long Name',
       score: 43,
@@ -115,11 +104,7 @@ const LeaderboardScreen = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
-        {...{ renderItem }}
-      />
+      <FlatList data={data} keyExtractor={(item) => item.id} {...{ renderItem }} />
     </ScreenContainer>
   );
 };

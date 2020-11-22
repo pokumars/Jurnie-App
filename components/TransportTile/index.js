@@ -24,10 +24,7 @@ const TransportTile = (props) => {
         { backgroundColor, width: size, height: size },
         GLOBAL_STYLE.CENTER,
       ]}>
-      <FastImage
-        {...{ source }}
-        style={{ width: iconSize, height: iconSize }}
-      />
+      <FastImage {...{ source }} style={{ width: iconSize, height: iconSize }} />
     </View>
   );
 };
