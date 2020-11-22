@@ -116,6 +116,9 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                 // array collection of TmdActivities --> JS Array
                 WritableNativeArray activitiesArray = new WritableNativeArray();
                 try {
+                    // force upload of TMD data: upload is done periodically by TMD otherwise
+                    Result<TmdUploadMetadata> uploadResult = TmdCloudApi.uploadData(reactContext);
+
                     // fetch TMD data in a background thread
                     Result<List<TmdActivity>> downloadResult = TmdCloudApi.fetchData(getReactApplicationContext(), date);
                     activityToString = downloadResult.toString();
