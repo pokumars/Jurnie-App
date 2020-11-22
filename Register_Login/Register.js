@@ -17,6 +17,7 @@ import { NavigationContainer, StackActions } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import { createStackNavigator } from '@react-navigation/stack';
+import firestore from '@react-native-firebase/firestore';
 
 const user = auth().currentUser;
 console.log('User info for provider: ', user);
@@ -26,13 +27,31 @@ function register({ navigation }) {
   const [pass, setpass] = React.useState('');
   const [confirmPass, setConfirmPass] = React.useState('');
 
+  const AddUserToFirestore = () => {
+    let name = auth().currentUser.email;
+    firestore().collection('users').doc(name).set({
+      userName: '',
+      profileImgUrl: '',
+      totalFeeds: 0,
+    });
+    firestore()
+      .collection('users')
+      .doc(name)
+      .collection('trips')
+      .doc('demo')
+      .set({
+        demo: true,
+      });
+  };
+
   const Authentication = () => {
     if (pass === confirmPass && email.length > 8) {
       auth()
         .createUserWithEmailAndPassword(email, pass)
         .then(() => {
           console.log('User account created & signed in!'),
-            navigation.dispatch(StackActions.replace('Main'));
+            AddUserToFirestore();
+          navigation.dispatch(StackActions.replace('Main'));
         })
         .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
@@ -45,11 +64,19 @@ function register({ navigation }) {
 
           console.error(error);
         });
-    } else if (pass.length < 8 && pass === confirmPass && (email.length > 8 || email.length < 8)) {
+    } else if (
+      pass.length < 8 &&
+      pass === confirmPass &&
+      (email.length > 8 || email.length < 8)
+    ) {
       Toast.show({
         text1: 'Password length is less than 8 charachters',
       });
-    } else if (email.length < 8 && pass === confirmPass && (pass.length > 8 || pass.length < 8)) {
+    } else if (
+      email.length < 8 &&
+      pass === confirmPass &&
+      (pass.length > 8 || pass.length < 8)
+    ) {
       Toast.show({
         text1: 'Email is incorrect',
       });
@@ -230,7 +257,8 @@ function register({ navigation }) {
             />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+        <View
+          style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
           <Text style={{ color: 'white' }}>Already have an Account</Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}

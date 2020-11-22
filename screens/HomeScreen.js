@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button, Text, View } from 'react-native';
 import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
 import { ButtonContainer, ButtonWrapper } from 'components/Button';
 import { DefaultCard } from 'components/Cards';
+import { FlatList, DeviceEventEmitter } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import {
   Emperor,
   Fire,
@@ -36,23 +39,241 @@ import {
   StackM,
 } from 'components/Spacing';
 import TransportTile from 'components/TransportTile';
+import TmdApi from '../bridge/TmdApi';
+import color from '../constants/color';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
+import firestore from '@react-native-firebase/firestore';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+
+const Item = ({ title, onPress }) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={{
+      backgroundColor: '#f9c2ff',
+      padding: 20,
+      marginVertical: 8,
+      marginHorizontal: 16,
+    }}>
+    <Text style={{ fontSize: 28 }}>{title}</Text>
+  </TouchableOpacity>
+);
 
 const HomeScreen = ({ navigation }) => {
+  const [tmdIsRunning, setTmd] = useState(false);
+  const [activity, setActivity] = useState('nothing');
+  const [arraydata, setarraydata] = useState([]);
+  const [currentTrip, setcurrentTrip] = useState();
+  const [array, setarray] = useState([]);
+  const tar = [];
+
   const defaultValues = {
     meansOfTransport: MEANS_OF_TRANSPORT.BUS,
   };
 
+  useEffect(() => {
+    DeviceEventEmitter.addListener('TmdStatus', (event) => {
+      console.log('tmd status:', event.isTmdRunning);
+    });
+  }, []);
+
+  useEffect(() => {
+    try {
+      TmdApi.fetchTmdData(
+        (activities, str) => {
+          console.log('Tmd success');
+          getthat(activities);
+
+          setActivity(str);
+          //console.log('AAAAAAAAAAa', arraydata);
+        },
+        (err) => {
+          console.log('Tmd error', err);
+        },
+      );
+    } catch (e) {
+      console.log('error', e.message);
+    }
+  }, []);
+  useEffect(() => {
+    try {
+      DeviceEventEmitter.addListener('DownloadResult', (event) => {
+        console.log(
+          'TmdData:',
+          event.HasResultError,
+          event.HasResultMessage,
+          event.TmdActivity,
+          event.resultStr,
+        );
+        setActivity(event.resultStr);
+      });
+    } catch (e) {
+      console.log('error', e.message);
+    }
+  });
+
+  const toggleTmdService = () => () => {
+    if (!tmdIsRunning) {
+      TmdApi.startTmdService();
+      setTmd(true);
+    } else {
+      TmdApi.stopTmdService();
+      setTmd(false);
+    }
+  };
+
+  const getthat = (arr) => {
+    /*TmdApi.fetchTmdData(
+      (activities, str) => {
+        console.log('Tmd success', activities);
+        setarray(activities);
+        // getthat();
+        setActivity(str);
+        //console.log('AAAAAAAAAAa', arraydata);
+      },
+      (err) => {
+        console.log('Tmd error', err);
+      },
+    );
+
+    console.log('array:', array.length, '   arraydata: ', arraydata.length);
+*/
+    console.log('oooop');
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('trips')
+      .get()
+      .then((querySnapshot) => {
+        console.log('Total trips: ', querySnapshot.size);
+        var chunks = [],
+          // i = 0,
+          n = querySnapshot.size;
+        /*while (i < n) { chunks.push(querySnapshot.docs[i].id); }*/
+        //const data = querySnapshot.docs.map((id) => id)
+        /*for (i in (0, n, i++)) { }*/
+
+        if (arr.length == 0 || arr == null) {
+          console.log('no data found');
+        } else {
+          for (let i = 0; i < n; i++) {
+            const data = querySnapshot.docs[i].id;
+            chunks.push(data);
+          }
+          console.log(chunks); //console.log(chunks.includes('dd'));
+          for (var i = 0; i < arr.length; i++) {
+            if (chunks.includes(arr[i].id)) {
+              console.log(arr[i].id, 'already');
+            } else {
+              firestore()
+                .collection('users')
+                .doc(auth().currentUser.email)
+                .collection('trips')
+                .doc(arr[i].id)
+                .set({
+                  id: arr[i].id,
+                  activityType: arr[i].activityType,
+                  co2: arr[i].co2,
+                  distance: arr[i].distance,
+                  duration: arr[i].duration,
+                  destination: arr[i].destination,
+                  origin: arr[i].origin,
+                  polyline: arr[i].polyline,
+                  speed: arr[i].speed,
+                  timestart: arr[i].timeStart,
+                  timeEnd: arr[i].timeEnd,
+                  dateAdded: firestore.FieldValue.serverTimestamp(),
+                  feed1: '',
+                  feed2: '',
+                  feed3: '',
+                  feed4: '',
+                  img1: '',
+                  img2: '',
+                  img3: '',
+                  img4: '',
+                  feedGiven: false,
+                });
+            }
+          }
+        }
+      });
+  };
+
+  const renderItem = ({ item }) => {
+    <Item title={item.timeEnd} onPress={() => setSelectedId(item.id)} />;
+  };
+
+  const GetCurrent = () => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('trips')
+      .orderBy('dateAdded', 'desc')
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        //console.log(data);
+
+        setcurrentTrip(data);
+        //console.log('kkkkk', data);
+      });
+  };
+
+  const Sth = () => {
+    return (
+      <View>
+        <Text>YRsssssssssssss</Text>
+      </View>
+    );
+  };
+
+  //console.log(arraydata[i].activityType); } } }); };
+
   const onWriteFeedbackButtonPress = () => {};
 
   return (
-    <ScreenContainer>
-      <LastTrip {...{ onWriteFeedbackButtonPress }} />
-      <YourPosition />
-    </ScreenContainer>
+    <View>
+      <Text>HomeScreen</Text>
+
+      <Button
+        onPress={toggleTmdService()}
+        title={tmdIsRunning ? 'Stop TMD' : 'Start TMD'}
+        color={tmdIsRunning ? color.STEEL_BLUE : color.ORANGE_CAR}
+        accessibilityLabel="start or stop TMD service"
+      />
+      <Button
+        onPress={() =>
+          TmdApi.fetchTmdData(
+            (activities, str) => {
+              console.log('Tmd success', activities);
+              setActivity(str);
+              getthat(activities);
+            },
+            (err) => {
+              console.log('Tmd error', err);
+            },
+          )
+        }
+        title="fetch"
+        color={color.STEEL_BLUE}
+        accessibilityLabel="fetch data"
+      />
+
+      <Button title="get LastTrip" onPress={() => GetCurrent()} />
+      <FlatList
+        data={currentTrip}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+    </View>
   );
 };
+
+/*<ScreenContainer>
+      <LastTrip {...{ onWriteFeedbackButtonPress }} />
+      <YourPosition />
+    </ScreenContainer>*/
 
 const ScreenContainer = styled.View`
   ${DefaultContainer};
@@ -64,7 +285,10 @@ const LastTrip = ({ onWriteFeedbackButtonPress }) => (
     <SubtitleText>LAST TRIP</SubtitleText>
     <LastTripCard>
       <MeansOfTransportText>On Bus</MeansOfTransportText>
-      <TransportTile source={require('assets/icons/bus-white.png')} backgroundColor={HawaiianTan} />
+      <TransportTile
+        source={require('assets/icons/bus-white.png')}
+        backgroundColor={HawaiianTan}
+      />
       <FeedbackButton onPress={onWriteFeedbackButtonPress} />
     </LastTripCard>
   </LastTripContainer>
@@ -127,7 +351,8 @@ const YourPosition = ({}) => (
         <Avatar
           size={InlineXL}
           source={{
-            uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+            uri:
+              'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
           }}
         />
         <UserNameText>Test</UserNameText>
