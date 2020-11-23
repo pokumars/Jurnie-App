@@ -1,5 +1,11 @@
 import { MEANS_OF_TRANSPORT } from 'app-constants';
-import { Celery, FireBush, White, Zinnwaldite } from 'components/Colors';
+import {
+  Celery,
+  Dandelion,
+  FireBush,
+  White,
+  Zinnwaldite,
+} from 'components/Colors';
 
 export const determineTransportIcon = (transportType) => {
   switch (transportType) {

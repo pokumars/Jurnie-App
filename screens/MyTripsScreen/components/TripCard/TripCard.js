@@ -57,9 +57,10 @@ const DestinationText = CommonText;
 
 const MeansOfTransport = (props) => {
   const { meansOfTransport } = props;
-  const totalTravelingTime = meansOfTransport
-    .map((transport) => transport.time)
-    .reduce((accumulator, currentValue) => accumulator + currentValue);
+  // const totalTravelingTime = meansOfTransport
+  //   .map((transport) => transport.time)
+  //   .reduce((accumulator, currentValue) => accumulator + currentValue);
+
   return (
     <MeansOfTransportContainer>
       {meansOfTransport.map((transport, index) => (
@@ -74,6 +75,7 @@ const MeansOfTransport = (props) => {
           width={InlineL}
           style={{
             marginLeft: index === 0 ? 0 : InlineS,
+            flex: transport.time,
           }}
         />
       ))}

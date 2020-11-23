@@ -11,6 +11,7 @@ const testLocation = { destination: 'Kamppi', origin: 'Pihläjämäki' };
 const testTransport = [
   { time: 300, type: MEANS_OF_TRANSPORT.BUS },
   { time: 200, type: MEANS_OF_TRANSPORT.TRAIN },
+  { time: 200, type: MEANS_OF_TRANSPORT.WALK },
 ];
 
 const MyTripsScreen = ({ navigation }) => (
