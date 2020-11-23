@@ -1,17 +1,18 @@
 package com.moprimapp;
 
 import com.moprimapp.TmdApiPackage;
-import androidx.multidex.MultiDexApplication;
-import android.content.Context;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+
+import androidx.multidex.MultiDexApplication;
+import android.content.Context;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
 import android.app.PendingIntent;
 import android.util.Log;
 import android.app.IntentService;

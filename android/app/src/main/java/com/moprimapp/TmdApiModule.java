@@ -2,6 +2,7 @@ package com.moprimapp;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -12,12 +13,21 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.GuardedAsyncTask;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import android.app.PendingIntent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
-import java.lang.Thread;
-import android.os.Looper;
-import android.os.Handler;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,15 +43,41 @@ import fi.moprim.tmd.sdk.model.Result;
 import fi.moprim.tmd.sdk.model.TmdActivity;
 import fi.moprim.tmd.sdk.model.TmdUploadMetadata;
 
-public class TmdApiModule extends ReactContextBaseJavaModule {
+public class TmdApiModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     public static final String CLASS_NAME = "TmdApi";
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+    private static final String NOTIFICATION_CHANNEL_ID = "com.moprimapp.channel";
+    private static final int NOTIFICATION_ID = 0101;
+    private static final int TMD_PERMISSIONS_REQUEST_LOCATION = 0202;
+    private static final int TMD_PERMISSION_REQUEST_ACTIVITY = 0303;
+    public static final String ACTION_START_TMD_FOREGROUND_SERVICE
+            = "com.moprimapp.ACTION_START_TMD_FOREGROUND_SERVICE";
+
     private static  String activityToString;
+    private Notification notification;
+
     private static ReactApplicationContext reactContext;
+
+    // process intent to restart TMD service
+    private BroadcastReceiver startTmdReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            TMD.startForeground(reactContext, NOTIFICATION_ID, notification);
+            Toast.makeText(reactContext, reactContext.getString(R.string.service_is_running),
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
 
     public TmdApiModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        // access activity lifecycle events
+        reactContext.addLifecycleEventListener(this);
         this.reactContext = reactContext;
+        createNotificationChannel();
+        notification = buildNotification(reactContext.getString(R.string.service_is_running));
+        TMD.startForeground(reactContext, NOTIFICATION_ID, notification);
+
+        registerTmdReceiver();
     }
 
     @Override
@@ -51,15 +87,24 @@ public class TmdApiModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startTmdService() {
-        // Starting the TMD as a foreground service
-        Toast.makeText(getReactApplicationContext(), "starting service", Toast.LENGTH_SHORT).show();
-        this.reactContext.startService(new Intent(this.reactContext, LaunchTMDService.class));
+        //sends the broadcast intent to restart TMD
+        if(!TMD.isTmdRunning()) {
+            Intent intent = new Intent();
+            intent.setAction(ACTION_START_TMD_FOREGROUND_SERVICE);
+            reactContext.sendBroadcast(intent);
+        }
     }
 
     @ReactMethod
     public void stopTmdService() {
         // stops TMD sdk and terminates TmdService component
         TMD.stop(this.reactContext);
+    }
+
+    @ReactMethod
+    private void isTmdRunning(Callback callback) {
+        Boolean tmdIsRunning = TMD.isTmdRunning();
+        callback.invoke(tmdIsRunning);
     }
     
     @ReactMethod
@@ -118,18 +163,73 @@ public class TmdApiModule extends ReactContextBaseJavaModule {
         }.execute();
     }
 
+    private void registerTmdReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_START_TMD_FOREGROUND_SERVICE);
+        reactContext.registerReceiver(startTmdReceiver, filter);
+    }
+
+    public void createNotificationChannel() {
+        // Create the NotificationChannel, for API 26+
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = reactContext.getString(R.string.channel_name);
+            String description = reactContext.getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setSound(null, null);
+            channel.setVibrationPattern(null);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = reactContext.getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    public Notification buildNotification(String notificationText) {
+        // Create notification builder.
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(reactContext, NOTIFICATION_CHANNEL_ID);
+
+        notificationBuilder.setWhen(System.currentTimeMillis());
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        notificationBuilder.setContentTitle("Jurnie M");
+        notificationBuilder.setContentText(notificationText);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            notificationBuilder.setPriority(NotificationManager.IMPORTANCE_HIGH);
+        }
+
+        // Make the notification open the MainActivity
+        PendingIntent contentIntent = PendingIntent.getActivity(reactContext, 0,
+                new Intent(reactContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationBuilder.setContentIntent(contentIntent);
+
+        // Build the notification.
+        return notificationBuilder.build();
+    }
+
+    @Override
+    public void onHostResume() {
+
+    }
+
+    @Override
+    public void onHostPause() {
+
+    }
+
+    @Override
+    public void onHostDestroy() {
+
+    }
+
 }
 
-// DeviceEventEmitters: List of eventNames 
-/* 
-*  DownloadResult - use this to get Tmd Acitivity results from moprim cloud
-** DownloadResult.NoResultError - returns error message if the result has errror
-**               .HasResultError
-                 .HasResultMessage
-                 .TmdActivity
-* TmdStatus - checks whether TMD is running or not
-**       . isTmdRunning
- 
+ /*
 * Usage Example: fetchTmdDAta()
      useEffect(() => {
     try {
@@ -145,5 +245,4 @@ public class TmdApiModule extends ReactContextBaseJavaModule {
     } catch (e) {
       console.log('error', e.message);
     }
-  }, []);
-*/
+  }, []);*/
