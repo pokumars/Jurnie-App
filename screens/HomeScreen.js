@@ -81,7 +81,7 @@ const HomeScreen = ({ navigation }) => {
     try {
       TmdApi.fetchTmdData(
         (activities, str) => {
-          console.log('Tmd success');
+          console.log('Tmd success', activities);
           getthat(activities);
 
           setActivity(str);
@@ -216,7 +216,7 @@ const HomeScreen = ({ navigation }) => {
         //console.log(data);
 
         setcurrentTrip(data);
-        //console.log('kkkkk', data);
+        console.log('kkkkk', data);
       });
   };
 
