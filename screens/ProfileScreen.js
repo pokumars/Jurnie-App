@@ -81,7 +81,7 @@ const ProfileScreen = ({navigation}) => {
             textFirst
             btnText="Logout"
             btnImage={require('../assets/icons/log-out.png')}
-            onPress={() => signOut()}
+            onPress={signOut}
           />
         </View>
         <ProfilePicChanger

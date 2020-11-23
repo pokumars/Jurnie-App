@@ -1,12 +1,4 @@
-/* eslint-disable prettier/prettier */
-import {
-  Button,
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Button, Image, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -30,9 +22,9 @@ function register({navigation}) {
         .createUserWithEmailAndPassword(email, pass)
         .then(() => {
           console.log('User account created & signed in!');
-          auth().currentUser.updateProfile({displayName: randomUsername})
-          .then(() => navigation.dispatch(StackActions.replace('Main')));
-
+          auth()
+            .currentUser.updateProfile({ displayName: randomUsername })
+            .then(() => navigation.dispatch(StackActions.replace('Main')));
         })
         .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
