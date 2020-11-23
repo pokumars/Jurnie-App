@@ -1,4 +1,5 @@
 const MeansOfTransport = Object.freeze({
+  // This will act like an enum
   BUS: 1,
   CAR: 2,
   TRAIN: 3,

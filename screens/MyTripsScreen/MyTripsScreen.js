@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { MEANS_OF_TRANSPORT } from 'app-constants';
 import { DefaultContainer, StackM } from 'components/Spacing';
 import { SubtitleText } from 'components/Text';
 import TripCard from './components/TripCard';
+import WeekCalendar from './components/WeekCalendar';
 
 const testTrips = [
   {
@@ -31,8 +32,21 @@ const testTrips = [
   },
 ];
 
-const MyTripsScreen = ({ navigation }) => (
-  <ScreenContainer>
+const MyTripsScreen = ({ navigation }) => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  return (
+    <ScreenContainer>
+      <WeekCalendar
+        currentDate={new Date()}
+        {...{ selectedDate, setSelectedDate }}
+      />
+      <MyTrips />
+    </ScreenContainer>
+  );
+};
+
+const MyTrips = () => (
+  <>
     <SubtitleText>MY TRIPS</SubtitleText>
     <FlatList
       data={testTrips}
@@ -41,7 +55,7 @@ const MyTripsScreen = ({ navigation }) => (
       }
       {...{ renderItem }}
     />
-  </ScreenContainer>
+  </>
 );
 
 const renderItem = ({ item }) => (
@@ -54,7 +68,7 @@ const renderItem = ({ item }) => (
 
 const ScreenContainer = styled.View`
   ${DefaultContainer};
-
+  flex: 1;
   padding-top: ${StackM}px;
 `;
 
