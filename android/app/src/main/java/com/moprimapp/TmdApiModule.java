@@ -6,6 +6,7 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
@@ -22,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import android.app.PendingIntent;
 import android.content.pm.PackageManager;
+import android.Manifest;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     private static final int TMD_PERMISSION_REQUEST_ACTIVITY = 0303;
     public static final String ACTION_START_TMD_FOREGROUND_SERVICE
             = "com.moprimapp.ACTION_START_TMD_FOREGROUND_SERVICE";
+    private static final String TMD_IS_RUNNING_ERROR = "TMD_IS_RUNNING_ERROR";
 
     private static  String activityToString;
     private Notification notification;
@@ -73,9 +76,9 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
         // access activity lifecycle events
         reactContext.addLifecycleEventListener(this);
         this.reactContext = reactContext;
+
         createNotificationChannel();
         notification = buildNotification(reactContext.getString(R.string.service_is_running));
-        TMD.startForeground(reactContext, NOTIFICATION_ID, notification);
 
         registerTmdReceiver();
     }
@@ -87,7 +90,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @ReactMethod
     public void startTmdService() {
-        //sends the broadcast intent to restart TMD
+        //sends the broadcast intent to start TMD
         if(!TMD.isTmdRunning()) {
             Intent intent = new Intent();
             intent.setAction(ACTION_START_TMD_FOREGROUND_SERVICE);
@@ -102,9 +105,13 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     }
 
     @ReactMethod
-    private void isTmdRunning(Callback callback) {
-        Boolean tmdIsRunning = TMD.isTmdRunning();
-        callback.invoke(tmdIsRunning);
+    private void isTmdRunning(Promise promise) {
+        try {
+            Boolean tmdIsRunning = TMD.isTmdRunning();
+            promise.resolve(tmdIsRunning);
+        }catch (Exception e) {
+            promise.reject(TMD_IS_RUNNING_ERROR, e.getMessage());
+        }
     }
     
     @ReactMethod
@@ -149,7 +156,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                             activityMap.putString("metadata", tmdActivity.getMetadata());
 
                             String polyline = tmdActivity.getPolyline();
-
+                            activityMap.putString("polyline", polyline);
                             // decodes the polyine into JSONArray of coordinates
                             JSONArray decodedPolyline = TmdUtils.polylineDecode(polyline);
 
@@ -220,8 +227,33 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
         return notificationBuilder.build();
     }
 
+    private boolean isPhysicalActivityPermissionsGranted() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            return ContextCompat.checkSelfPermission(reactContext,
+                    Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else {
+            return true;
+        }
+    }
+
+    private boolean isLocationPermissionsGranted() {
+        boolean granted = ContextCompat.checkSelfPermission(reactContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (granted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return ContextCompat.checkSelfPermission(reactContext,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else {
+            return granted;
+        }
+    }
+
     @Override
     public void onHostResume() {
+        if(!(isLocationPermissionsGranted() || isPhysicalActivityPermissionsGranted())) {
+            TMD.stop(reactContext);
+        }
     }
 
     @Override
