@@ -6,7 +6,7 @@ import globalStyles from '../constants/globalStyle';
 import color from '../constants/color';
 import { uploadProfileImage } from '../helpers/firebaseStorage';
 
-const ImagePickerComponent = ({visible, toggleVisibility, update, oldProfileImageRef}) => {
+const ProfilePicChanger = ({visible, toggleVisibility, update, oldProfileImageRef}) => {
   //selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null)
 
@@ -137,4 +137,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ImagePickerComponent;
+export default ProfilePicChanger;

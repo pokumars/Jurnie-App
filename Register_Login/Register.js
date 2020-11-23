@@ -15,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import { generate as generateUsername } from '../helpers/randomUsernameGenerator'
 
+const LOGO_SIZE = 150;
 const user = auth().currentUser;
 console.log('User info for provider: ', user);
 function register({navigation}) {
@@ -74,9 +75,9 @@ function register({navigation}) {
           <Image
             source={require('../assets/moprim.png')}
             style={{
-              width: 150,
-              height: 150,
-              borderRadius: 75,
+              width: LOGO_SIZE,
+              height: LOGO_SIZE,
+              borderRadius: LOGO_SIZE/ 2,
               backgroundColor: '#000000',
             }}
           />

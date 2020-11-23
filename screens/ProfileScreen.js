@@ -17,7 +17,7 @@ import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
 import TitleText from '../components/TitleText';
 import color from '../constants/color';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
-import ProfilePicChanger from '../components/ProfilePicChanger';
+import ProfilePicChanger from './ProfilePicChanger';
 import globalStyles from '../constants/globalStyle';
 
 const ProfileScreen = ({navigation}) => {
@@ -26,7 +26,6 @@ const ProfileScreen = ({navigation}) => {
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
  
-  const profilePicPlaceholderTruth = false;
   const signOut = () => {
     auth()
       .signOut()
@@ -51,13 +50,14 @@ const ProfileScreen = ({navigation}) => {
     setProfilePicUrl(newPicUrl);
   }
   const getOldProfileImageRef= () => {
-    console.log('profilePicUrl---------', profilePicUrl)
-    console.log('attempt at ref--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
     
-    //to delete the old profile pic, we must get the ref from the url.
     if(profilePicUrl!== null ){
+      // to delete the old profile pic, we must get the ref from the url.
+      console.log('profilePicUrl---------', profilePicUrl)
+      console.log('ref from the profilePicUrl--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
       return profilePicUrl.split('?').shift().split('profilePics%2F').pop()
     }
+    console.log('profilePicUrl--------- was null')
     return ""
   }
 
