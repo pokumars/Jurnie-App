@@ -72,17 +72,16 @@ const ProfilePicChanger = ({visible, toggleVisibility, update, oldProfileImageRe
                 style={globalStyles.profilePic}
               />
             </View>
-            <View style={styles.buttonsContainer}>
-              <View style={styles.button}>
+            <View style={globalStyles.buttonsSideBySideContainer}>
+              <View style={globalStyles.sideBySideButtonView}>
                 <Button
                   title="save"
                   color={color.STEEL_BLUE}
                   onPress={saveImageHandler}
                 />
               </View>
-              <View style={styles.button}>
+              <View style={globalStyles.sideBySideButtonView}>
               <Button
-                style={styles.button}
                 title="try again"
                 color={color.RAJAH}
                 onPress={pickImageHandler}
@@ -122,14 +121,6 @@ const styles = StyleSheet.create({
   img: {
     width: 200,
     height: 200
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    width: '75%',
-    justifyContent: 'space-around',
-  },
-  button: {
-    width: '40%',
   },
   wideBtn: {
     width: '70%',

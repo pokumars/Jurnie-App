@@ -3,6 +3,8 @@ import color from './color';
 
 
 const DEFAULT_HORIZONTAL_PADDING = 16;
+const PROFILE_PIC_DIMENSION = 150;
+
 
 const globalStyles = StyleSheet.create({
   CENTER: {
@@ -21,9 +23,9 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   profilePicView: {
-    height: 150,
-    width: 150,
-    borderRadius: 75,
+    height: PROFILE_PIC_DIMENSION,
+    width: PROFILE_PIC_DIMENSION,
+    borderRadius: PROFILE_PIC_DIMENSION / 2,
     borderWidth: 1,
     borderColor: color.STEEL_BLUE,
     overflow: 'hidden',
@@ -32,6 +34,14 @@ const globalStyles = StyleSheet.create({
   profilePic: {
     width: '100%',
     height: '100%',
+  },
+  buttonsSideBySideContainer: {
+    flexDirection: 'row',
+    width: '75%',
+    justifyContent: 'space-around',
+  },
+  sideBySideButtonView: {
+    width: '40%',
   },
 });
 

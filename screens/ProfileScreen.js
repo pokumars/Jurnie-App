@@ -53,8 +53,8 @@ const ProfileScreen = ({navigation}) => {
     
     if(profilePicUrl!== null ){
       // to delete the old profile pic, we must get the ref from the url.
-      console.log('profilePicUrl---------', profilePicUrl)
-      console.log('ref from the profilePicUrl--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
+      // console.log('profilePicUrl---------', profilePicUrl)
+      // console.log('ref from the profilePicUrl--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
       return profilePicUrl.split('?').shift().split('profilePics%2F').pop()
     }
     console.log('profilePicUrl--------- was null')

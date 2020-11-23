@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
 const MyTripsScreen = ({ navigation }) => (
   <View>
+    <Button title="Go to Questionnaire" onPress={() => navigation.navigate('Questionnaire')} />
     <Text>MyTripsScreen</Text>
   </View>
 );
