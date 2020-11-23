@@ -50,6 +50,7 @@ const BORDER_RADIUS = 4;
 const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS,
+    minWidth: InlineL,
   },
 });
 

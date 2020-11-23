@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// export default MyTripsScreen;
+export default MyTripsScreen;
