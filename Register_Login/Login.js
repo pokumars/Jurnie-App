@@ -1,21 +1,11 @@
-import {
-  Button,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, { useState } from 'react';
+/* eslint-disable global-require */
+/* eslint-disable no-console */
+import { Button, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React from 'react';
 
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 import auth from '@react-native-firebase/auth';
-import { createStackNavigator } from '@react-navigation/stack';
 import TmdApi from '../bridge/TmdApi';
 
 const user = auth().currentUser;
@@ -29,7 +19,9 @@ function login({ navigation }) {
     auth()
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
-        console.log('User account created & signed in!'), TmdApi.startTmdService();
+        // eslint-disable-next-line no-unused-expressions
+        TmdApi.startTmdService();
+        console.log('User account created & signed in!');
         navigation.dispatch(StackActions.replace('Main'));
         // navigation.dispatch(StackActions.replace('Profile'));
       })
