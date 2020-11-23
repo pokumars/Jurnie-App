@@ -8,17 +8,17 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import LottieView from 'lottie-react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {StackActions} from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
+
 import auth from '@react-native-firebase/auth';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const user = auth().currentUser;
 
-const SplashLoader = ({navigation}) => {
+const SplashLoader = ({ navigation }) => {
   console.log('User info for provider: ', user);
   useEffect(() => {
     setTimeout(() => {
@@ -31,7 +31,7 @@ const SplashLoader = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{alignContent: 'center', alignItems: 'center'}}>
+    <View style={{ alignContent: 'center', alignItems: 'center' }}>
       <Text>Splash Screen wait 2s</Text>
       <LottieView
         style={{

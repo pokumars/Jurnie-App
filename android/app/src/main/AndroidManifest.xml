@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera.any" android:required="false"/>
 
     <application
       android:name=".MainApplication"
@@ -30,8 +33,9 @@
         <service
             android:name=".TmdUploadIntentService"
             android:exported="false" />
-        <service android:name=".TmdTaskService" />
-        <service android:name=".TmdService" />
+        <service
+            android:name=".LaunchTMDService"
+            android:exported="false" />
         <uses-library android:name ="org.apache.http.legacy" android:required ="false"/>
     </application>
 

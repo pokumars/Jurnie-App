@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import {
   Button,
   Image,
@@ -7,37 +9,71 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
+
+import { StackActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import { createStackNavigator } from '@react-navigation/stack';
 import Badge from '../components/Profile/Badge';
 import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
 import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
-import {StackActions} from '@react-navigation/native';
 import TitleText from '../components/TitleText';
-import auth from '@react-native-firebase/auth';
 import color from '../constants/color';
-import {createStackNavigator} from '@react-navigation/stack';
+import TmdApi from '../bridge/TmdApi';
+import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
+import ProfilePicChanger from './ProfilePicChanger';
+import globalStyles from '../constants/globalStyle';
+
 
 const ProfileScreen = ({navigation}) => {
-  //TODO: if a user has a profile pic, use that else use the profile icon
-  const profilePicUrl =
-    'https://ohe-test-image-upload-1.s3.amazonaws.com/44e97045-fd97-4882-8ed1-942934d6bee4.png';
-  const profilePicPlaceholderTruth = false;
-  const Sign_out = () => {
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  const [username, setUsername] = useState(auth().currentUser.displayName);
+  const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
+  const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
+ 
+  const signOut = () => {
     auth()
       .signOut()
       .then(
         () => console.log('User signed out!'),
+        TmdApi.stopTmdService(),
         navigation.dispatch(StackActions.replace('Login')),
       );
     console.log('Sign_out clicked');
   };
-  /* 
+
+  const updateUsername = (newUsername) => {
+    console.log('ProfileScreen received this', newUsername);
+    return auth()
+      .currentUser.updateProfile({displayName: newUsername})
+      .then((data) => {
+        console.log('confirmation from Firebase');
+        setUsername(newUsername);
+      });
+  };
+  const renderNewProfilePic = (newPicUrl) => {
+    console.log('setNewProfilePic---------',newPicUrl);
+    setProfilePicUrl(newPicUrl);
+  }
+  const getOldProfileImageRef= () => {
+    
+    if(profilePicUrl!== null ){
+      // to delete the old profile pic, we must get the ref from the url.
+      console.log('profilePicUrl---------', profilePicUrl)
+      console.log('ref from the profilePicUrl--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
+      return profilePicUrl.split('?').shift().split('profilePics%2F').pop()
+    }
+    console.log('profilePicUrl--------- was null')
+    return ""
+  }
+
+  /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
  "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
-
+ // TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
   return (
     <View style={styles.screen}>
       <ScrollView>
@@ -49,33 +85,51 @@ const ProfileScreen = ({navigation}) => {
             onPress={() => console.log('settings clicked')}
           />
           <IconTextBorderlessBtn
-            textFirst={true}
+            textFirst
             btnText="Logout"
             btnImage={require('../assets/icons/log-out.png')}
-            onPress={() => Sign_out()}
+            onPress={signOut}
           />
         </View>
-        <View style={styles.profilePicContainer}>
-          <View style={styles.profilePicView}>
+        <ProfilePicChanger
+          visible={changingPicModalVisible}
+          toggleVisibility={()=>setChangingPicModalVisible(false)}
+          update={renderNewProfilePic}
+          oldProfileImageRef={getOldProfileImageRef()}
+        />
+       
+        <View style={globalStyles.profilePicContainer}>
+          <View style={globalStyles.profilePicView}>
             <Image
-              style={styles.profilePic}
+              style={globalStyles.profilePic}
               source={
-                profilePicPlaceholderTruth
-                  ? {uri: profilePic}
+                profilePicUrl
+                  ? {uri: profilePicUrl}
                   : require('../assets/icons/profile.png')
               }
             />
           </View>
           <Button
-            onPress={() => console.log('change profile pic clicked')}
+            onPress={() => setChangingPicModalVisible(true)}
             title="Change Pic"
             color={color.STEEL_BLUE}
             accessibilityLabel="Change profile picture"
           />
         </View>
         <View style={styles.userDetails}>
-          <ProfileUserDetail title="Username" detail="ngolo_kante" />
+          <ProfileUserDetail
+            title="Username"
+            onPress={() => setDetailModalVisible(true)}
+            detail={username}
+            changeable
+          />
           <ProfileUserDetail title="Email" detail={auth().currentUser.email} />
+          <DetailUpdateModal
+            modalVisible={detailModalVisible}
+            toggleDetailModal={() => setDetailModalVisible(false)}
+            originalDetail={auth().currentUser.displayName}
+            onConfirm={updateUsername}
+          />
           <Button
             onPress={() => console.log('update details clicked')}
             title="change username or password"
@@ -103,12 +157,12 @@ const ProfileScreen = ({navigation}) => {
             />
           </View>
         </View>
+        
       </ScrollView>
     </View>
   );
 };
-//TODO: clicking on profile picture lets you view it
-//TODO: button for change profile picture
+// TODO: clicking on profile picture lets you view it
 
 const styles = StyleSheet.create({
   screen: {
@@ -127,11 +181,6 @@ const styles = StyleSheet.create({
 
     padding: 5,
   },
-  profilePicContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   profilePicView: {
     height: 150,
     width: 150,
@@ -145,6 +194,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  
   userDetails: {
     alignItems: 'center',
     justifyContent: 'center',

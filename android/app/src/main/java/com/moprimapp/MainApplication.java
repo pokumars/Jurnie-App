@@ -1,17 +1,18 @@
 package com.moprimapp;
 
 import com.moprimapp.TmdApiPackage;
-import androidx.multidex.MultiDexApplication;
-import android.content.Context;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+
+import androidx.multidex.MultiDexApplication;
+import android.content.Context;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
 import android.app.PendingIntent;
 import android.util.Log;
 import android.app.IntentService;
@@ -78,7 +79,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           public void onTmdInitSuccessful(String s) {
               // s is the current installation ID, we'll put the UUID as the same just to demonstrate how to use the method
               // replace with your own user id in production
-              // TMD.setUUID(s);
+              TMD.setUUID(s);
               Log.i(MainApplication.class.getSimpleName(), "Initialization successful with id: " + s);
               Intent intent = new Intent(MainApplication.this, TmdUploadIntentService.class);
               PendingIntent callbackIntent = PendingIntent.getService(MainApplication.this, 0, intent,

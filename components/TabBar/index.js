@@ -80,11 +80,7 @@ function CustomizedTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={styles.tab}>
             <FastImage source={imageSource} style={styles.tabBarIcon} />
-            <Text
-              style={[
-                styles.tabLabel,
-                { color: isFocused ? COLOR.STEEL_BLUE : COLOR.JUMBO },
-              ]}>
+            <Text style={[styles.tabLabel, { color: isFocused ? COLOR.STEEL_BLUE : COLOR.JUMBO }]}>
               {label.toUpperCase()}
             </Text>
           </TouchableOpacity>

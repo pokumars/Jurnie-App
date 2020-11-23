@@ -1,26 +1,15 @@
-import {
-  Button,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {StackActions} from '@react-navigation/native';
+/* eslint-disable global-require */
+/* eslint-disable no-console */
+import { Button, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import {createStackNavigator} from '@react-navigation/stack';
+import TmdApi from '../bridge/TmdApi';
 
 const user = auth().currentUser;
 
 console.log('User info for provider: ', user);
-function login({navigation}) {
+function login({ navigation }) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
 
@@ -28,9 +17,11 @@ function login({navigation}) {
     auth()
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
-        console.log('User account created & signed in!'),
-          navigation.dispatch(StackActions.replace('Main'));
-        //navigation.dispatch(StackActions.replace('Profile'));
+        TmdApi.startTmdService();
+        console.log('User account created & signed in!');
+
+        navigation.dispatch(StackActions.replace('Main'));
+        // navigation.dispatch(StackActions.replace('Profile'));
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
@@ -46,10 +37,11 @@ function login({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#000000'}}>
-      <View style={{flex: 1}}>
-        <View style={{alignSelf: 'center', backgroundColor: '#000000'}}>
+    <View style={{ flex: 1, backgroundColor: '#000000' }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ alignSelf: 'center', backgroundColor: '#000000' }}>
           <Image
+            // eslint-disable-next-line global-require
             source={require('../assets/moprim.png')}
             style={{
               width: 170,
@@ -72,7 +64,7 @@ function login({navigation}) {
           alignItems: 'center',
           alignContent: 'center',
         }}>
-        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Welcome back</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Welcome back</Text>
         <Text>Use your credentials below and login to your account</Text>
 
         <View
@@ -93,7 +85,7 @@ function login({navigation}) {
             }}
           />
           <TextInput
-            style={{width: 200, marginStart: 5}}
+            style={{ width: 200, marginStart: 5 }}
             placeholder="email"
             value={email}
             onChangeText={setemail}
@@ -117,7 +109,7 @@ function login({navigation}) {
             }}
           />
           <TextInput
-            style={{width: 200, marginStart: 5}}
+            style={{ width: 200, marginStart: 5 }}
             placeholder="Pass"
             maxLength={15}
             value={pass}
@@ -133,17 +125,16 @@ function login({navigation}) {
           <Button title="Login" onPress={() => Authentication()} />
         </View>
 
-        <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
           <Text>Forgot your Password</Text>
-          <TouchableOpacity style={{marginStart: 5}}>
-            <Text style={{color: '#1E90FF'}}>retrieve</Text>
+          <TouchableOpacity style={{ marginStart: 5 }}>
+            <Text style={{ color: '#1E90FF' }}>retrieve</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={{flex: 1}}>
-        <Text style={{alignSelf: 'center', color: 'white'}}>
+      <View style={{ flex: 1 }}>
+        <Text style={{ alignSelf: 'center', color: 'white' }}>
           Or use one of your social accounts
         </Text>
         <View
@@ -162,7 +153,7 @@ function login({navigation}) {
             }}>
             <Image
               source={require('../assets/icons/twitter.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
             />
           </View>
 
@@ -173,7 +164,7 @@ function login({navigation}) {
             }}>
             <Image
               source={require('../assets/icons/gmail.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
             />
           </View>
 
@@ -185,19 +176,16 @@ function login({navigation}) {
             }}>
             <Image
               source={require('../assets/icons/faceb.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
             />
           </View>
         </View>
-        <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
-          <Text style={{color: 'white'}}>Don't have an Account</Text>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+          <Text style={{ color: 'white' }}> Don't have an Account </Text>
           <TouchableOpacity
-            style={{marginStart: 5}}
-            onPress={() =>
-              navigation.dispatch(StackActions.replace('Register'))
-            }>
-            <Text style={{color: '#1E90FF'}}>Register</Text>
+            style={{ marginStart: 5 }}
+            onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
+            <Text style={{ color: '#1E90FF' }}>Register</Text>
           </TouchableOpacity>
         </View>
       </View>
