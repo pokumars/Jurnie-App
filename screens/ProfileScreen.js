@@ -1,4 +1,12 @@
-import { Button, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, { useState } from 'react';
 
 import { StackActions } from '@react-navigation/native';
@@ -9,6 +17,7 @@ import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
 import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
 import TitleText from '../components/TitleText';
 import color from '../constants/color';
+import TmdApi from '../bridge/TmdApi';
 
 const ProfileScreen = ({ navigation }) => {
   // TODO: if a user has a profile pic, use that else use the profile icon
@@ -20,7 +29,8 @@ const ProfileScreen = ({ navigation }) => {
       .signOut()
       .then(
         () => console.log('User signed out!'),
-        navigation.dispatch(StackActions.replace('Login'))
+        TmdApi.stopTmdService(),
+        navigation.dispatch(StackActions.replace('Login')),
       );
     console.log('Sign_out clicked');
   };
@@ -78,10 +88,21 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.badgesAchievementsContainer}>
           <TitleText>Badges &amp; Achievements</TitleText>
           <View style={styles.badgesContainer}>
-            <Badge multiple={31} badgeImage={require('../assets/icons/log-out.png')} />
-            <Badge multiple={3} badgeImage={require('../assets/icons/home.png')} />
-            <Badge multiple={125} badgeImage={require('../assets/icons/profile.png')} />
-            <Badge badgeImage={require('../assets/icons/settings-outline.png')} />
+            <Badge
+              multiple={31}
+              badgeImage={require('../assets/icons/log-out.png')}
+            />
+            <Badge
+              multiple={3}
+              badgeImage={require('../assets/icons/home.png')}
+            />
+            <Badge
+              multiple={125}
+              badgeImage={require('../assets/icons/profile.png')}
+            />
+            <Badge
+              badgeImage={require('../assets/icons/settings-outline.png')}
+            />
           </View>
         </View>
       </ScrollView>

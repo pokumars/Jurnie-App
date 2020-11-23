@@ -16,6 +16,7 @@ import {
   MineShaft,
   Rajah,
   RoyalBlue,
+  White,
 } from 'components/Colors';
 import Icon from 'components/Icon';
 import {
@@ -63,19 +64,13 @@ const HomeScreen = ({ navigation }) => {
   const [tmdIsRunning, setTmd] = useState(false);
   const [activity, setActivity] = useState('nothing');
   const [arraydata, setarraydata] = useState([]);
-  const [currentTrip, setcurrentTrip] = useState();
+  const [currentTrip, setcurrentTrip] = useState([]);
   const [array, setarray] = useState([]);
   const tar = [];
 
   const defaultValues = {
     meansOfTransport: MEANS_OF_TRANSPORT.BUS,
   };
-
-  useEffect(() => {
-    DeviceEventEmitter.addListener('TmdStatus', (event) => {
-      console.log('tmd status:', event.isTmdRunning);
-    });
-  }, []);
 
   useEffect(() => {
     try {
@@ -95,22 +90,23 @@ const HomeScreen = ({ navigation }) => {
       console.log('error', e.message);
     }
   }, []);
-  useEffect(() => {
-    try {
-      DeviceEventEmitter.addListener('DownloadResult', (event) => {
-        console.log(
-          'TmdData:',
-          event.HasResultError,
-          event.HasResultMessage,
-          event.TmdActivity,
-          event.resultStr,
-        );
-        setActivity(event.resultStr);
+
+  useEffect(function Fetchcu() {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('trips')
+      .orderBy('dateAdded', 'desc')
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        //console.log(data);
+
+        setcurrentTrip(data);
+        //console.log('kkkkk', currentTrip);
       });
-    } catch (e) {
-      console.log('error', e.message);
-    }
-  });
+  }, []);
 
   const toggleTmdService = () => () => {
     if (!tmdIsRunning) {
@@ -123,21 +119,6 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const getthat = (arr) => {
-    /*TmdApi.fetchTmdData(
-      (activities, str) => {
-        console.log('Tmd success', activities);
-        setarray(activities);
-        // getthat();
-        setActivity(str);
-        //console.log('AAAAAAAAAAa', arraydata);
-      },
-      (err) => {
-        console.log('Tmd error', err);
-      },
-    );
-
-    console.log('array:', array.length, '   arraydata: ', arraydata.length);
-*/
     console.log('oooop');
     firestore()
       .collection('users')
@@ -147,11 +128,7 @@ const HomeScreen = ({ navigation }) => {
       .then((querySnapshot) => {
         console.log('Total trips: ', querySnapshot.size);
         var chunks = [],
-          // i = 0,
           n = querySnapshot.size;
-        /*while (i < n) { chunks.push(querySnapshot.docs[i].id); }*/
-        //const data = querySnapshot.docs.map((id) => id)
-        /*for (i in (0, n, i++)) { }*/
 
         if (arr.length == 0 || arr == null) {
           console.log('no data found');
@@ -208,6 +185,10 @@ const HomeScreen = ({ navigation }) => {
       .collection('users')
       .doc(auth().currentUser.email)
       .collection('trips')
+      .where('activityType', '!=', 'stationary')
+      .where('activityType', '!=', 'non-motorized/bicycle')
+      .where('activityType', '!=', 'non-motorized/pedestrian/walk')
+      .where('activityType', '!=', 'non-motorized/pedestrian/run')
       .orderBy('dateAdded', 'desc')
       .limit(1)
       .get()
@@ -220,199 +201,219 @@ const HomeScreen = ({ navigation }) => {
       });
   };
 
-  const Sth = () => {
-    return (
-      <View>
-        <Text>YRsssssssssssss</Text>
-      </View>
-    );
-  };
-
-  //console.log(arraydata[i].activityType); } } }); };
-
   const onWriteFeedbackButtonPress = () => {};
 
-  return (
-    <View>
-      <Text>HomeScreen</Text>
+  const FilterMode = (activity) => {
+    switch (activity) {
+      case 'stationary':
+        return require('assets/icons/sitting-man.png');
+        break;
 
-      <Button
-        onPress={toggleTmdService()}
-        title={tmdIsRunning ? 'Stop TMD' : 'Start TMD'}
-        color={tmdIsRunning ? color.STEEL_BLUE : color.ORANGE_CAR}
-        accessibilityLabel="start or stop TMD service"
-      />
-      <Button
-        onPress={() =>
-          TmdApi.fetchTmdData(
-            (activities, str) => {
-              console.log('Tmd success', activities);
-              setActivity(str);
-              getthat(activities);
-            },
-            (err) => {
-              console.log('Tmd error', err);
-            },
-          )
-        }
-        title="fetch"
-        color={color.STEEL_BLUE}
-        accessibilityLabel="fetch data"
-      />
+      case 'non-motorized/bicycle':
+        return require('assets/icons/bicycle.png');
+        break;
 
-      <Button title="get LastTrip" onPress={() => GetCurrent()} />
-      <FlatList
-        data={currentTrip}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+      case 'non-motorized/pedestrian':
+        return require('assets/icons/walk.png');
+        break;
+
+      case 'non-motorized/pedestrian/walk':
+        return require('assets/icons/walk.png');
+        break;
+
+      case 'non-motorized/pedestrian/run':
+        return require('assets/icons/run.png');
+        break;
+
+      case 'motorized/road/car':
+        return require('assets/icons/car.png');
+        break;
+
+      case 'motorized/road/bus':
+        return require('assets/icons/bus.png');
+        break;
+
+      case 'motorized/rail':
+        return require('assets/icons/rail.png');
+        break;
+
+      case 'motorized/rail/tram':
+        return require('assets/icons/tram.png');
+        break;
+
+      case 'motorized/rail/train':
+        return require('assets/icons/train.png');
+        break;
+
+      case 'motorized/rail/metro':
+        return require('assets/icons/underground.png');
+        break;
+
+      case 'motorized/air/plane':
+        return require('assets/icons/plane.png');
+        break;
+
+      default:
+        return require('assets/icons/bus.png');
+        break;
+    }
+  };
+
+  const ScreenContainer = styled.View`
+    ${DefaultContainer};
+    padding-top: ${StackM}px;
+  `;
+
+  const LastTrip = ({ onWriteFeedbackButtonPress }) => (
+    <LastTripContainer>
+      <Button title="DD" onPress={() => console.log('Clicked!!')} />
+      <SubtitleText>LAST TRIP</SubtitleText>
+      <LastTripCard>
+        {currentTrip.length !== 0 ? (
+          <>
+            <MeansOfTransportText>
+              {currentTrip[0].activityType}
+            </MeansOfTransportText>
+            <TransportTile
+              source={FilterMode(currentTrip[0].activityType)}
+              backgroundColor={White}
+            />
+            <FeedbackButton onPress={onWriteFeedbackButtonPress} />
+          </>
+        ) : (
+          <MeansOfTransportText>No Recent</MeansOfTransportText>
+        )}
+      </LastTripCard>
+    </LastTripContainer>
   );
-};
 
-/*<ScreenContainer>
+  const LastTripContainer = styled.View`
+    margin-bottom: ${InlineL}px;
+  `;
+
+  const LastTripCard = styled(DefaultCard)`
+    ${Row}
+    align-items: center;
+    background-color: ${Rajah};
+    justify-content: space-between;
+  `;
+
+  const MeansOfTransportText = styled(BoldText)`
+    color: ${MineShaft};
+    font-size: ${TextXXS}px;
+  `;
+
+  const FeedbackButton = ({ onPress }) => (
+    <FeedbackButtonWrapper {...{ onPress }}>
+      <FeedbackButtonContainer>
+        <Icon
+          size={{ width: FeedbackIconSize, height: FeedbackIconSize }}
+          source={require('assets/icons/feedback.png')}
+          tintColor={RoyalBlue}
+        />
+      </FeedbackButtonContainer>
+      <FeedbackButtonText>Write feedback</FeedbackButtonText>
+    </FeedbackButtonWrapper>
+  );
+
+  const FeedbackButtonText = styled.Text`
+    color: ${MineShaft};
+    font-size: ${TextXXXXS}px;
+  `;
+
+  const FeedbackButtonWrapper = styled(ButtonWrapper)`
+    ${Center}
+  `;
+
+  const FeedbackButtonSize = InlineL;
+  const FeedbackIconSize = (FeedbackButtonSize * 4) / 7;
+
+  const FeedbackButtonContainer = styled(ButtonContainer)`
+    ${Center};
+    border-radius: ${FeedbackButtonSize / 2}px;
+    border: 1px solid ${MangoTango};
+    height: ${FeedbackButtonSize}px;
+    width: ${FeedbackButtonSize}px;
+  `;
+
+  const YourPosition = ({}) => (
+    <>
+      <SubtitleText>YOUR POSITION</SubtitleText>
+      <YourPositionCard>
+        <UserInfo>
+          <Avatar
+            size={InlineXL}
+            source={{
+              uri:
+                'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+            }}
+          />
+          <UserNameText>Test</UserNameText>
+        </UserInfo>
+        <CompetitionInfo>
+          <RankingInfo>
+            <NumberText color={Grenadier}>23</NumberText>
+            <AnnotationText>FINNISH RANKING</AnnotationText>
+          </RankingInfo>
+          <ScoreInfo>
+            <NumberText color={Fire}>21</NumberText>
+            <AnnotationText>POINTS</AnnotationText>
+          </ScoreInfo>
+          <PointToTopTenInfo>
+            <NumberText color={Fire}>10</NumberText>
+            <AnnotationText>POINTS MORE TO TOP 10</AnnotationText>
+          </PointToTopTenInfo>
+        </CompetitionInfo>
+      </YourPositionCard>
+    </>
+  );
+
+  const YourPositionCard = styled(DefaultCard)``;
+
+  const UserInfo = styled.View`
+    ${Row};
+    align-items: center;
+    margin-bottom: ${StackM}px;
+  `;
+
+  const UserNameText = styled(BigText)`
+    margin-left: ${InlineM}px;
+  `;
+
+  const CompetitionInfo = styled.View``;
+
+  const CompetitionInfoRow = styled.View`
+    ${Row};
+    align-items: center;
+  `;
+
+  const NotTheLastCompetitionInfoRow = styled(CompetitionInfoRow)`
+    margin-bottom: ${StackS}px;
+  `;
+
+  const RankingInfo = styled(NotTheLastCompetitionInfoRow)``;
+  const ScoreInfo = styled(NotTheLastCompetitionInfoRow)``;
+  const PointToTopTenInfo = styled(CompetitionInfoRow)``;
+
+  const NumberText = styled.Text`
+    color: ${(props) => props.color || MineShaft};
+    font-size: ${TextXXL}px;
+    font-weight: 700;
+    line-height: ${TextXXL}px;
+    margin-right: ${InlineS}px;
+  `;
+
+  const AnnotationText = styled.Text`
+    color: ${Emperor};
+    font-size: ${TextXS}px;
+  `;
+
+  return (
+    <ScreenContainer>
       <LastTrip {...{ onWriteFeedbackButtonPress }} />
       <YourPosition />
-    </ScreenContainer>*/
-
-const ScreenContainer = styled.View`
-  ${DefaultContainer};
-  padding-top: ${StackM}px;
-`;
-
-const LastTrip = ({ onWriteFeedbackButtonPress }) => (
-  <LastTripContainer>
-    <SubtitleText>LAST TRIP</SubtitleText>
-    <LastTripCard>
-      <MeansOfTransportText>On Bus</MeansOfTransportText>
-      <TransportTile
-        source={require('assets/icons/bus-white.png')}
-        backgroundColor={HawaiianTan}
-      />
-      <FeedbackButton onPress={onWriteFeedbackButtonPress} />
-    </LastTripCard>
-  </LastTripContainer>
-);
-
-const LastTripContainer = styled.View`
-  margin-bottom: ${InlineL}px;
-`;
-
-const LastTripCard = styled(DefaultCard)`
-  ${Row}
-  align-items: center;
-  background-color: ${Rajah};
-  justify-content: space-between;
-`;
-
-const MeansOfTransportText = styled(BoldText)`
-  color: ${MineShaft};
-  font-size: ${TextXXS}px;
-`;
-
-const FeedbackButton = ({ onPress }) => (
-  <FeedbackButtonWrapper {...{ onPress }}>
-    <FeedbackButtonContainer>
-      <Icon
-        size={{ width: FeedbackIconSize, height: FeedbackIconSize }}
-        source={require('assets/icons/feedback.png')}
-        tintColor={RoyalBlue}
-      />
-    </FeedbackButtonContainer>
-    <FeedbackButtonText>Write feedback</FeedbackButtonText>
-  </FeedbackButtonWrapper>
-);
-
-const FeedbackButtonText = styled.Text`
-  color: ${MineShaft};
-  font-size: ${TextXXXXS}px;
-`;
-
-const FeedbackButtonWrapper = styled(ButtonWrapper)`
-  ${Center}
-`;
-
-const FeedbackButtonSize = InlineL;
-const FeedbackIconSize = (FeedbackButtonSize * 4) / 7;
-
-const FeedbackButtonContainer = styled(ButtonContainer)`
-  ${Center};
-  border-radius: ${FeedbackButtonSize / 2}px;
-  border: 1px solid ${MangoTango};
-  height: ${FeedbackButtonSize}px;
-  width: ${FeedbackButtonSize}px;
-`;
-
-const YourPosition = ({}) => (
-  <>
-    <SubtitleText>YOUR POSITION</SubtitleText>
-    <YourPositionCard>
-      <UserInfo>
-        <Avatar
-          size={InlineXL}
-          source={{
-            uri:
-              'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-          }}
-        />
-        <UserNameText>Test</UserNameText>
-      </UserInfo>
-      <CompetitionInfo>
-        <RankingInfo>
-          <NumberText color={Grenadier}>23</NumberText>
-          <AnnotationText>FINNISH RANKING</AnnotationText>
-        </RankingInfo>
-        <ScoreInfo>
-          <NumberText color={Fire}>21</NumberText>
-          <AnnotationText>POINTS</AnnotationText>
-        </ScoreInfo>
-        <PointToTopTenInfo>
-          <NumberText color={Fire}>10</NumberText>
-          <AnnotationText>POINTS MORE TO TOP 10</AnnotationText>
-        </PointToTopTenInfo>
-      </CompetitionInfo>
-    </YourPositionCard>
-  </>
-);
-
-const YourPositionCard = styled(DefaultCard)``;
-
-const UserInfo = styled.View`
-  ${Row};
-  align-items: center;
-  margin-bottom: ${StackM}px;
-`;
-
-const UserNameText = styled(BigText)`
-  margin-left: ${InlineM}px;
-`;
-
-const CompetitionInfo = styled.View``;
-
-const CompetitionInfoRow = styled.View`
-  ${Row};
-  align-items: center;
-`;
-
-const NotTheLastCompetitionInfoRow = styled(CompetitionInfoRow)`
-  margin-bottom: ${StackS}px;
-`;
-
-const RankingInfo = styled(NotTheLastCompetitionInfoRow)``;
-const ScoreInfo = styled(NotTheLastCompetitionInfoRow)``;
-const PointToTopTenInfo = styled(CompetitionInfoRow)``;
-
-const NumberText = styled.Text`
-  color: ${(props) => props.color || MineShaft};
-  font-size: ${TextXXL}px;
-  font-weight: 700;
-  line-height: ${TextXXL}px;
-  margin-right: ${InlineS}px;
-`;
-
-const AnnotationText = styled.Text`
-  color: ${Emperor};
-  font-size: ${TextXS}px;
-`;
+    </ScreenContainer>
+  );
+};
 
 export default HomeScreen;

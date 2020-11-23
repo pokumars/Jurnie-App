@@ -18,6 +18,7 @@ import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import { createStackNavigator } from '@react-navigation/stack';
 import firestore from '@react-native-firebase/firestore';
+import TmdApi from '../bridge/TmdApi';
 
 const user = auth().currentUser;
 console.log('User info for provider: ', user);
@@ -51,6 +52,7 @@ function register({ navigation }) {
         .then(() => {
           console.log('User account created & signed in!'),
             AddUserToFirestore();
+          TmdApi.startTmdService();
           navigation.dispatch(StackActions.replace('Main'));
         })
         .catch((error) => {
