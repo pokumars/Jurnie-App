@@ -1,8 +1,8 @@
 const MeansOfTransport = Object.freeze({
   BUS: 1,
-  TRAIN: 2,
-  WALK: 3,
-  CAR: 4,
+  CAR: 2,
+  TRAIN: 3,
+  WALK: 4,
 });
 
 export default MeansOfTransport;

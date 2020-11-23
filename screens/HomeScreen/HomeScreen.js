@@ -13,6 +13,7 @@ import {
   MineShaft,
   Rajah,
   RoyalBlue,
+  White,
 } from 'components/Colors';
 import Icon from 'components/Icon';
 import {
@@ -65,8 +66,9 @@ const LastTrip = ({ onWriteFeedbackButtonPress }) => (
     <LastTripCard>
       <MeansOfTransportText>On Bus</MeansOfTransportText>
       <TransportTile
-        source={require('assets/icons/bus-white.png')}
         backgroundColor={HawaiianTan}
+        source={require('assets/icons/bus-white.png')}
+        tintColor={White}
       />
       <FeedbackButton onPress={onWriteFeedbackButtonPress} />
     </LastTripCard>
