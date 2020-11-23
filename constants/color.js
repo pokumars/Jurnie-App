@@ -10,5 +10,5 @@ export default {
   Whisper: '#F3F2F7',
   USERNAME_BLUE: '#1C75D5',
   WHITE: '#FFF',
-  ERR_RED: "#e52d27",
+  ERR_RED: '#e52d27',
 };

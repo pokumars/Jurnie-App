@@ -121,7 +121,7 @@ const ProfileScreen = ({navigation}) => {
             title="Username"
             onPress={() => setDetailModalVisible(true)}
             detail={username}
-            changeable={true}
+            changeable
           />
           <ProfileUserDetail title="Email" detail={auth().currentUser.email} />
           <DetailUpdateModal

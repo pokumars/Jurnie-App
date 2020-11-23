@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, Text, View, FlatList, DeviceEventEmitter } from 'react-native';
 import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
 import { ButtonContainer, ButtonWrapper } from 'components/Button';
 import { DefaultCard } from 'components/Cards';
-import { FlatList, DeviceEventEmitter } from 'react-native';
+
 import auth from '@react-native-firebase/auth';
 import {
   Emperor,
@@ -40,12 +40,12 @@ import {
   StackM,
 } from 'components/Spacing';
 import TransportTile from 'components/TransportTile';
-import TmdApi from '../bridge/TmdApi';
-import color from '../constants/color';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
 import firestore from '@react-native-firebase/firestore';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import color from '../constants/color';
+import TmdApi from '../bridge/TmdApi';
 
 const Item = ({ title, onPress }) => (
   <TouchableOpacity
@@ -80,11 +80,11 @@ const HomeScreen = ({ navigation }) => {
           getthat(activities);
 
           setActivity(str);
-          //console.log('AAAAAAAAAAa', arraydata);
+          // console.log('AAAAAAAAAAa', arraydata);
         },
         (err) => {
           console.log('Tmd error', err);
-        },
+        }
       );
     } catch (e) {
       console.log('error', e.message);
@@ -101,10 +101,10 @@ const HomeScreen = ({ navigation }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        //console.log(data);
+        // console.log(data);
 
         setcurrentTrip(data);
-        //console.log('kkkkk', currentTrip);
+        // console.log('kkkkk', currentTrip);
       });
   }, []);
 
@@ -127,8 +127,8 @@ const HomeScreen = ({ navigation }) => {
       .get()
       .then((querySnapshot) => {
         console.log('Total trips: ', querySnapshot.size);
-        var chunks = [],
-          n = querySnapshot.size;
+        const chunks = [];
+        const n = querySnapshot.size;
 
         if (arr.length == 0 || arr == null) {
           console.log('no data found');
@@ -137,8 +137,8 @@ const HomeScreen = ({ navigation }) => {
             const data = querySnapshot.docs[i].id;
             chunks.push(data);
           }
-          console.log(chunks); //console.log(chunks.includes('dd'));
-          for (var i = 0; i < arr.length; i++) {
+          console.log(chunks); // console.log(chunks.includes('dd'));
+          for (let i = 0; i < arr.length; i++) {
             if (chunks.includes(arr[i].id)) {
               console.log(arr[i].id, 'already');
             } else {
@@ -194,7 +194,7 @@ const HomeScreen = ({ navigation }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        //console.log(data);
+        // console.log(data);
 
         setcurrentTrip(data);
         console.log('kkkkk', data);
@@ -271,9 +271,7 @@ const HomeScreen = ({ navigation }) => {
       <LastTripCard>
         {currentTrip.length !== 0 ? (
           <>
-            <MeansOfTransportText>
-              {currentTrip[0].activityType}
-            </MeansOfTransportText>
+            <MeansOfTransportText>{currentTrip[0].activityType}</MeansOfTransportText>
             <TransportTile
               source={FilterMode(currentTrip[0].activityType)}
               backgroundColor={White}
@@ -344,8 +342,7 @@ const HomeScreen = ({ navigation }) => {
           <Avatar
             size={InlineXL}
             source={{
-              uri:
-                'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+              uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
             }}
           />
           <UserNameText>Test</UserNameText>

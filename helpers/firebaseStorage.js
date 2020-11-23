@@ -1,7 +1,7 @@
 import 'react-native-get-random-values';
 import storage, { firebase } from '@react-native-firebase/storage';
-import { generate as generateName } from './randomUsernameGenerator';
 import auth from '@react-native-firebase/auth';
+import { generate as generateName } from './randomUsernameGenerator';
 
 const profilePicStorageRef = firebase
   .app()

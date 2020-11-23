@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-//import libraries
+// import libraries
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TextInput, Alert, Button} from 'react-native';
 import color from '../../constants/color';
@@ -35,7 +35,7 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
       return;
     }
 
-    //if all is good
+    // if all is good
     onConfirm(detail).then(() => {
       setDetail('');
       toggleDetailModal();
@@ -117,5 +117,5 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
+// make this component available to the app
 export default DetailUpdateModal;

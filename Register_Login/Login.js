@@ -11,12 +11,12 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
-import TmdApi from '../bridge/TmdApi';
 
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 
 import auth from '@react-native-firebase/auth';
 import { createStackNavigator } from '@react-navigation/stack';
+import TmdApi from '../bridge/TmdApi';
 
 const user = auth().currentUser;
 
@@ -29,8 +29,7 @@ function login({ navigation }) {
     auth()
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
-        console.log('User account created & signed in!'),
-          TmdApi.startTmdService();
+        console.log('User account created & signed in!'), TmdApi.startTmdService();
         navigation.dispatch(StackActions.replace('Main'));
         // navigation.dispatch(StackActions.replace('Profile'));
       })
@@ -135,8 +134,7 @@ function login({ navigation }) {
           <Button title="Login" onPress={() => Authentication()} />
         </View>
 
-        <View
-          style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
           <Text>Forgot your Password</Text>
           <TouchableOpacity style={{ marginStart: 5 }}>
             <Text style={{ color: '#1E90FF' }}>retrieve</Text>
@@ -191,14 +189,11 @@ function login({ navigation }) {
             />
           </View>
         </View>
-        <View
-          style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
           <Text style={{ color: 'white' }}>Don't have an Account</Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}
-            onPress={() =>
-              navigation.dispatch(StackActions.replace('Register'))
-            }>
+            onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
             <Text style={{ color: '#1E90FF' }}>Register</Text>
           </TouchableOpacity>
         </View>

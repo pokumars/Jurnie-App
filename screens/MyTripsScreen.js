@@ -28,10 +28,10 @@ const MyTripsScreen = ({ navigation }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        //console.log(data);
+        // console.log(data);
 
         setcurrentTrip(data);
-        //console.log('kkkkk', data);
+        // console.log('kkkkk', data);
       });
   };
 
@@ -39,11 +39,7 @@ const MyTripsScreen = ({ navigation }) => {
     <View>
       <Text>MyTripsScreen</Text>
       <Button title="get" onPress={() => GetCurrent()} />
-      <FlatList
-        data={currentTrip}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      <FlatList data={currentTrip} renderItem={renderItem} keyExtractor={(item) => item.id} />
     </View>
   );
 };
