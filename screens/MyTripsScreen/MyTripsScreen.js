@@ -1,10 +1,11 @@
 import React from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 
 import styled from 'styled-components';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
-import { DefaultContainer } from 'components/Spacing';
+import { DefaultContainer, StackM } from 'components/Spacing';
+import { SubtitleText } from 'components/Text';
 import TripCard from './components/TripCard';
 
 const testTrips = [
@@ -32,7 +33,7 @@ const testTrips = [
 
 const MyTripsScreen = ({ navigation }) => (
   <ScreenContainer>
-    <Text>MyTripsScreen</Text>
+    <SubtitleText>MY TRIPS</SubtitleText>
     <FlatList
       data={testTrips}
       keyExtractor={(item, index) =>
@@ -53,6 +54,8 @@ const renderItem = ({ item }) => (
 
 const ScreenContainer = styled.View`
   ${DefaultContainer};
+
+  padding-top: ${StackM}px;
 `;
 
 export default MyTripsScreen;
