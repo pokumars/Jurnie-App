@@ -17,15 +17,15 @@ import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
 import TitleText from '../components/TitleText';
 import color from '../constants/color';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
+import ProfilePicChanger from './ProfilePicChanger';
+import globalStyles from '../constants/globalStyle';
 
 const ProfileScreen = ({navigation}) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
-
-  //TODO: if a user has a profile pic, use that else use the profile icon
-  const profilePicUrl =
-    'https://ohe-test-image-upload-1.s3.amazonaws.com/44e97045-fd97-4882-8ed1-942934d6bee4.png';
-  const profilePicPlaceholderTruth = false;
+  const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
+  const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
+ 
   const signOut = () => {
     auth()
       .signOut()
@@ -45,13 +45,28 @@ const ProfileScreen = ({navigation}) => {
         setUsername(newUsername);
       });
   };
+  const renderNewProfilePic = (newPicUrl) => {
+    console.log('setNewProfilePic---------',newPicUrl);
+    setProfilePicUrl(newPicUrl);
+  }
+  const getOldProfileImageRef= () => {
+    
+    if(profilePicUrl!== null ){
+      // to delete the old profile pic, we must get the ref from the url.
+      console.log('profilePicUrl---------', profilePicUrl)
+      console.log('ref from the profilePicUrl--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
+      return profilePicUrl.split('?').shift().split('profilePics%2F').pop()
+    }
+    console.log('profilePicUrl--------- was null')
+    return ""
+  }
 
   /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
  "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
-
+ // TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
   return (
     <View style={styles.screen}>
       <ScrollView>
@@ -69,19 +84,26 @@ const ProfileScreen = ({navigation}) => {
             onPress={signOut}
           />
         </View>
-        <View style={styles.profilePicContainer}>
-          <View style={styles.profilePicView}>
+        <ProfilePicChanger
+          visible={changingPicModalVisible}
+          toggleVisibility={()=>setChangingPicModalVisible(false)}
+          update={renderNewProfilePic}
+          oldProfileImageRef={getOldProfileImageRef()}
+        />
+       
+        <View style={globalStyles.profilePicContainer}>
+          <View style={globalStyles.profilePicView}>
             <Image
-              style={styles.profilePic}
+              style={globalStyles.profilePic}
               source={
-                profilePicPlaceholderTruth
+                profilePicUrl
                   ? {uri: profilePicUrl}
                   : require('../assets/icons/profile.png')
               }
             />
           </View>
           <Button
-            onPress={() => console.log('chnage profile pic clicked')}
+            onPress={() => setChangingPicModalVisible(true)}
             title="Change Pic"
             color={color.STEEL_BLUE}
             accessibilityLabel="Change profile picture"
@@ -117,12 +139,12 @@ const ProfileScreen = ({navigation}) => {
             <Badge badgeImage={require('../assets/icons/settings-outline.png')} />
           </View>
         </View>
+        
       </ScrollView>
     </View>
   );
 };
 // TODO: clicking on profile picture lets you view it
-// TODO: button for change profile picture
 
 const styles = StyleSheet.create({
   screen: {
@@ -141,11 +163,6 @@ const styles = StyleSheet.create({
 
     padding: 5,
   },
-  profilePicContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   profilePicView: {
     height: 150,
     width: 150,
@@ -159,6 +176,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  
   userDetails: {
     alignItems: 'center',
     justifyContent: 'center',
