@@ -1,21 +1,9 @@
-import {
-  Button,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, { useState } from 'react';
-
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-
+/* eslint-disable global-require */
+/* eslint-disable no-console */
+import { Button, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import { createStackNavigator } from '@react-navigation/stack';
 import TmdApi from '../bridge/TmdApi';
 
 const user = auth().currentUser;
@@ -29,7 +17,9 @@ function login({ navigation }) {
     auth()
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
-        console.log('User account created & signed in!'), TmdApi.startTmdService();
+        TmdApi.startTmdService();
+        console.log('User account created & signed in!');
+
         navigation.dispatch(StackActions.replace('Main'));
         // navigation.dispatch(StackActions.replace('Profile'));
       })
@@ -51,6 +41,7 @@ function login({ navigation }) {
       <View style={{ flex: 1 }}>
         <View style={{ alignSelf: 'center', backgroundColor: '#000000' }}>
           <Image
+            // eslint-disable-next-line global-require
             source={require('../assets/moprim.png')}
             style={{
               width: 170,
@@ -190,7 +181,7 @@ function login({ navigation }) {
           </View>
         </View>
         <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-          <Text style={{ color: 'white' }}>Don't have an Account</Text>
+          <Text style={{ color: 'white' }}> Don't have an Account </Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}
             onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
