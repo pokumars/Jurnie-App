@@ -15,6 +15,34 @@ import TmdApi from '../../bridge/TmdApi';
 import DetailUpdateModal from './components/DetailUpdateModal';
 import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
 import globalStyles from '../../constants/globalStyle';
+import { determineBadgeIcon } from '../../helpers/determineAsset';
+
+const testBadgeData = [
+  {
+    id: 'badge1',
+    isReachievable: true,
+    numberOfBadge: 12,
+    symbol: 'camera',
+  },
+  {
+    id: 'badge2',
+    isReachievable: false,
+    numberOfBadge: 1,
+    symbol: 'medal',
+  },
+  {
+    id: 'badge3',
+    isReachievable: true,
+    numberOfBadge: 123,
+    symbol: 'target',
+  },
+  {
+    id: 'badge4',
+    isReachievable: true,
+    numberOfBadge: 7908,
+    symbol: 'trophy',
+  },
+];
 
 const ProfileScreen = ({ navigation }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
@@ -134,16 +162,14 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.badgesAchievementsContainer}>
           <TitleText>Badges &amp; Achievements</TitleText>
           <View style={styles.badgesContainer}>
-            <Badge
-              multiple={31}
-              badgeImage={require('assets/icons/log-out.png')}
-            />
-            <Badge multiple={3} badgeImage={require('assets/icons/home.png')} />
-            <Badge
-              multiple={125}
-              badgeImage={require('assets/icons/profile.png')}
-            />
-            <Badge badgeImage={require('assets/icons/settings-outline.png')} />
+            {testBadgeData.map((badge) => (
+              <Badge
+                badgeImage={determineBadgeIcon(badge.symbol)}
+                isReachievable={badge.isReachievable}
+                key={badge.id}
+                numberOfTheSameBadge={badge.numberOfBadge}
+              />
+            ))}
           </View>
         </View>
       </ScrollView>
@@ -192,9 +218,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badgesContainer: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
 });
 

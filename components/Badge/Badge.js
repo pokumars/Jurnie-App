@@ -1,52 +1,50 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import color from '../../constants/color';
+import { StyleSheet } from 'react-native';
+
+import FastImage from 'react-native-fast-image';
+import styled from 'styled-components/native';
+
+import { Emperor } from 'components/Colors';
+import { InlineXXL, StackXXS } from 'components/Spacing';
+import { BoldText, TextS } from 'components/Text';
 
 /**
  *
- * @param {number|string} prop.multiple How many times has auser won the badge
+ * @param {number|string} prop.numberOfTheSameBadge How many times has auser won the badge
  * @param {string} prop.badgeImage - image that goes directly into react native's Image source
  * either require('../../logo.png') or {uri: 'https://smth.dev/logo.png'}
  *
  */
-const Badge = ({ multiple, badgeImage }) => {
+const Badge = ({ numberOfTheSameBadge, badgeImage, isReachievable }) => {
   return (
-    <View style={styles.container}>
-      <Image style={styles.badgeImage} source={badgeImage} />
-      <View style={styles.badgeMultipleContainer}>
-        <Text style={styles.badgeMultipleText}>
-          {multiple ? `x${multiple}` : 'x1'}
-        </Text>
-      </View>
-    </View>
+    <BadgeContainer>
+      <FastImage source={badgeImage} style={styles.badgeImage} />
+      {isReachievable && (
+        <NumberOfTheSameBadgeText>
+          {numberOfTheSameBadge}
+        </NumberOfTheSameBadgeText>
+      )}
+    </BadgeContainer>
   );
 };
 
-// define your styles
+const BadgeContainer = styled.View`
+  align-items: center;
+  justify-content: flex-start;
+  max-width: ${InlineXXL}px;
+`;
+
+const NumberOfTheSameBadgeText = styled(BoldText)`
+  font-size: ${TextS}px;
+  color: ${Emperor};
+  margin-top: ${StackXXS}px;
+`;
+
 const styles = StyleSheet.create({
-  container: {
-    maxHeight: 100,
-    maxWidth: 100,
-    marginHorizontal: 20,
-    marginTop: 10,
-  },
   badgeImage: {
-    width: 50,
-    height: 50,
-  },
-  badgeMultipleText: {
-    fontSize: 12,
-    color: color.SaffronMango,
-    padding: 5,
-  },
-  badgeMultipleContainer: {
-    position: 'absolute',
-    bottom: 1,
-    right: -15,
-    backgroundColor: color.BLACK,
-    borderRadius: 15,
+    width: InlineXXL,
+    height: InlineXXL,
   },
 });
 
-// make this component available to the app
 export default Badge;

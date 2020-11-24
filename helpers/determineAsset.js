@@ -1,4 +1,4 @@
-import { MEANS_OF_TRANSPORT } from 'app-constants';
+import { BADGE, MEANS_OF_TRANSPORT } from 'app-constants';
 import {
   Celery,
   Dandelion,
@@ -34,5 +34,20 @@ export const determineTransportBackgroundColorForDarkIcon = (transportType) => {
       return Dandelion;
     default:
       return White;
+  }
+};
+
+export const determineBadgeIcon = (badgeSymbol) => {
+  switch (badgeSymbol) {
+    case BADGE.CAMERA:
+      return require('assets/icons/badge-camera.png');
+    case BADGE.MEDAL:
+      return require('assets/icons/badge-medal.png');
+    case BADGE.TARGET:
+      return require('assets/icons/badge-target.png');
+    case BADGE.TROPHY:
+      return require('assets/icons/badge-trophy.png');
+    default:
+      return null;
   }
 };
