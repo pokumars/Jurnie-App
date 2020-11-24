@@ -18,6 +18,7 @@ function login({ navigation }) {
       .then(() => {
         // eslint-disable-next-line no-unused-expressions
         console.log('User account created & signed in!');
+
         navigation.dispatch(StackActions.replace('Main'));
         // navigation.dispatch(StackActions.replace('Profile'));
       })
@@ -39,6 +40,7 @@ function login({ navigation }) {
       <View style={{ flex: 1 }}>
         <View style={{ alignSelf: 'center', backgroundColor: '#000000' }}>
           <Image
+            // eslint-disable-next-line global-require
             source={require('../assets/moprim.png')}
             style={{
               width: 170,
@@ -178,7 +180,7 @@ function login({ navigation }) {
           </View>
         </View>
         <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-          <Text style={{ color: 'white' }}>Don't have an Account</Text>
+          <Text style={{ color: 'white' }}> Don't have an Account </Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}
             onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
