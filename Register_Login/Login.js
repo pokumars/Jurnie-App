@@ -4,7 +4,6 @@ import { Button, Image, Text, TextInput, TouchableOpacity, View } from 'react-na
 import React from 'react';
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import TmdApi from '../bridge/TmdApi';
 
 const user = auth().currentUser;
 
@@ -17,7 +16,7 @@ function login({ navigation }) {
     auth()
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
-        TmdApi.startTmdService();
+        // eslint-disable-next-line no-unused-expressions
         console.log('User account created & signed in!');
 
         navigation.dispatch(StackActions.replace('Main'));

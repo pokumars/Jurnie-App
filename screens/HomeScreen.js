@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
 import { Button, Text, View, FlatList, DeviceEventEmitter } from 'react-native';
 import styled from 'styled-components';
@@ -61,7 +64,6 @@ const Item = ({ title, onPress }) => (
 );
 
 const HomeScreen = ({ navigation }) => {
-  const [tmdIsRunning, setTmd] = useState(false);
   const [activity, setActivity] = useState('nothing');
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
@@ -72,6 +74,22 @@ const HomeScreen = ({ navigation }) => {
     meansOfTransport: MEANS_OF_TRANSPORT.BUS,
   };
 
+  // checks if TMD service is running
+  useEffect(() => {
+    const isTmdRunning = async () => {
+      try {
+        const isRunning = await TmdApi.isTmdRunning();
+        setTmdStatus(isRunning);
+        console.log('tmdstatus', tmdStatus);
+      } catch (e) {
+        console.log('tmdIsRunning error', e.message);
+      }
+    };
+    isTmdRunning();
+  }, []);
+
+  const [tmdStatus, setTmdStatus] = useState();
+
   useEffect(() => {
     try {
       TmdApi.fetchTmdData(
@@ -80,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
           getthat(activities);
 
           setActivity(str);
-          // console.log('AAAAAAAAAAa', arraydata);
+          console.log('AAAAAAAAAAa', arraydata);
         },
         (err) => {
           console.log('Tmd error', err);
@@ -108,13 +126,16 @@ const HomeScreen = ({ navigation }) => {
       });
   }, []);
 
-  const toggleTmdService = () => () => {
-    if (!tmdIsRunning) {
+  // starts/stops TMD
+  const toggleTmdService = () => async () => {
+    if (!tmdStatus) {
+      setTmdStatus(true);
       TmdApi.startTmdService();
-      setTmd(true);
+      console.log('tmdstatus', 1);
     } else {
+      setTmdStatus(false);
       TmdApi.stopTmdService();
-      setTmd(false);
+      console.log('tmdstatus', 0);
     }
   };
 
@@ -207,55 +228,42 @@ const HomeScreen = ({ navigation }) => {
     switch (activity) {
       case 'stationary':
         return require('assets/icons/sitting-man.png');
-        break;
 
       case 'non-motorized/bicycle':
         return require('assets/icons/bicycle.png');
-        break;
 
       case 'non-motorized/pedestrian':
         return require('assets/icons/walk.png');
-        break;
 
       case 'non-motorized/pedestrian/walk':
         return require('assets/icons/walk.png');
-        break;
 
       case 'non-motorized/pedestrian/run':
         return require('assets/icons/run.png');
-        break;
 
       case 'motorized/road/car':
         return require('assets/icons/car.png');
-        break;
 
       case 'motorized/road/bus':
         return require('assets/icons/bus.png');
-        break;
 
       case 'motorized/rail':
         return require('assets/icons/rail.png');
-        break;
 
       case 'motorized/rail/tram':
         return require('assets/icons/tram.png');
-        break;
 
       case 'motorized/rail/train':
         return require('assets/icons/train.png');
-        break;
 
       case 'motorized/rail/metro':
         return require('assets/icons/underground.png');
-        break;
 
       case 'motorized/air/plane':
         return require('assets/icons/plane.png');
-        break;
 
       default:
         return require('assets/icons/bus.png');
-        break;
     }
   };
 
@@ -266,7 +274,11 @@ const HomeScreen = ({ navigation }) => {
 
   const LastTrip = ({ onWriteFeedbackButtonPress }) => (
     <LastTripContainer>
-      <Button title="DD" onPress={() => console.log('Clicked!!')} />
+      <Button
+        title={tmdStatus ? 'stop TMD' : 'start TMD'}
+        onPress={toggleTmdService()}
+        color={tmdStatus ? color.STEEL_BLUE : color.MANGO_TANGO}
+      />
       <SubtitleText>LAST TRIP</SubtitleText>
       <LastTripCard>
         {currentTrip.length !== 0 ? (
