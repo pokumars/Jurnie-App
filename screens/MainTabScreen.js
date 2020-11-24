@@ -7,7 +7,7 @@ import TabBar from 'components/TabBar';
 import HomeScreen from './HomeScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import MyTripsScreen from './MyTripsScreen';
-import ProfileScreen from './ProfileScreen';
+import ProfileScreen from './ProfileScreen/ProfileScreen';
 
 import { COLOR, NAVIGATION_ROUTE } from '../constants';
 

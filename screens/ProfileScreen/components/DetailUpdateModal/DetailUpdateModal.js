@@ -1,8 +1,16 @@
 /* eslint-disable prettier/prettier */
 // import libraries
 import React from 'react';
-import { View, Text, StyleSheet, Modal, TextInput, Alert, Button} from 'react-native';
-import color from '../../constants/color';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TextInput,
+  Alert,
+  Button,
+} from 'react-native';
+import color from '../../../../constants/color';
 
 /**
  *
@@ -13,21 +21,28 @@ import color from '../../constants/color';
  *
  */
 // create a component
-const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onConfirm}) => {
+const DetailUpdateModal = ({
+  toggleDetailModal,
+  modalVisible,
+  originalDetail,
+  onConfirm,
+}) => {
   const [detail, setDetail] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const legalChars = /^[a-zA-Z0-9_-]*$/; // allow letters, numbers, and underscores
 
   const updateUserDetails = () => {
-    if (detail.length < 5){
+    if (detail.length < 5) {
       setErrorMessage('The username must be longer than 5 characters');
       return;
     }
-    if (!legalChars.test(detail)){
-      setErrorMessage('The username can only contain letters, numbers and underscores');
+    if (!legalChars.test(detail)) {
+      setErrorMessage(
+        'The username can only contain letters, numbers and underscores',
+      );
       return;
     }
-    if (originalDetail === detail){
+    if (originalDetail === detail) {
       setErrorMessage('');
       setDetail('');
       toggleDetailModal();
@@ -47,42 +62,41 @@ const DetailUpdateModal = ({toggleDetailModal, modalVisible, originalDetail, onC
     setDetail('');
   };
 
-return (
-  <Modal
-    animationType="slide"
-    visible={modalVisible}
-    presentationStyle="fullScreen"
-    onRequestClose={() => {
-      toggleDetailModal();
-      Alert.alert('Username change aborted');
-    }}
-  >
-    <View style={styles.container}>
-      <Text style={styles.errorMessage} >{errorMessage}</Text>
-      <TextInput style={styles.input}
-        onChangeText={setDetail}
-        placeholder="username"
-      />
-      <View style={styles.buttonsContainer}>
-        <View style={styles.button}>
-          <Button
-            title="save"
-            color={color.USERNAME_BLUE}
-            onPress={updateUserDetails}
-          />
+  return (
+    <Modal
+      animationType="slide"
+      visible={modalVisible}
+      presentationStyle="fullScreen"
+      onRequestClose={() => {
+        toggleDetailModal();
+        Alert.alert('Username change aborted');
+      }}>
+      <View style={styles.container}>
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setDetail}
+          placeholder="username"
+        />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.button}>
+            <Button
+              title="save"
+              color={color.USERNAME_BLUE}
+              onPress={updateUserDetails}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              style={styles.button}
+              title="cancel"
+              color={color.ERR_RED}
+              onPress={cancelChange}
+            />
+          </View>
         </View>
-        <View style={styles.button}>
-          <Button
-            style={styles.button}
-            title="cancel"
-            color={color.ERR_RED}
-            onPress={cancelChange}
-          />
-        </View>
-
       </View>
-    </View>
-  </Modal>
+    </Modal>
   );
 };
 

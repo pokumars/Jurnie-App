@@ -1,37 +1,29 @@
 /* eslint-disable prettier/prettier */
 
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import React, { useState } from 'react';
-
+import { Button, Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import { createStackNavigator } from '@react-navigation/stack';
-import Badge from '../components/Profile/Badge';
-import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
-import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
-import TitleText from '../components/TitleText';
-import color from '../constants/color';
-import TmdApi from '../bridge/TmdApi';
-import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
-import ProfilePicChanger from './ProfilePicChanger';
-import globalStyles from '../constants/globalStyle';
 
+import Badge from 'components/Badge';
+import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
+import ProfileUserDetail from './components/ProfileUserDetail';
+import TitleText from 'components/TitleText';
+import { Mariner, SteelBlue } from 'components/Colors';
+import TmdApi from '../../bridge/TmdApi';
+import DetailUpdateModal from './components/DetailUpdateModal';
+import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
+import globalStyles from '../../constants/globalStyle';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({ navigation }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
-  const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL)
- 
+  const [profilePicUrl, setProfilePicUrl] = useState(
+    auth().currentUser.photoURL,
+  );
+
   const signOut = () => {
     auth()
       .signOut()
@@ -46,34 +38,36 @@ const ProfileScreen = ({navigation}) => {
   const updateUsername = (newUsername) => {
     console.log('ProfileScreen received this', newUsername);
     return auth()
-      .currentUser.updateProfile({displayName: newUsername})
+      .currentUser.updateProfile({ displayName: newUsername })
       .then((data) => {
         console.log('confirmation from Firebase');
         setUsername(newUsername);
       });
   };
   const renderNewProfilePic = (newPicUrl) => {
-    console.log('setNewProfilePic---------',newPicUrl);
+    console.log('setNewProfilePic---------', newPicUrl);
     setProfilePicUrl(newPicUrl);
-  }
-  const getOldProfileImageRef= () => {
-    
-    if(profilePicUrl!== null ){
+  };
+  const getOldProfileImageRef = () => {
+    if (profilePicUrl !== null) {
       // to delete the old profile pic, we must get the ref from the url.
-      console.log('profilePicUrl---------', profilePicUrl)
-      console.log('ref from the profilePicUrl--------------', profilePicUrl.split('?').shift().split('profilePics%2F').pop())
-      return profilePicUrl.split('?').shift().split('profilePics%2F').pop()
+      console.log('profilePicUrl---------', profilePicUrl);
+      console.log(
+        'ref from the profilePicUrl--------------',
+        profilePicUrl.split('?').shift().split('profilePics%2F').pop(),
+      );
+      return profilePicUrl.split('?').shift().split('profilePics%2F').pop();
     }
-    console.log('profilePicUrl--------- was null')
-    return ""
-  }
+    console.log('profilePicUrl--------- was null');
+    return '';
+  };
 
   /*
   User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
  "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
  "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
  "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
- // TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
+  // TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
   return (
     <View style={styles.screen}>
       <ScrollView>
@@ -81,38 +75,38 @@ const ProfileScreen = ({navigation}) => {
           <IconTextBorderlessBtn
             textFirst={false}
             btnText="Settings"
-            btnImage={require('../assets/icons/settings-outline.png')}
+            btnImage={require('assets/icons/settings-outline.png')}
             onPress={() => console.log('settings clicked')}
           />
           <IconTextBorderlessBtn
             textFirst
             btnText="Logout"
-            btnImage={require('../assets/icons/log-out.png')}
+            btnImage={require('assets/icons/log-out.png')}
             onPress={signOut}
           />
         </View>
-        <ProfilePicChanger
+        <ProfilePicturePickerModal
           visible={changingPicModalVisible}
-          toggleVisibility={()=>setChangingPicModalVisible(false)}
+          toggleVisibility={() => setChangingPicModalVisible(false)}
           update={renderNewProfilePic}
           oldProfileImageRef={getOldProfileImageRef()}
         />
-       
+
         <View style={globalStyles.profilePicContainer}>
           <View style={globalStyles.profilePicView}>
             <Image
               style={globalStyles.profilePic}
               source={
                 profilePicUrl
-                  ? {uri: profilePicUrl}
-                  : require('../assets/icons/profile.png')
+                  ? { uri: profilePicUrl }
+                  : require('assets/icons/profile.png')
               }
             />
           </View>
           <Button
             onPress={() => setChangingPicModalVisible(true)}
             title="Change Pic"
-            color={color.STEEL_BLUE}
+            color={SteelBlue}
             accessibilityLabel="Change profile picture"
           />
         </View>
@@ -133,7 +127,7 @@ const ProfileScreen = ({navigation}) => {
           <Button
             onPress={() => console.log('update details clicked')}
             title="change username or password"
-            color={color.USERNAME_BLUE}
+            color={Mariner}
             accessibilityLabel="Change username or password"
           />
         </View>
@@ -142,22 +136,16 @@ const ProfileScreen = ({navigation}) => {
           <View style={styles.badgesContainer}>
             <Badge
               multiple={31}
-              badgeImage={require('../assets/icons/log-out.png')}
+              badgeImage={require('assets/icons/log-out.png')}
             />
-            <Badge
-              multiple={3}
-              badgeImage={require('../assets/icons/home.png')}
-            />
+            <Badge multiple={3} badgeImage={require('assets/icons/home.png')} />
             <Badge
               multiple={125}
-              badgeImage={require('../assets/icons/profile.png')}
+              badgeImage={require('assets/icons/profile.png')}
             />
-            <Badge
-              badgeImage={require('../assets/icons/settings-outline.png')}
-            />
+            <Badge badgeImage={require('assets/icons/settings-outline.png')} />
           </View>
         </View>
-        
       </ScrollView>
     </View>
   );
@@ -186,7 +174,7 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 75,
     borderWidth: 1,
-    borderColor: color.STEEL_BLUE,
+    borderColor: SteelBlue,
     overflow: 'hidden',
     marginVertical: 5,
   },
@@ -194,7 +182,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  
+
   userDetails: {
     alignItems: 'center',
     justifyContent: 'center',

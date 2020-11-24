@@ -14,7 +14,9 @@ const Badge = ({ multiple, badgeImage }) => {
     <View style={styles.container}>
       <Image style={styles.badgeImage} source={badgeImage} />
       <View style={styles.badgeMultipleContainer}>
-        <Text style={styles.badgeMultipleText}>{multiple ? `x${multiple}` : 'x1'}</Text>
+        <Text style={styles.badgeMultipleText}>
+          {multiple ? `x${multiple}` : 'x1'}
+        </Text>
       </View>
     </View>
   );

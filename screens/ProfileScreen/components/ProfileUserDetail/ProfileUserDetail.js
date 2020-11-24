@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import color from '../../constants/color';
+import color from '../../../../constants/color';
 /**
  *
  * @param {string} prop.title Title of the detail e.g username
