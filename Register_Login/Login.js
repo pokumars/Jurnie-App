@@ -20,7 +20,7 @@ function login({ navigation }) {
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
         // eslint-disable-next-line no-unused-expressions
-        TmdApi.startTmdService();
+        //TmdApi.startTmdService();
         console.log('User account created & signed in!');
         navigation.dispatch(StackActions.replace('Main'));
         // navigation.dispatch(StackActions.replace('Profile'));

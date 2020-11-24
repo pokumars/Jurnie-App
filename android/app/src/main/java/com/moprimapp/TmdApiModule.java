@@ -57,6 +57,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     private static final String TMD_IS_RUNNING_ERROR = "TMD_IS_RUNNING_ERROR";
 
     private static  String activityToString;
+    private static  String error;
     private Notification notification;
 
     private static ReactApplicationContext reactContext;
@@ -115,7 +116,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     }
     
     @ReactMethod
-    public void fetchTmdData(final Callback successCallback, Callback errorCallback) {
+    public void fetchTmdData(final Callback successCallback, final Callback errorCallback) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
             protected void doInBackgroundGuarded(Void ...params) {
@@ -166,11 +167,11 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                     }
 
                     if (downloadResult.hasError()) {
-                        errorCallback.invoke(String.format(Locale.ENGLISH, "%s:  %s", downloadResult.getError().name(), "no data"));
+                        error = downloadResult.getError().name();
                     }
 
                 } catch(Exception e) {
-                    errorCallback.invoke( e.getMessage());
+                    errorCallback.invoke(String.format(Locale.ENGLISH, "%s:  %s", error, e.getMessage()));
                 }
 
                 successCallback.invoke(activitiesArray, activityToString);

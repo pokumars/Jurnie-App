@@ -41,7 +41,7 @@ function register({ navigation }) {
           // eslint-disable-next-line no-unused-expressions
           console.log('User account created & signed in!'),
             AddUserToFirestore(),
-            TmdApi.startTmdService(),
+            //TmdApi.startTmdService(),
             auth()
               .currentUser.updateProfile({ displayName: randomUsername })
               .then(() => navigation.dispatch(StackActions.replace('Main')));
