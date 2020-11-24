@@ -38,6 +38,7 @@ import {
 import TransportTile from 'components/TransportTile';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
+import { Button } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   const defaultValues = {
@@ -49,6 +50,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScreenContainer>
       <LastTrip {...{ onWriteFeedbackButtonPress }} />
+      <Button title="Go to Questionnaire" onPress={() => navigation.navigate('Questionnaire')} />
       <YourPosition />
     </ScreenContainer>
   );

@@ -4,3 +4,9 @@ export const transportModes = [
 'motorized/road/bus', 'motorized/rail/tram', 'motorized/rail/train',
  'motorized/rail/metro', 'motorized/air/plane'
 ]
+export const answerTypes = {
+  rating: 'RATING',
+  booleanUnsure: 'BOOLEAN_UNSURE',
+  text: 'TEXT',
+  dropdown: 'DROPDOWN',
+};

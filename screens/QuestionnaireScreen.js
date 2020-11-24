@@ -76,7 +76,7 @@ const Questionnaire = ({ navigation }) => {
           <Text> Choose the correct one and press YES</Text>
           <Picker
             selectedValue={selectedMode}
-            onValueChange={(itemValue, itemIndex) => setSelectedMode(itemValue)}>
+            onValueChange={(itemValue) => setSelectedMode(itemValue)}>
             {transportModes.map((mode) => {
               return (
                 <Picker.Item key={mode} label={capitaliseModeofTransport(mode)} value={mode} />
@@ -85,6 +85,7 @@ const Questionnaire = ({ navigation }) => {
           </Picker>
         </>
       )}
+      
     </View>
   );
 };
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 15,
   },
 });
 
