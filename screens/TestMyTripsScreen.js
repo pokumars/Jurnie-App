@@ -39,7 +39,11 @@ const MyTripsScreen = ({ navigation }) => {
     <View>
       <Text>MyTripsScreen</Text>
       <Button title="get" onPress={() => GetCurrent()} />
-      <FlatList data={currentTrip} renderItem={renderItem} keyExtractor={(item) => item.id} />
+      <FlatList
+        data={currentTrip}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
