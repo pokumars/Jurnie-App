@@ -5,36 +5,10 @@ import { BoldText, TextXS } from '../components/Text/Text';
 import color from '../constants/color';
 import globalStyle from '../constants/globalStyle';
 import { Picker } from '@react-native-picker/picker';
-import { transportModes } from '../helpers/TmdTransportModes';
-const exampleTripObject = {
-  activityType: 'motorized/road/car',
-  co2: 0,
-  dateAdded: 'November 22, 2020 at 7:20:19 PM UTC+2',
-  destination: '',
-  distance: 2.1,
-  duration: '28m47s',
-  feed1: '',
-  feed2: '',
-  feed3: '',
-  feed4: '',
-  feedGiven: false,
-  id: '2',
-  img1: '',
-  img2: '',
-  img3: '',
-  img4: '',
-  origin: '',
-  polyline: '{gnnJmgkwCC@',
-  speed: 0.0000012154339272753793,
-  timeEnd: '16:16',
-  timestart: '15:47',
-};
-const capitaliseModeofTransport = (mode) => {
-  return mode
-    .split('/')
-    .pop()
-    .replace(/^\w/, (m) => m.toUpperCase());
-};
+import { transportModes, answerTypes, ABORT, PROCEED, exampleTripObject, capitaliseModeofTransport } from '../helpers/TmdTransportModes';
+import QuestionModal from '../components/QuestionModal';
+
+
 const Questionnaire = ({ navigation }) => {
   /* if feedGiven is false, then isCorrectTransportMode should be null. Because
   user cant proceed to give feedback until they have answered isCorrectTransportMode.
@@ -43,13 +17,38 @@ const Questionnaire = ({ navigation }) => {
   chance to choose the correct one */ // TODO: the above
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
   const [selectedMode, setSelectedMode] = useState(exampleTripObject.activityType);
+  const [questionNumber, setQuestionNumber] = useState(null);
+
+  
+  //after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
+  const [answers, setAnswers] = useState({ feedGiven: false, activityType: selectedMode });
+
   console.log(
     `isCorrectTransportMode -------------${isCorrectTransportMode}
-    selectedMode------------------${selectedMode}`
+    selectedMode------------------${selectedMode}
+    questionNumber------------------${questionNumber}
+    received answers------------------`, answers
   );
 
   // activityTypeString is required. pass it as props or as part of the passed in trip object
   const activityTypeString = capitaliseModeofTransport(selectedMode);
+  const correctTransportModeHandler = () => {
+    setIsCorrectTransportMode(true);
+    setQuestionNumber(0);
+  };
+
+  const nextModalAction = (abortOrProceed) => {
+    if (abortOrProceed=== ABORT){setQuestionNumber(null)}
+    if (abortOrProceed=== PROCEED){setQuestionNumber(() => setQuestionNumber(questionNumber + 1))}
+  };
+
+  const appendAnswer = (key, value) => {
+    // console.log('append answers -------------key', key);
+    // console.log('append answers -------------value', value);
+    const obj = { ...answers };
+    obj[key] = value;
+    setAnswers(obj);
+  };
 
   return (
     <View>
@@ -60,7 +59,7 @@ const Questionnaire = ({ navigation }) => {
         <Text style={[{ fontSize: TextXS }]}>Is this correct?</Text>
         <View style={globalStyle.buttonsSideBySideContainer}>
           <View style={globalStyle.sideBySideButtonView}>
-            <Button title="yes" onPress={() => setIsCorrectTransportMode(true)} />
+            <Button title="yes" onPress={correctTransportModeHandler} />
           </View>
           <View style={globalStyle.sideBySideButtonView}>
             <Button
@@ -85,7 +84,35 @@ const Questionnaire = ({ navigation }) => {
           </Picker>
         </>
       )}
-      
+
+<QuestionModal
+        answerType={answerTypes.text}
+        question="Do you have any comments you would like to add?"
+        visible={questionNumber === 2}
+        nextAction={nextModalAction}
+        appendAnswer={appendAnswer}
+        questionNumber={2}
+      />
+
+
+
+    <QuestionModal
+        answerType={answerTypes.booleanUnsure}
+        question="Question Number 2 Lorem ipsum dolor"
+        visible={questionNumber === 1}
+        nextAction={nextModalAction}
+        appendAnswer={appendAnswer}
+        questionNumber={1}
+      />
+      <QuestionModal
+        answerType={answerTypes.emojiRating}
+        question="How would you rate the trip?"
+        visible={questionNumber === 0}
+        nextAction={nextModalAction}
+        appendAnswer={appendAnswer}
+        questionNumber={0}
+      />
+
     </View>
   );
 };
