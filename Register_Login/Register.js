@@ -8,7 +8,6 @@ import { StackActions } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import TmdApi from '../bridge/TmdApi';
 
 import { generate as generateUsername } from '../helpers/randomUsernameGenerator';
 
@@ -41,7 +40,6 @@ function register({ navigation }) {
           // eslint-disable-next-line no-unused-expressions
           console.log('User account created & signed in!'),
             AddUserToFirestore(),
-            //TmdApi.startTmdService(),
             auth()
               .currentUser.updateProfile({ displayName: randomUsername })
               .then(() => navigation.dispatch(StackActions.replace('Main')));

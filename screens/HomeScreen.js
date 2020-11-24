@@ -73,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
   const defaultValues = {
     meansOfTransport: MEANS_OF_TRANSPORT.BUS,
   };
- 
+
   // checks if TMD service is running
   useEffect(() => {
     const isTmdRunning = async () => {
