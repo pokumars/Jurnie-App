@@ -1,11 +1,15 @@
 // import libraries
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native';
 import color from '../constants/color';
+import globalStyles from '../constants/globalStyle';
 
 const EmojiRatingResponse = (props) => {
+  useEffect(() => {
+    props.setMediaOrDone(null);
+  }); 
   return (
-    <View style={styles.responderViewContainer}>
+    <View style={globalStyles.responderViewContainer}>
       <View style={styles.emojisContainer}>
         <View style={styles.emojiView}>
           <Pressable

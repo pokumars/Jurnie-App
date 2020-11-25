@@ -43,6 +43,9 @@ const globalStyles = StyleSheet.create({
   sideBySideButtonView: {
     width: '40%',
   },
+  responderViewContainer: {
+    marginVertical: 20,
+  },
 });
 
 export default globalStyles;

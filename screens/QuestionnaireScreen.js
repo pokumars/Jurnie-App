@@ -7,6 +7,7 @@ import globalStyle from '../constants/globalStyle';
 import { Picker } from '@react-native-picker/picker';
 import { transportModes, answerTypes, ABORT, PROCEED, exampleTripObject, capitaliseModeofTransport } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
+import { StackActions } from '@react-navigation/native';
 
 
 const Questionnaire = ({ navigation }) => {
@@ -18,13 +19,12 @@ const Questionnaire = ({ navigation }) => {
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
   const [selectedMode, setSelectedMode] = useState(exampleTripObject.activityType);
   const [questionNumber, setQuestionNumber] = useState(null);
-
-  
+ 
   //after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({ feedGiven: false, activityType: selectedMode });
 
-  console.log(
-    `isCorrectTransportMode -------------${isCorrectTransportMode}
+  console.log(`
+    isCorrectTransportMode -------------${isCorrectTransportMode}
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     received answers------------------`, answers
@@ -48,6 +48,11 @@ const Questionnaire = ({ navigation }) => {
     const obj = { ...answers };
     obj[key] = value;
     setAnswers(obj);
+  };
+
+  const sendAnswersToFirebase = () => {
+    console.log('------------ we are ready to sendAnswer to firebase-------------', answers);
+    navigation.dispatch(StackActions.popToTop());
   };
 
   return (
@@ -85,32 +90,43 @@ const Questionnaire = ({ navigation }) => {
         </>
       )}
 
-<QuestionModal
+    <QuestionModal
         answerType={answerTypes.text}
         question="Do you have any comments you would like to add?"
         visible={questionNumber === 2}
         nextAction={nextModalAction}
         appendAnswer={appendAnswer}
         questionNumber={2}
+        
       />
 
-
-
     <QuestionModal
-        answerType={answerTypes.booleanUnsure}
-        question="Question Number 2 Lorem ipsum dolor"
+        answerType={answerTypes.mediaPhoto}
+        question="Would you like to add an image?"
         visible={questionNumber === 1}
         nextAction={nextModalAction}
         appendAnswer={appendAnswer}
         questionNumber={1}
+        
       />
       <QuestionModal
         answerType={answerTypes.emojiRating}
+        
         question="How would you rate the trip?"
         visible={questionNumber === 0}
         nextAction={nextModalAction}
         appendAnswer={appendAnswer}
         questionNumber={0}
+      />
+
+    <QuestionModal
+        answerType={answerTypes.thankYou}
+        question="Lorem ipsum"
+        visible={questionNumber === 3}
+        nextAction={nextModalAction}
+        appendAnswer={appendAnswer}
+        questionNumber={3}
+        sendAnswers={sendAnswersToFirebase}
       />
 
     </View>
