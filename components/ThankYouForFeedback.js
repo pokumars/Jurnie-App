@@ -10,7 +10,7 @@ const ThankYouForFeedback = (props) => {
   
   return (
     <View style={globalStyles.responderViewContainer}>
-      <Text> Thank you for the feedback. See you soon.</Text>
+      <Text>See you soon.</Text>
       <Text> +5 points</Text>
     </View>
   )

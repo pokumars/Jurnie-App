@@ -20,16 +20,16 @@ const feelSafeQuestion = {
   responseType: answerTypes.booleanUnsure,
 };
 const imageQuestion = {
-  question: 'Did you feel safe as a passenger?',
+  question: 'Would you like to post an image as part of yor feedback',
   responseType: answerTypes.mediaPhoto,
 };
 const rateTripQuestion = {
-  question: 'Did you feel safe as a passenger?',
+  question: 'How would you rate the trip?',
   responseType: answerTypes.emojiRating,
 };
 
 const thankYou = {
-  question: 'Did you feel safe as a passenger?',
+  question: 'Thank you for the feedback',
   responseType: answerTypes.thankYou,
 };
 

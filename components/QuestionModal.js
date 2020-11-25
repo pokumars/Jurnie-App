@@ -84,7 +84,7 @@ const QuestionModal = ({
       }}
       visible={visible}>
       <View style={styles.container}>
-        <Text>Question: {question}</Text>
+        <Text>{question}</Text>
         {renderResponder()}
         <View style={{ alignItems: 'flex-end' }}>
         {

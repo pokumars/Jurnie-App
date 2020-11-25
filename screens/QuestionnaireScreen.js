@@ -8,6 +8,7 @@ import { Picker } from '@react-native-picker/picker';
 import { transportModes, answerTypes, ABORT, PROCEED, exampleTripObject, capitaliseModeofTransport } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
 import { StackActions } from '@react-navigation/native';
+import { busQuestions } from '../helpers/TmdTransportQuestions';
 
 
 const Questionnaire = ({ navigation }) => {
@@ -89,45 +90,20 @@ const Questionnaire = ({ navigation }) => {
           </Picker>
         </>
       )}
-
-    <QuestionModal
-        answerType={answerTypes.text}
-        question="Do you have any comments you would like to add?"
-        visible={questionNumber === 2}
-        nextAction={nextModalAction}
-        appendAnswer={appendAnswer}
-        questionNumber={2}
-        
-      />
-
-    <QuestionModal
-        answerType={answerTypes.mediaPhoto}
-        question="Would you like to add an image?"
-        visible={questionNumber === 1}
-        nextAction={nextModalAction}
-        appendAnswer={appendAnswer}
-        questionNumber={1}
-        
-      />
-      <QuestionModal
-        answerType={answerTypes.emojiRating}
-        
-        question="How would you rate the trip?"
-        visible={questionNumber === 0}
-        nextAction={nextModalAction}
-        appendAnswer={appendAnswer}
-        questionNumber={0}
-      />
-
-    <QuestionModal
-        answerType={answerTypes.thankYou}
-        question="Lorem ipsum"
-        visible={questionNumber === 3}
-        nextAction={nextModalAction}
-        appendAnswer={appendAnswer}
-        questionNumber={3}
-        sendAnswers={sendAnswersToFirebase}
-      />
+      {busQuestions.map((que, questionIndex) => {
+        return (
+          <QuestionModal
+            key={que.question}
+            answerType={que.responseType}
+            question={que.question}
+            visible={questionNumber === questionIndex}
+            nextAction={nextModalAction}
+            appendAnswer={appendAnswer}
+            questionNumber={questionIndex}
+            sendAnswers={sendAnswersToFirebase}
+          />)
+        })
+      }
 
     </View>
   );
