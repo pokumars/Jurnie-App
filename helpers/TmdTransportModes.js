@@ -9,7 +9,9 @@ export const answerTypes = {
   booleanUnsure: 'BOOLEAN_UNSURE',
   text: 'TEXT',
   dropdown: 'DROPDOWN',
-  emojiRating: 'EMOJI_RATING'
+  emojiRating: 'EMOJI_RATING',
+  mediaPhoto: 'MEDIA_PHOTO',
+  thankYou: 'THANK_YOU',
 };
 export const ABORT = 'ABORT';
 export const PROCEED = 'PROCEED';
