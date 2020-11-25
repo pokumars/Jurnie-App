@@ -5,8 +5,8 @@ import FastImage from 'react-native-fast-image';
 import styled from 'styled-components/native';
 
 import { Emperor } from 'components/Colors';
-import { InlineXXL, StackXXS } from 'components/Spacing';
-import { BoldText, TextS } from 'components/Text';
+import { InlineXXL, StackXS, StackXXS } from 'components/Spacing';
+import { BoldText, TextXXS } from 'components/Text';
 
 /**
  *
@@ -20,7 +20,7 @@ const Badge = ({ numberOfTheSameBadge, badgeImage, isReachievable }) => {
     <BadgeContainer>
       <FastImage source={badgeImage} style={styles.badgeImage} />
       {isReachievable && (
-        <NumberOfTheSameBadgeText>
+        <NumberOfTheSameBadgeText numberOfLines={1}>
           {numberOfTheSameBadge}
         </NumberOfTheSameBadgeText>
       )}
@@ -28,14 +28,15 @@ const Badge = ({ numberOfTheSameBadge, badgeImage, isReachievable }) => {
   );
 };
 
-const BadgeContainer = styled.View`
+const BadgeContainer = styled.TouchableOpacity`
   align-items: center;
   justify-content: flex-start;
   max-width: ${InlineXXL}px;
+  padding: ${StackXS / 2}px;
 `;
 
 const NumberOfTheSameBadgeText = styled(BoldText)`
-  font-size: ${TextS}px;
+  font-size: ${TextXXS}px;
   color: ${Emperor};
   margin-top: ${StackXXS}px;
 `;

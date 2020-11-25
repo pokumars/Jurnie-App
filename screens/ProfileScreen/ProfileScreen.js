@@ -3,19 +3,28 @@
 import React, { useState } from 'react';
 import { Button, Image, ScrollView, StyleSheet, View } from 'react-native';
 
-import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import styled from 'styled-components/native';
+import { StackActions } from '@react-navigation/native';
+
+import TmdApi from 'bridge/TmdApi';
 
 import Badge from 'components/Badge';
-import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
-import ProfileUserDetail from './components/ProfileUserDetail';
-import TitleText from 'components/TitleText';
 import { Mariner, SteelBlue } from 'components/Colors';
-import TmdApi from '../../bridge/TmdApi';
 import DetailUpdateModal from './components/DetailUpdateModal';
+import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
 import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
-import globalStyles from '../../constants/globalStyle';
-import { determineBadgeIcon } from '../../helpers/determineAsset';
+import ProfileUserDetail from './components/ProfileUserDetail';
+import {
+  Center,
+  InlineXXXL,
+  StackXS,
+  StackS,
+  StackM,
+} from 'components/Spacing';
+import { TextM } from 'components/Text';
+
+import { determineBadgeIcon } from 'helpers/determineAsset';
 
 const testBadgeData = [
   {
@@ -38,6 +47,24 @@ const testBadgeData = [
   },
   {
     id: 'badge4',
+    isReachievable: true,
+    numberOfBadge: 7908,
+    symbol: 'trophy',
+  },
+  {
+    id: 'badge5',
+    isReachievable: true,
+    numberOfBadge: 7908,
+    symbol: 'trophy',
+  },
+  {
+    id: 'badge6',
+    isReachievable: true,
+    numberOfBadge: 7908,
+    symbol: 'trophy',
+  },
+  {
+    id: 'badge7',
     isReachievable: true,
     numberOfBadge: 7908,
     symbol: 'trophy',
@@ -120,24 +147,24 @@ const ProfileScreen = ({ navigation }) => {
           oldProfileImageRef={getOldProfileImageRef()}
         />
 
-        <View style={globalStyles.profilePicContainer}>
-          <View style={globalStyles.profilePicView}>
+        <ProfilePictureWrapper>
+          <ProfilePictureContainer>
             <Image
-              style={globalStyles.profilePic}
+              style={styles.profilePic}
               source={
                 profilePicUrl
                   ? { uri: profilePicUrl }
                   : require('assets/icons/profile.png')
               }
             />
-          </View>
+          </ProfilePictureContainer>
           <Button
             onPress={() => setChangingPicModalVisible(true)}
             title="Change Pic"
             color={SteelBlue}
             accessibilityLabel="Change profile picture"
           />
-        </View>
+        </ProfilePictureWrapper>
         <View style={styles.userDetails}>
           <ProfileUserDetail
             title="Username"
@@ -159,9 +186,13 @@ const ProfileScreen = ({ navigation }) => {
             accessibilityLabel="Change username or password"
           />
         </View>
-        <View style={styles.badgesAchievementsContainer}>
+        <AchievementsContainer>
           <TitleText>Badges &amp; Achievements</TitleText>
-          <View style={styles.badgesContainer}>
+          <BadgesContainer
+            style={{
+              justifyContent:
+                testBadgeData.length <= 5 ? 'space-between' : 'flex-start',
+            }}>
             {testBadgeData.map((badge) => (
               <Badge
                 badgeImage={determineBadgeIcon(badge.symbol)}
@@ -170,13 +201,43 @@ const ProfileScreen = ({ navigation }) => {
                 numberOfTheSameBadge={badge.numberOfBadge}
               />
             ))}
-          </View>
-        </View>
+          </BadgesContainer>
+        </AchievementsContainer>
       </ScrollView>
     </View>
   );
 };
-// TODO: clicking on profile picture lets you view it
+// TODO: clicking on profile picture lets you view
+
+const ProfilePictureWrapper = styled.View`
+  ${Center};
+`;
+
+const ProfilePictureContainer = styled.View`
+  border-radius: ${InlineXXXL / 2}px;
+  border: 3px solid ${Mariner};
+  height: ${InlineXXXL}px;
+  margin-bottom: ${StackS}px;
+  margin-top: ${StackS}px;
+  overflow: hidden;
+  width: ${InlineXXXL}px;
+`;
+
+const AchievementsContainer = styled.View`
+  align-items: center;
+  padding-top: ${StackM}px;
+`;
+
+const TitleText = styled.Text`
+  font-size: ${TextM}px;
+  margin-bottom: ${StackS}px;
+`;
+
+const BadgesContainer = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: ${StackXS}px;
+`;
 
 const styles = StyleSheet.create({
   screen: {
@@ -192,17 +253,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-
     padding: 5,
-  },
-  profilePicView: {
-    height: 150,
-    width: 150,
-    borderRadius: 75,
-    borderWidth: 1,
-    borderColor: SteelBlue,
-    overflow: 'hidden',
-    marginVertical: 5,
   },
   profilePic: {
     width: '100%',
@@ -212,16 +263,6 @@ const styles = StyleSheet.create({
   userDetails: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  badgesAchievementsContainer: {
-    paddingTop: 25,
-    alignItems: 'center',
-  },
-  badgesContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
   },
 });
 
