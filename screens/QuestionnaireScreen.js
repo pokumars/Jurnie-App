@@ -8,7 +8,7 @@ import { Picker } from '@react-native-picker/picker';
 import { transportModes, answerTypes, ABORT, PROCEED, exampleTripObject, capitaliseModeofTransport } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
 import { StackActions } from '@react-navigation/native';
-import { busQuestions } from '../helpers/TmdTransportQuestions';
+import { allocatePoints, busQuestions } from '../helpers/TmdTransportQuestions';
 
 
 const Questionnaire = ({ navigation }) => {
@@ -30,6 +30,7 @@ const Questionnaire = ({ navigation }) => {
     isCorrectTransportMode -------------${isCorrectTransportMode}
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
+    points------------------${points}
     received answers------------------`,
     answers
   );
@@ -40,6 +41,7 @@ const Questionnaire = ({ navigation }) => {
     setIsCorrectTransportMode(true);
     setQuestionNumber(0);
   };
+
 
   const nextModalAction = (abortOrProceed) => {
     if (abortOrProceed=== ABORT){setQuestionNumber(null)}
@@ -52,6 +54,8 @@ const Questionnaire = ({ navigation }) => {
     const obj = { ...answers };
     obj[key] = value;
     setAnswers(obj);
+    setPoints(allocatePoints(obj));
+    // setPoints(allocatePoints(answers));
   };
 
   const sendAnswersToFirebase = () => {
@@ -107,6 +111,7 @@ const Questionnaire = ({ navigation }) => {
             appendAnswer={appendAnswer}
             questionNumber={questionIndex}
             sendAnswers={sendAnswersToFirebase}
+            points={points}
           />)
         })
       }

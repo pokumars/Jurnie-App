@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native';
 import color from '../constants/color';
 import globalStyles from '../constants/globalStyle';
+import { basicAnswerPoint } from '../helpers/TmdTransportQuestions';
 
 const EmojiRatingResponse = (props) => {
   useEffect(() => {

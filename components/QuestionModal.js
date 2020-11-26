@@ -15,7 +15,8 @@ const QuestionModal = ({
   nextAction,
   questionNumber,
   appendAnswer,
-  sendAnswers
+  sendAnswers,
+  points
 }) => {
   // answered=== true shows btn that says next
   const [answered, setAnswered] = useState(false);
@@ -30,26 +31,23 @@ const QuestionModal = ({
   const renderResponder = () => {
     switch (answerType) {
       case answerTypes.emojiRating:
-        return <EmojiRatingResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone}/>;
+        return <EmojiRatingResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} />;
       case answerTypes.mediaPhoto:
         return <ImageResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} />;
       case answerTypes.text:
-        return <TextResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone}/>;
+        return <TextResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone}  />;
       case answerTypes.booleanUnsure:
-        return <BooleanUnsureResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone}/>;
+        return <BooleanUnsureResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} />;
       case answerTypes.thankYou:
-        //this component triggers the send feedback
-        return <ThankYouForFeedback setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone}/>;
+        // this component triggers the send feedback
+        return <ThankYouForFeedback setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} points={points} />;
 
       default:
         console.error('error in question modal. No question type detected');
         return <Text>error in question modal. No question type detected</Text>;
     }
   };
-  /**
-   * 
-   * @param {String} mediaOrDone if photo put 'photo' if done put 'done'
-   */
+
   const toNextQuestionHandler = () => {
     // appendAnswer takes (keyName,value). It adds it to the tempAnswerObj to be sent to the db
     // if it is the modal where we take pictures, then append answer will be image saving. To be handled later

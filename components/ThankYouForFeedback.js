@@ -11,7 +11,7 @@ const ThankYouForFeedback = (props) => {
   return (
     <View style={globalStyles.responderViewContainer}>
       <Text>See you soon.</Text>
-      <Text> +5 points</Text>
+      <Text> +{props.points} points</Text>
     </View>
   )
 };
