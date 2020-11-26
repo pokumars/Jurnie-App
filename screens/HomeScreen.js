@@ -288,10 +288,17 @@ const HomeScreen = ({ navigation }) => {
             <MeansOfTransportText>
               {currentTrip[0].activityType}
             </MeansOfTransportText>
-            <TransportTile
-              source={FilterMode(currentTrip[0].activityType)}
-              backgroundColor={White}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Detailed', {
+                  paramKey: currentTrip[0].id,
+                })
+              }>
+              <TransportTile
+                source={FilterMode(currentTrip[0].activityType)}
+                backgroundColor={White}
+              />
+            </TouchableOpacity>
             <FeedbackButton onPress={onWriteFeedbackButtonPress} />
           </>
         ) : (

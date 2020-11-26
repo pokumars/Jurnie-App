@@ -24,15 +24,19 @@ const Item = ({ title, start, mode, onPress }) => (
 const MyTripsScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const [currentTrip, setcurrentTrip] = useState();
+  const [currentTrip, setcurrentTrip] = useState([]);
   const [selectedId, setselectedId] = useState(null);
 
   const renderItem = ({ item }) => (
     <Item
       title={item.timeEnd}
       start={item.timestart}
-      mode={item.id}
-      onPress={() => setselectedId(item.id)}
+      mode={item.activityType}
+      onPress={() =>
+        navigation.navigate('Detailed', {
+          paramKey: item.id,
+        })
+      }
     />
   );
 
@@ -41,7 +45,7 @@ const MyTripsScreen = ({ navigation }) => {
       .collection('users')
       .doc(auth().currentUser.email)
       .collection('trips')
-      .where('dateAdded', '==', moment(selectedDate).format('DD/MM/YYYY'))
+      .where('datefortrips', '==', moment(selectedDate).format('DD/MM/YYYY'))
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
@@ -59,12 +63,16 @@ const MyTripsScreen = ({ navigation }) => {
         {...{ selectedDate, setSelectedDate }}
       />
       <Button title="get" onPress={() => GetCurrent()} />
-      <FlatList
-        data={currentTrip}
-        renderItem={renderItem}
-        numColumns={1}
-        keyExtractor={(item) => item.id}
-      />
+      {currentTrip.length !== 0 ? (
+        <FlatList
+          data={currentTrip}
+          renderItem={renderItem}
+          numColumns={1}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text> No data for today</Text>
+      )}
     </ScreenContainer>
   );
 };
