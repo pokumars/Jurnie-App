@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import globalStyles from '../constants/globalStyle';
+import globalStyles from '../../constants/globalStyle';
 
 const ThankYouForFeedback = (props) => {
   useEffect(() => {
@@ -9,7 +9,7 @@ const ThankYouForFeedback = (props) => {
   })
   
   return (
-    <View style={globalStyles.responderViewContainer}>
+    <View style={globalStyles .responderViewContainer}>
       <Text>See you soon.</Text>
       <Text> +{props.points} points</Text>
     </View>

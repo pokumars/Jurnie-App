@@ -2,17 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Button, Alert } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import globalStyles from '../constants/globalStyle';
-import color from '../constants/color';
+import globalStyles from '../../constants/globalStyle';
+import color from '../../constants/color';
+import { uploadAnnotationImage } from '../../helpers/firebaseStorage';
 
-import { uploadAnnotationImage } from '../helpers/firebaseStorage';
-/* 
-              props.setAnswered(true);
-              props.setAnswer(
-*/
 
 const ImageResponse = (props) => {
-  //selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
+  // selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null)
   useEffect(() => {
     props.setMediaOrDone('photo');
@@ -46,7 +42,7 @@ const ImageResponse = (props) => {
   const saveImageHandler = () => {
     /* TODO: when the image is saving to firebase, we should have a 
   loading screen so that it doesnt appear unresponive to the user while it waits */
-
+  
   uploadAnnotationImage(selectedImage.uri, selectedImage.fileName)
       .then((downloadUrl) =>{
         // console.log('return value in modal after upload-------------------------', downloadUrl)
@@ -57,6 +53,7 @@ const ImageResponse = (props) => {
         // true means next button appears
         props.setAnswered(true)
       })
+      
   }
 
 
@@ -99,7 +96,7 @@ const ImageResponse = (props) => {
       </View>
         </View>
       )
-    //yes or no buttons
+    // yes or no buttons
     }
     <View style= {[styles.wideBtn, {marginTop: 20}]}>
       <Button title="cancel"

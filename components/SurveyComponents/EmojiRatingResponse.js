@@ -1,9 +1,8 @@
 // import libraries
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native';
-import color from '../constants/color';
-import globalStyles from '../constants/globalStyle';
-import { basicAnswerPoint } from '../helpers/TmdTransportQuestions';
+import { View, StyleSheet, Image, Pressable } from 'react-native';
+import color from '../../constants/color';
+import globalStyles from '../../constants/globalStyle';
 
 const EmojiRatingResponse = (props) => {
   useEffect(() => {
@@ -22,7 +21,7 @@ const EmojiRatingResponse = (props) => {
             }}>
             <Image
               style={styles.emojiImage}
-              source={require('../assets/icons/surveyEmojis/happy_survey_4.png')}
+              source={require('../../assets/icons/surveyEmojis/happy_survey_4.png')}
             />
           </Pressable>
         </View>
@@ -36,7 +35,7 @@ const EmojiRatingResponse = (props) => {
             }}>
             <Image
               style={styles.emojiImage}
-              source={require('../assets/icons/surveyEmojis/smile_survey_3.png')}
+              source={require('../../assets/icons/surveyEmojis/smile_survey_3.png')}
             />
           </Pressable>
         </View>
@@ -50,7 +49,7 @@ const EmojiRatingResponse = (props) => {
             }}>
             <Image
               style={styles.emojiImage}
-              source={require('../assets/icons/surveyEmojis/sad_survey_2.png')}
+              source={require('../../assets/icons/surveyEmojis/sad_survey_2.png')}
             />
           </Pressable>
         </View>
@@ -64,7 +63,7 @@ const EmojiRatingResponse = (props) => {
             }}>
             <Image
               style={styles.emojiImage}
-              source={require('../assets/icons/surveyEmojis/angry_survey_1.png')}
+              source={require('../../assets/icons/surveyEmojis/angry_survey_1.png')}
             />
           </Pressable>
         </View>

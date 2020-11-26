@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Modal, StyleSheet, Text, View, Button } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import color from '../constants/color';
-import globalStyles from '../constants/globalStyle';
 import { answerTypes, ABORT, PROCEED } from '../helpers/TmdTransportModes';
-import EmojiRatingResponse from './EmojiRatingResponse';
-import ImageResponse from './ImageResponse';
-import ThankYouForFeedback from './ThankYouForFeedback';
+import EmojiRatingResponse from './SurveyComponents/EmojiRatingResponse';
+import ImageResponse from './SurveyComponents/ImageResponse';
+import BooleanUnsureResponse from './SurveyComponents/BooleanUnsureResponse';
+import TextResponse from './SurveyComponents/TextResponse';
+import ThankYouForFeedback from './SurveyComponents/ThankYouForFeedback';
 
 const QuestionModal = ({
   answerType,
@@ -66,8 +67,6 @@ const QuestionModal = ({
       appendAnswer(`feed${questionNumber + 1}`, answer);
     }
 
-    
-    
     console.log('next clicked');
   };
   return (
@@ -117,80 +116,5 @@ const styles = StyleSheet.create({
   },
 
 });
-
-const TextResponse = (props) => {
-  const [textValue, setTextValue] = useState('');
-  useEffect(() => {
-    props.setMediaOrDone(null);
-  }); 
-  const submitText = () => {
-    props.setAnswered(true);
-    props.setAnswer(textValue);
-  };
-  return (
-    <View style={[globalStyles.responderViewContainer, { alignItems: 'center' }]}>
-      <TextInput
-        multiline
-        numberOfLines={6}
-        style={{ borderColor: 'gray', borderWidth: 1, width: '100%'}}
-        onChangeText={(text) => setTextValue(text)}
-        value={textValue}
-      />
-      <View style={[globalStyles.sideBySideButtonView, { marginTop: 15 }]}>
-        <Button title="submit" onPress={submitText} />
-      </View>
-    </View>
-  );
-};
-
-const BooleanUnsureResponse = (props) => {
-  useEffect(() => {
-    props.setMediaOrDone(null);
-  });
-
-  return (
-    <View style={globalStyles.responderViewContainer}>
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonView}>
-          <Button
-            title="yes"
-            color={color.STEEL_BLUE}
-            onPress={() => {
-              // show btn that says next
-              props.setAnswered(true);
-              props.setAnswer('yes');
-              console.log('yes clicked');
-            }}
-          />
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-            title="no"
-            color={color.STEEL_BLUE}
-            onPress={() => {
-              // show btn that says next
-              props.setAnswered(true);
-              props.setAnswer('no');
-              console.log('no clicked');
-            }}
-          />
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-            title="not sure"
-            color={color.RAJAH}
-            onPress={() => {
-              // show btn that says next
-              props.setAnswered(true);
-              props.setAnswer('not sure');
-              console.log('not sure clicked');
-            }}
-          />
-        </View>
-      </View>
-    </View>
-  );
-};
-
 
 export default QuestionModal;
