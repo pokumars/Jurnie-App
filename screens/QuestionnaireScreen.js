@@ -20,15 +20,18 @@ const Questionnaire = ({ navigation }) => {
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
   const [selectedMode, setSelectedMode] = useState(exampleTripObject.activityType);
   const [questionNumber, setQuestionNumber] = useState(null);
- 
-  //after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
+
+  // after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({ feedGiven: false, activityType: selectedMode });
+  // TODO: setpoints upon question being answered....based on question type 
+  const [points, setPoints] = useState(0);
 
   console.log(`
     isCorrectTransportMode -------------${isCorrectTransportMode}
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
-    received answers------------------`, answers
+    received answers------------------`,
+    answers
   );
 
   // activityTypeString is required. pass it as props or as part of the passed in trip object
