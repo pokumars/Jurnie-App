@@ -40,9 +40,11 @@ export const exampleTripObject = {
   timestart: '15:47',
 };
 
+
+export const extractModeofTransport = (mode) => {
+  return mode.split('/').pop();
+};
+
 export const capitaliseModeofTransport = (mode) => {
-  return mode
-    .split('/')
-    .pop()
-    .replace(/^\w/, (m) => m.toUpperCase());
+  return extractModeofTransport(mode).replace(/^\w/, (m) => m.toUpperCase());
 };

@@ -5,10 +5,10 @@ import { BoldText, TextXS } from '../components/Text/Text';
 import color from '../constants/color';
 import globalStyle from '../constants/globalStyle';
 import { Picker } from '@react-native-picker/picker';
-import { transportModes, answerTypes, ABORT, PROCEED, exampleTripObject, capitaliseModeofTransport } from '../helpers/TmdTransportModes';
+import { transportModes, answerTypes, ABORT, PROCEED, exampleTripObject, capitaliseModeofTransport, extractModeofTransport } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
 import { StackActions } from '@react-navigation/native';
-import { allocatePoints, busQuestions } from '../helpers/TmdTransportQuestions';
+import { allocatePoints, transportModeQuestions, } from '../helpers/TmdTransportQuestions';
 
 
 const Questionnaire = ({ navigation }) => {
@@ -31,6 +31,7 @@ const Questionnaire = ({ navigation }) => {
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
+    extractModeofTransport(selectedMode)------------------${extractModeofTransport(selectedMode)}
     received answers------------------`,
     answers
   );
@@ -41,7 +42,7 @@ const Questionnaire = ({ navigation }) => {
     setIsCorrectTransportMode(true);
     setQuestionNumber(0);
   };
-
+  
 
   const nextModalAction = (abortOrProceed) => {
     if (abortOrProceed=== ABORT){setQuestionNumber(null)}
@@ -100,7 +101,7 @@ const Questionnaire = ({ navigation }) => {
           </Picker>
         </>
       )}
-      {busQuestions.map((que, questionIndex) => {
+      {transportModeQuestions[extractModeofTransport(selectedMode)].map((que, questionIndex) => {
         return (
           <QuestionModal
             key={que.question}

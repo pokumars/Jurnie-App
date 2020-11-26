@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, View, Button } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import color from '../constants/color';
 import { answerTypes, ABORT, PROCEED } from '../helpers/TmdTransportModes';
 import EmojiRatingResponse from './SurveyComponents/EmojiRatingResponse';

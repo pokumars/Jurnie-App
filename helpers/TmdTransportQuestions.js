@@ -39,6 +39,16 @@ const wearingMasksQuestion = {
   responseType: answerTypes.booleanUnsure,
 };
 
+const trafficQuestion = {
+  question: 'Was there a lot of traffic?',
+  responseType: answerTypes.booleanUnsure,
+};
+
+const bikeLanesQuestion= {
+  question: 'Is there adequate bike lanes?',
+  responseType: answerTypes.booleanUnsure,
+};
+
 const feelSafeQuestion = {
   question: 'Did you feel safe as a passenger?',
   responseType: answerTypes.booleanUnsure,
@@ -60,22 +70,35 @@ const thankYou = {
 /* The questionnaire has been structiured so that the question 5 i.e after feed4  is the one that asks for image.
  Then after that comes the thank you. So keep the structure
  feed4 should always be the user generated text */
-export const bikeQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const bikeQuestions = [ bikeLanesQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const busQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const busQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const walkQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const walkQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const runQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const runQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const carQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const carQuestions = [ trafficQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const railQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const railQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const tramQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const tramQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const trainQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const trainQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const metroQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const metroQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-export const planeQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const planeQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+
+export const transportModeQuestions = {
+  bicycle: bikeQuestions,
+  walk: walkQuestions,
+  run: runQuestions,
+  car: carQuestions,
+  bus: busQuestions,
+  rail: railQuestions,
+  tram: tramQuestions,
+  train: trainQuestions,
+  metro: metroQuestions,
+  plane: planeQuestions,
+};
