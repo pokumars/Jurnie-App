@@ -68,6 +68,7 @@ const HomeScreen = ({ navigation }) => {
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [array, setarray] = useState([]);
+  const [update, setUpdate] = useState();
   const tar = [];
 
   const defaultValues = {
@@ -98,7 +99,7 @@ const HomeScreen = ({ navigation }) => {
           getthat(activities);
 
           setActivity(str);
-          console.log('AAAAAAAAAAa', arraydata);
+          // console.log('AAAAAAAAAAa', arraydata);
         },
         (err) => {
           console.log('Tmd error', err);
@@ -119,7 +120,7 @@ const HomeScreen = ({ navigation }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        // console.log(data);
+        console.log('from db', data);
 
         setcurrentTrip(data);
         // console.log('kkkkk', currentTrip);
