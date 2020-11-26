@@ -43,6 +43,7 @@ import {
   StackM,
 } from 'components/Spacing';
 import TransportTile from 'components/TransportTile';
+import moment from 'moment';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
 import firestore from '@react-native-firebase/firestore';
@@ -102,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
         },
         (err) => {
           console.log('Tmd error', err);
-        }
+        },
       );
     } catch (e) {
       console.log('error', e.message);
@@ -119,7 +120,7 @@ const HomeScreen = ({ navigation }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        // console.log(data);
+        console.log(data);
 
         setcurrentTrip(data);
         // console.log('kkkkk', currentTrip);
@@ -181,6 +182,7 @@ const HomeScreen = ({ navigation }) => {
                   timestart: arr[i].timeStart,
                   timeEnd: arr[i].timeEnd,
                   dateAdded: firestore.FieldValue.serverTimestamp(),
+                  datefortrips: moment(new Date()).format('DD/MM/YYYY'),
                   feed1: '',
                   feed2: '',
                   feed3: '',
@@ -283,11 +285,20 @@ const HomeScreen = ({ navigation }) => {
       <LastTripCard>
         {currentTrip.length !== 0 ? (
           <>
-            <MeansOfTransportText>{currentTrip[0].activityType}</MeansOfTransportText>
-            <TransportTile
-              source={FilterMode(currentTrip[0].activityType)}
-              backgroundColor={White}
-            />
+            <MeansOfTransportText>
+              {currentTrip[0].activityType}
+            </MeansOfTransportText>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Detailed', {
+                  paramKey: currentTrip[0].id,
+                })
+              }>
+              <TransportTile
+                source={FilterMode(currentTrip[0].activityType)}
+                backgroundColor={White}
+              />
+            </TouchableOpacity>
             <FeedbackButton onPress={onWriteFeedbackButtonPress} />
           </>
         ) : (
@@ -354,7 +365,8 @@ const HomeScreen = ({ navigation }) => {
           <Avatar
             size={InlineXL}
             source={{
-              uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+              uri:
+                'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
             }}
           />
           <UserNameText>Test</UserNameText>
