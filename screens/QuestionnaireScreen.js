@@ -84,7 +84,10 @@ const Questionnaire = ({ navigation }) => {
           <Text> Choose the correct one and press YES</Text>
           <Picker
             selectedValue={selectedMode}
-            onValueChange={(itemValue) => setSelectedMode(itemValue)}>
+            onValueChange={(itemValue) => {
+              setSelectedMode(itemValue);
+              appendAnswer('activityType', itemValue)
+            }}>
             {transportModes.map((mode) => {
               return (
                 <Picker.Item key={mode} label={capitaliseModeofTransport(mode)} value={mode} />

@@ -1,5 +1,29 @@
 import { answerTypes } from "./TmdTransportModes";
 
+export const basicAnswerPoint = 1;
+export const imgFeedbackPoint = 2;
+// These are the fields in an answer object that are gotten from the feedback
+const expectedResponses = ['feed1', 'feed2', 'feed3', 'feed4', 'img1'];
+/**
+ * 
+ * @param {Object} answerObj pass the trip object or the answer object
+ * @returns the number of points that the answers deserve
+ */
+export const allocatePoints = (answerObj) => {
+  let points = 0;
+  // console.log(points);
+  expectedResponses.forEach((element) => {
+    if (answerObj[element] != null && answerObj[element].trim().length > 1) {
+      if (element.substr(0, 3) === 'img') {
+        points += 2;
+      } else {
+        points += 1;
+      }
+    }
+  });
+  console.log('points ---------------', points);
+  return points;
+};
 
 const onTimeQuestion = {
   question: 'Was it on time?',
@@ -33,9 +57,9 @@ const thankYou = {
   responseType: answerTypes.thankYou,
 };
 
-
 /* The questionnaire has been structiured so that the question 5 i.e after feed4  is the one that asks for image.
- Then after that comes the thank you. So keep the structure */
+ Then after that comes the thank you. So keep the structure
+ feed4 should always be the user generated text */
 export const bikeQuestions = [];
 export const busQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 export const trainQuestions = [];
