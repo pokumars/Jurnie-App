@@ -28,7 +28,6 @@ const QuestionModal = ({
   const [mediaOrDone, setMediaOrDone] = useState(null);
   // console.log('mediaOrDone------------',mediaOrDone)
 
-
   const renderResponder = () => {
     switch (answerType) {
       case answerTypes.emojiRating:
