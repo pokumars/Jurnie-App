@@ -432,6 +432,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScreenContainer>
       <LastTrip {...{ onWriteFeedbackButtonPress }} />
+      <Button title="Go to Questionnaire" onPress={() => navigation.navigate('Questionnaire')} />
       <YourPosition />
     </ScreenContainer>
   );
