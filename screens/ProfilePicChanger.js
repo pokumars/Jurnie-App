@@ -7,7 +7,7 @@ import color from '../constants/color';
 import { uploadProfileImage } from '../helpers/firebaseStorage';
 
 const ProfilePicChanger = ({visible, toggleVisibility, update, oldProfileImageRef}) => {
-  //selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
+  // selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null)
 
   const pickImageHandler= () => {
@@ -91,7 +91,7 @@ const ProfilePicChanger = ({visible, toggleVisibility, update, oldProfileImageRe
           </View>
             </View>
           )
-        //yes or no buttons
+        // yes or no buttons
         }
         <View style= {[styles.wideBtn, {marginTop: 20}]}>
           <Button title="cancel"
@@ -99,8 +99,8 @@ const ProfilePicChanger = ({visible, toggleVisibility, update, oldProfileImageRe
            color={color.ERR_RED}
           />
         </View>
-        {/*gallery or camera buttons*/}
-        {/*abort*/}
+        {/* gallery or camera buttons */}
+        {/* abort */}
 
       </View>
     </Modal>

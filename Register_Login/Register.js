@@ -1,30 +1,48 @@
+/* eslint-disable no-console */
+/* eslint-disable global-require */
 import { Button, Image, Text, TextInput, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
-import { generate as generateUsername } from '../helpers/randomUsernameGenerator'
+import firestore from '@react-native-firebase/firestore';
+
+import { generate as generateUsername } from '../helpers/randomUsernameGenerator';
 
 const LOGO_SIZE = 150;
 const user = auth().currentUser;
 console.log('User info for provider: ', user);
-function register({navigation}) {
+function register({ navigation }) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
   const [confirmPass, setConfirmPass] = React.useState('');
   const randomUsername = generateUsername();
+
+  const AddUserToFirestore = () => {
+    const name = auth().currentUser.email;
+    firestore().collection('users').doc(name).set({
+      userName: '',
+      profileImgUrl: '',
+      totalFeeds: 0,
+    });
+    firestore().collection('users').doc(name).collection('trips').doc('demo').set({
+      demo: true,
+    });
+  };
 
   const Authentication = () => {
     if (pass === confirmPass && email.length > 8) {
       auth()
         .createUserWithEmailAndPassword(email, pass)
         .then(() => {
-          console.log('User account created & signed in!');
-          auth()
-            .currentUser.updateProfile({ displayName: randomUsername })
-            .then(() => navigation.dispatch(StackActions.replace('Main')));
+          // eslint-disable-next-line no-unused-expressions
+          console.log('User account created & signed in!'),
+            AddUserToFirestore(),
+            auth()
+              .currentUser.updateProfile({ displayName: randomUsername })
+              .then(() => navigation.dispatch(StackActions.replace('Main')));
         })
         .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
@@ -69,7 +87,7 @@ function register({navigation}) {
             style={{
               width: LOGO_SIZE,
               height: LOGO_SIZE,
-              borderRadius: LOGO_SIZE/ 2,
+              borderRadius: LOGO_SIZE / 2,
               backgroundColor: '#000000',
             }}
           />
@@ -225,7 +243,8 @@ function register({navigation}) {
             />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+        <View
+          style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
           <Text style={{ color: 'white' }}>Already have an Account</Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}

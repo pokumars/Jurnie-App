@@ -6,28 +6,29 @@ import color from '../../constants/color';
  * @param {string} prop.title Title of the detail e.g username
  * @param {string} prop.detail the user detail e.g pokumars
  * @param {Boolean} prop.changeable can the user change that detail
- * 
+ *
  */
-const ProfileUserDetail = ({title, detail, changeable, onPress}) => {
-  
-
+const ProfileUserDetail = ({ title, detail, changeable, onPress }) => {
   return (
-    <View style={styles.container} >
+    <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.buttonAndDetail}>
-        <View style={styles.detailContainer} >
-          <Text style={styles.detailText} >{detail}</Text>
+        <View style={styles.detailContainer}>
+          <Text style={styles.detailText}>{detail}</Text>
         </View>
-        {changeable &&
-          <Button style={styles.saveBtn}
+        {changeable && (
+          <Button
+            style={styles.saveBtn}
             title="change"
             onPress={onPress}
-            accessibilityLabel={`Save new ${detail}`} />}
+            accessibilityLabel={`Save new ${detail}`}
+          />
+        )}
       </View>
     </View>
-  )
-  };
-  
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     flex: 1,
     marginHorizontal: 10,
-
   },
   detailText: {
     fontSize: 18,
@@ -55,12 +55,11 @@ const styles = StyleSheet.create({
   },
   buttonAndDetail: {
     flexDirection: 'row',
-    width: '100%'
-
+    width: '100%',
   },
   saveBtn: {
-    marginHorizontal: '5px'
-  }
+    marginHorizontal: '5px',
+  },
 });
 
 export default ProfileUserDetail;

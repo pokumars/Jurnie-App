@@ -1,12 +1,16 @@
 /* eslint-disable prettier/prettier */
+
 import {
   Button,
   Image,
   ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+
 
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
@@ -16,9 +20,11 @@ import IconTextBorderlessBtn from '../components/Profile/IconTextBorderlessBtn';
 import ProfileUserDetail from '../components/Profile/ProfileUserDetail';
 import TitleText from '../components/TitleText';
 import color from '../constants/color';
+import TmdApi from '../bridge/TmdApi';
 import DetailUpdateModal from '../components/Profile/DetailUpdateModal';
 import ProfilePicChanger from './ProfilePicChanger';
 import globalStyles from '../constants/globalStyle';
+
 
 const ProfileScreen = ({navigation}) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
@@ -31,7 +37,8 @@ const ProfileScreen = ({navigation}) => {
       .signOut()
       .then(
         () => console.log('User signed out!'),
-        navigation.dispatch(StackActions.replace('Login'))
+        TmdApi.stopTmdService(),
+        navigation.dispatch(StackActions.replace('Login')),
       );
     console.log('Sign_out clicked');
   };
@@ -114,7 +121,7 @@ const ProfileScreen = ({navigation}) => {
             title="Username"
             onPress={() => setDetailModalVisible(true)}
             detail={username}
-            changeable={true}
+            changeable
           />
           <ProfileUserDetail title="Email" detail={auth().currentUser.email} />
           <DetailUpdateModal
@@ -133,10 +140,21 @@ const ProfileScreen = ({navigation}) => {
         <View style={styles.badgesAchievementsContainer}>
           <TitleText>Badges &amp; Achievements</TitleText>
           <View style={styles.badgesContainer}>
-            <Badge multiple={31} badgeImage={require('../assets/icons/log-out.png')} />
-            <Badge multiple={3} badgeImage={require('../assets/icons/home.png')} />
-            <Badge multiple={125} badgeImage={require('../assets/icons/profile.png')} />
-            <Badge badgeImage={require('../assets/icons/settings-outline.png')} />
+            <Badge
+              multiple={31}
+              badgeImage={require('../assets/icons/log-out.png')}
+            />
+            <Badge
+              multiple={3}
+              badgeImage={require('../assets/icons/home.png')}
+            />
+            <Badge
+              multiple={125}
+              badgeImage={require('../assets/icons/profile.png')}
+            />
+            <Badge
+              badgeImage={require('../assets/icons/settings-outline.png')}
+            />
           </View>
         </View>
         

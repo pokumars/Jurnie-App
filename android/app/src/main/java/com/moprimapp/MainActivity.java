@@ -20,8 +20,9 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+     requestPhysicalActivityPermission();
     requestLocationPermission();
-    requestPhysicalActivityPermission();
+   
 
     super.onCreate(savedInstanceState);
   }
