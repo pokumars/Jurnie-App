@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Text, View, FlatList, Button, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  FlatList,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -11,15 +18,6 @@ import { DefaultContainer, StackM } from 'components/Spacing';
 import { SubtitleText } from 'components/Text';
 import TripCard from './components/TripCard';
 import WeekCalendar from './components/WeekCalendar';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-const Item = ({ title, start, mode, onPress }) => (
-  <TouchableOpacity onPress={onPress} style={styles.item}>
-    <Text>{start}</Text>
-    <Text>{mode}</Text>
-    <Text style={{ fontSize: 17, marginRight: 0 }}>{title}</Text>
-  </TouchableOpacity>
-);
 
 const MyTripsScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -27,11 +25,85 @@ const MyTripsScreen = ({ navigation }) => {
   const [currentTrip, setcurrentTrip] = useState([]);
   const [selectedId, setselectedId] = useState(null);
 
+  const Item = ({ title, start, mode, id, feed, onPress }) => (
+    <TouchableOpacity onPress={onPress} style={styles.item}>
+      <Text style={{ fontWeight: 'bold' }}>{start}</Text>
+      <Text>{GetMode(mode)}</Text>
+      <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+      {feed == false ? (
+        <TouchableOpacity
+          style={{ backgroundColor: '#DDDDDD', padding: 10 }}
+          onPress={() =>
+            navigation.navigate('Questionnaire', {
+              paramKey: id,
+            })
+          }>
+          <Text>FeedBack</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={{ backgroundColor: '#DDDDDD', padding: 10 }}
+          onPress={() =>
+            navigation.navigate('Questionnaire', {
+              paramKey: id,
+            })
+          }>
+          <Text>Update Feed</Text>
+        </TouchableOpacity>
+      )}
+    </TouchableOpacity>
+  );
+
+  const GetMode = (activity) => {
+    switch (activity) {
+      case 'stationary':
+        return 'stationary';
+
+      case 'non-motorized/bicycle':
+        return 'bicycle';
+
+      case 'non-motorized/pedestrian':
+        return 'pedestrian';
+
+      case 'non-motorized/pedestrian/walk':
+        return 'walk';
+
+      case 'non-motorized/pedestrian/run':
+        return 'run';
+
+      case 'motorized/road/car':
+        return 'car';
+
+      case 'motorized/road/bus':
+        return 'bus';
+
+      case 'motorized/rail':
+        return 'rail';
+
+      case 'motorized/rail/tram':
+        return 'tram';
+
+      case 'motorized/rail/train':
+        return 'train';
+
+      case 'motorized/rail/metro':
+        return 'metro';
+
+      case 'motorized/air/plane':
+        return 'plain';
+
+      default:
+        return 'unknown';
+    }
+  };
+
   const renderItem = ({ item }) => (
     <Item
       title={item.timeEnd}
       start={item.timestart}
       mode={item.activityType}
+      id={item.id}
+      feed={item.feedGiven}
       onPress={() =>
         navigation.navigate('Detailed', {
           paramKey: item.id,

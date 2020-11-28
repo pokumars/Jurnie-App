@@ -224,7 +224,11 @@ const HomeScreen = ({ navigation }) => {
       });
   };
 
-  const onWriteFeedbackButtonPress = () => {};
+  const onWriteFeedbackButtonPress = () => {
+    navigation.navigate('Questionnaire', {
+      paramKey: currentTrip[0].id,
+    });
+  };
 
   const FilterMode = (activity) => {
     switch (activity) {
@@ -432,7 +436,6 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScreenContainer>
       <LastTrip {...{ onWriteFeedbackButtonPress }} />
-      <Button title="Go to Questionnaire" onPress={() => navigation.navigate('Questionnaire')} />
       <YourPosition />
     </ScreenContainer>
   );
