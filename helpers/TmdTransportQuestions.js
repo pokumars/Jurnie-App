@@ -54,7 +54,7 @@ const feelSafeQuestion = {
   responseType: answerTypes.booleanUnsure,
 };
 const imageQuestion = {
-  question: 'Would you like to post an image as part of yor feedback',
+  question: 'Would you like to post an image as part of your feedback',
   responseType: answerTypes.mediaPhoto,
 };
 const rateTripQuestion = {

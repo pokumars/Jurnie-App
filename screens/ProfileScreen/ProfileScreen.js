@@ -117,22 +117,17 @@ const ProfileScreen = ({ navigation }) => {
     return '';
   };
 
-  /*
-  User info for provider:  {"displayName": null, "email": "a9@gmail.com", "emailVerified": false,
- "isAnonymous": false, "metadata": {"creationTime": 1604699395003, "lastSignInTime": 1604925930815},
- "phoneNumber": null, "photoURL": null, "providerData": [[Object]], "providerId": "firebase",
- "uid": "OosmsPd3HNeADBvUG5lJaMhCbd82"} */
-  // TODO: the ios parts of the image adding https://github.com/react-native-image-picker/react-native-image-picker#install
   return (
     <View style={styles.screen}>
       <ScrollView>
         <View style={styles.settingsLogoutContainer}>
-          <IconTextBorderlessBtn
+
+          { false && (<IconTextBorderlessBtn
             textFirst={false}
             btnText="Settings"
             btnImage={require('assets/icons/settings-outline.png')}
             onPress={() => console.log('settings clicked')}
-          />
+          />)}
           <IconTextBorderlessBtn
             textFirst
             btnText="Logout"
@@ -246,7 +241,8 @@ const styles = StyleSheet.create({
   settingsLogoutContainer: {
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between', //uncomment this when we have settings
+    justifyContent: 'flex-end',  // remove this when we have settings
     padding: 5,
   },
   profilePic: {

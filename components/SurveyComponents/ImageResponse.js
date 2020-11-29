@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 1,
     borderColor: color.STEEL_BLUE,
+    marginBottom: 20
   },
   wideBtn: {
     width: '70%',
