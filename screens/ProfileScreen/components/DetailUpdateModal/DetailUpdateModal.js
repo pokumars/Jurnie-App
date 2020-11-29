@@ -69,7 +69,6 @@ const DetailUpdateModal = ({
       presentationStyle="fullScreen"
       onRequestClose={() => {
         toggleDetailModal();
-        Alert.alert('Username change aborted');
       }}>
       <View style={styles.container}>
         <Text style={styles.errorMessage}>{errorMessage}</Text>

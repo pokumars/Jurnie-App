@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import color from '../../../../constants/color';
+import IconTextBorderlessBtn from '../IconTextBorderlessBtn';
 /**
  *
  * @param {string} prop.title Title of the detail e.g username
@@ -14,15 +15,19 @@ const ProfileUserDetail = ({ title, detail, changeable, onPress }) => {
       <Text style={styles.title}>{title}</Text>
       <View style={styles.buttonAndDetail}>
         <View style={styles.detailContainer}>
-          <Text style={styles.detailText}>{detail}</Text>
+          <Text ellipsizeMode="tail" style={styles.detailText}>
+            {detail}
+          </Text>
         </View>
         {changeable && (
-          <Button
-            style={styles.saveBtn}
-            title="change"
-            onPress={onPress}
-            accessibilityLabel={`Save new ${detail}`}
-          />
+          <View style={styles.saveBtn}>
+            <IconTextBorderlessBtn
+              textFirst={false}
+              btnText="Change"
+              btnImage={require('assets/icons/edit-pencil.png')}
+              onPress={onPress}
+            />
+          </View>
         )}
       </View>
     </View>
@@ -58,7 +63,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   saveBtn: {
-    marginHorizontal: '5px',
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: color.STEEL_BLUE,
+    justifyContent: 'center'
   },
 });
 
