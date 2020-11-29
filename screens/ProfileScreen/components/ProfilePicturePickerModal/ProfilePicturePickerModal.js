@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, Button, Alert, Modal } from 'react-native';
+import { View, StyleSheet, Image, Button, Alert, Modal, ActivityIndicator, Text } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import globalStyles from '../../../../constants/globalStyle';
 import color from '../../../../constants/color';
 import { uploadProfileImage } from '../../../../helpers/firebaseStorage';
+import LoadingFullScreen from '../../../../components/LoadingFullScreen';
 
 const ProfilePicturePickerModal = ({
   visible,
@@ -14,6 +15,7 @@ const ProfilePicturePickerModal = ({
 }) => {
   // selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null);
+  const [savingLoader, setSavingLoader] = useState(false)
 
   const pickImageHandler = () => {
     const options = {
@@ -39,7 +41,8 @@ const ProfilePicturePickerModal = ({
 
   const saveImageHandler = () => {
     /* TODO: when the image is saving to firebase, we should have a 
-  loading screen so that it doesnt appear unresponive to the user while it waits */
+    loading screen so that it doesnt appear unresponive to the user while it waits */
+    setSavingLoader(true)
 
     uploadProfileImage(
       selectedImage.uri,
@@ -48,6 +51,7 @@ const ProfilePicturePickerModal = ({
     ).then((downloadUrl) => {
       // console.log('return value in modal after upload-------------------------', downloadUrl)
       toggleVisibility();
+      setSavingLoader(false)
       setSelectedImage(null);
       update(downloadUrl);
     });
@@ -89,6 +93,7 @@ const ProfilePicturePickerModal = ({
                     onPress={saveImageHandler}
                   />
                 </View>
+                
                 <View style={styles.button}>
                   <Button
                     style={styles.button}
@@ -109,8 +114,7 @@ const ProfilePicturePickerModal = ({
             color={color.ERR_RED}
           />
         </View>
-        {/* gallery or camera buttons */}
-        {/* abort */}
+        <LoadingFullScreen visible={savingLoader} text="Saving" />
       </View>
     </Modal>
   );

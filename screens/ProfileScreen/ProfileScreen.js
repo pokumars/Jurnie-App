@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import React, { useState } from 'react';
-import { Button, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Button, Image, ScrollView, StyleSheet, View, Modal,Text } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import styled from 'styled-components/native';
@@ -121,7 +121,7 @@ const ProfileScreen = ({ navigation }) => {
     <View style={styles.screen}>
       <ScrollView>
         <View style={styles.settingsLogoutContainer}>
-
+        
           { false && (<IconTextBorderlessBtn
             textFirst={false}
             btnText="Settings"
@@ -158,7 +158,9 @@ const ProfileScreen = ({ navigation }) => {
             title="Change Pic"
             color={SteelBlue}
             accessibilityLabel="Change profile picture"
+            
           />
+
         </ProfilePictureWrapper>
         <View style={styles.userDetails}>
           <ProfileUserDetail
@@ -253,6 +255,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
 });
 
 export default ProfileScreen;
