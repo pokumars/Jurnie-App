@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
-import { Button, Image, Text, TextInput, View } from 'react-native';
+import { Button, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
 import { StackActions } from '@react-navigation/native';
@@ -79,122 +79,106 @@ function register({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#000000' }}>
-      <View style={{ flex: 1 }}>
-        <View style={{ alignSelf: 'center', backgroundColor: '#000000' }}>
-          <Image
-            source={require('../assets/moprim.png')}
-            style={{
-              width: LOGO_SIZE,
-              height: LOGO_SIZE,
-              borderRadius: LOGO_SIZE / 2,
-              backgroundColor: '#000000',
-            }}
-          />
+    <View style={styles.screen}>
+      <ScrollView>
+        <View>
+          <View style={styles.logoContainer}>
+            <Image source={require('../assets/moprim.png')} style={styles.logo} />
+          </View>
+          <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
-        <Toast ref={(ref) => Toast.setRef(ref)} />
-      </View>
-      <View
-        style={{
-          flex: 2,
-          backgroundColor: '#F0FFFF',
-          borderRadius: 30,
-          margin: 10,
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          paddingTop: 10,
-          alignItems: 'center',
-          alignContent: 'center',
-        }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Create account</Text>
-        <Text>Please fill-in your Email and Password</Text>
+        <View style={styles.formContainer}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Create account</Text>
+          <Text>Please fill-in your Email and Password</Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#1E90FF',
-            borderWidth: 2,
-          }}>
-          <Image
-            source={require('../assets/icons/email.png')}
-            style={{
-              marginTop: 9,
-              marginStart: 5,
-              width: 30,
-              height: 30,
-              alignContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-          <TextInput
-            style={{ width: 200, marginStart: 5 }}
-            placeholder="email"
-            value={email}
-            onChangeText={setemail}
-          />
+          <View style={styles.inputContainer}>
+            <Image source={require('../assets/icons/email.png')} style={styles.inputImage} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setemail}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              maxLength={15}
+              secureTextEntry
+              value={pass}
+              onChangeText={setpass}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm password"
+              secureTextEntry
+              maxLength={15}
+              value={confirmPass}
+              onChangeText={setConfirmPass}
+            />
+          </View>
+          <View style={styles.btnView}>
+            <Button title="Register" onPress={() => Authentication()} />
+          </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#1E90FF',
-            borderWidth: 2,
-          }}>
-          <Image
-            source={require('../assets/icons/key.png')}
-            style={{
-              marginTop: 9,
-              marginStart: 5,
-              width: 30,
-              height: 30,
-              alignContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-          <TextInput
-            style={{ width: 200, marginStart: 5 }}
-            placeholder="password"
-            maxLength={15}
-            value={pass}
-            onChangeText={setpass}
-          />
+        <View style={styles.formContainer}>
+          <Text style={{ color: 'black' }}> Already have an Account? </Text>
+          <TouchableOpacity
+            style={{ marginStart: 5 }}
+            onPress={() => navigation.dispatch(StackActions.replace('Login'))}>
+            <Text style={{ color: '#1E90FF' }}>Login</Text>
+          </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#1E90FF',
-            borderWidth: 2,
-          }}>
-          <Image
-            source={require('../assets/icons/key.png')}
-            style={{
-              marginTop: 9,
-              marginStart: 5,
-              width: 30,
-              height: 30,
-              alignContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-          <TextInput
-            style={{ width: 200, marginStart: 5 }}
-            placeholder="Confirm password"
-            maxLength={15}
-            value={confirmPass}
-            onChangeText={setConfirmPass}
-          />
-        </View>
-        <View
-          style={{
-            width: 120,
-            borderRadius: 5,
-            alignSelf: 'center',
-          }}>
-          <Button title="Register" onPress={() => Authentication()} />
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+  },
+  logoContainer: { alignSelf: 'center' },
+  logo: {
+    width: LOGO_SIZE,
+    height: LOGO_SIZE,
+    borderRadius: LOGO_SIZE / 2,
+  },
+  formContainer: {
+    backgroundColor: '#F0FFFF',
+    borderRadius: 20,
+    margin: 10,
+    padding: 15,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    paddingTop: 10,
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  inputImage: {
+    marginTop: 9,
+    marginStart: 5,
+    width: 30,
+    height: 30,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    borderColor: '#1E90FF',
+    borderWidth: 2,
+  },
+  input: { width: 200, marginStart: 5 },
+  btnView: { width: 120, marginTop: 10 },
+});
+
 /*
       <View style={{flex: 1}}>
         <Text style={{alignSelf: 'center', color: 'white'}}>
