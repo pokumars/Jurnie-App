@@ -5,11 +5,13 @@ import ImagePicker from 'react-native-image-picker';
 import globalStyles from '../../constants/globalStyle';
 import color from '../../constants/color';
 import { uploadAnnotationImage } from '../../helpers/firebaseStorage';
+import LoadingFullScreen from "../LoadingFullScreen";
 
 
 const ImageResponse = (props) => {
   // selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null)
+  const [savingLoader, setSavingLoader] = useState(false)
   useEffect(() => {
     props.setMediaOrDone('photo');
   })
@@ -42,16 +44,19 @@ const ImageResponse = (props) => {
   const saveImageHandler = () => {
     /* TODO: when the image is saving to firebase, we should have a 
   loading screen so that it doesnt appear unresponive to the user while it waits */
+  setSavingLoader(true)
   
   uploadAnnotationImage(selectedImage.uri, selectedImage.fileName)
       .then((downloadUrl) =>{
         // console.log('return value in modal after upload-------------------------', downloadUrl)
         // Todo: show a toast that image url received
+
         
         setSelectedImage(null);
         props.setAnswer(downloadUrl)
         // true means next button appears
         props.setAnswered(true)
+        setSavingLoader(false)
       })
       
   }
@@ -92,7 +97,7 @@ const ImageResponse = (props) => {
             onPress={pickImageHandler}
           />
         </View>
-
+        <LoadingFullScreen visible={savingLoader} text="saving" />
       </View>
         </View>
       )
