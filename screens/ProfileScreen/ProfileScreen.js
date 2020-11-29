@@ -179,12 +179,6 @@ const ProfileScreen = ({ navigation }) => {
             originalDetail={auth().currentUser.displayName}
             onConfirm={updateUsername}
           />
-          <Button
-            onPress={() => console.log('update details clicked')}
-            title="change username or password"
-            color={Mariner}
-            accessibilityLabel="Change username or password"
-          />
         </View>
         <AchievementsContainer>
           <TitleText>Badges &amp; Achievements</TitleText>
