@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   saveBtn: {
-    // marginHorizontal: '5px',
     borderRadius: 7,
     borderWidth: 1,
     borderColor: color.STEEL_BLUE,
@@ -72,10 +71,3 @@ const styles = StyleSheet.create({
 });
 
 export default ProfileUserDetail;
-/* 
-<Button
-            style={styles.saveBtn}
-            title="change"
-            onPress={onPress}
-            accessibilityLabel={`Save new ${detail}`}
-          /> */

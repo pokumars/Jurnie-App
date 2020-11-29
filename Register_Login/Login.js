@@ -1,9 +1,10 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
-import { Button, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import React from 'react';
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const user = auth().currentUser;
 
@@ -36,160 +37,166 @@ function login({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#000000' }}>
-      <View style={{ flex: 1 }}>
-        <View style={{ alignSelf: 'center', backgroundColor: '#000000' }}>
-          <Image
-            // eslint-disable-next-line global-require
-            source={require('../assets/moprim.png')}
-            style={{
-              width: 170,
-              height: 170,
-              borderRadius: 100,
-              backgroundColor: '#000000',
-            }}
-          />
-        </View>
-      </View>
-      <View
-        style={{
-          flex: 2,
-          backgroundColor: '#F0FFFF',
-          borderRadius: 30,
-          margin: 10,
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          paddingTop: 10,
-          alignItems: 'center',
-          alignContent: 'center',
-        }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Welcome back</Text>
-        <Text>Use your credentials below and login to your account</Text>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#1E90FF',
-            borderWidth: 2,
-          }}>
-          <Image
-            source={require('../assets/icons/email.png')}
-            style={{
-              marginTop: 9,
-              marginStart: 5,
-              width: 30,
-              height: 30,
-              alignContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-          <TextInput
-            style={{ width: 200, marginStart: 5 }}
-            placeholder="email"
-            value={email}
-            onChangeText={setemail}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#1E90FF',
-            borderWidth: 2,
-          }}>
-          <Image
-            source={require('../assets/icons/key.png')}
-            style={{
-              marginTop: 9,
-              marginStart: 5,
-              width: 30,
-              height: 30,
-              alignContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-          <TextInput
-            style={{ width: 200, marginStart: 5 }}
-            placeholder="Pass"
-            maxLength={15}
-            value={pass}
-            onChangeText={setpass}
-          />
-        </View>
-        <View
-          style={{
-            width: 120,
-
-            alignSelf: 'center',
-          }}>
-          <Button title="Login" onPress={() => Authentication()} />
-        </View>
-
-        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-          <Text>Forgot your Password</Text>
-          <TouchableOpacity style={{ marginStart: 5 }}>
-            <Text style={{ color: '#1E90FF' }}>retrieve</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={{ flex: 1 }}>
-        <Text style={{ alignSelf: 'center', color: 'white' }}>
-          Or use one of your social accounts
-        </Text>
-        <View
-          style={{
-            marginVertical: 30,
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignContent: 'center',
-            alignSelf: 'center',
-          }}>
-          <View
-            style={{
-              backgroundColor: '#F0FFFF',
-              marginRight: 40,
-              borderRadius: 20,
-            }}>
+    <View style={styles.screen}>
+      <ScrollView>
+        <View>
+          <View style={styles.logoContainer}>
             <Image
-              source={require('../assets/icons/twitter.png')}
-              style={{ width: 40, height: 40 }}
-            />
-          </View>
-
-          <View
-            style={{
-              backgroundColor: '#F0FFFF',
-              borderRadius: 20,
-            }}>
-            <Image
-              source={require('../assets/icons/gmail.png')}
-              style={{ width: 40, height: 40 }}
-            />
-          </View>
-
-          <View
-            style={{
-              backgroundColor: '#F0FFFF',
-              marginLeft: 40,
-              borderRadius: 20,
-            }}>
-            <Image
-              source={require('../assets/icons/faceb.png')}
-              style={{ width: 40, height: 40 }}
+              // eslint-disable-next-line global-require
+              source={require('../assets/moprim.png')}
+              style={styles.logo}
             />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-          <Text style={{ color: 'white' }}> Don't have an Account </Text>
+        <View style={styles.loginFormContainer}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5 }}>Welcome back</Text>
+          <Text style={{ marginBottom: 10 }}>
+            Use your credentials below and login to your account
+          </Text>
+
+          <View style={styles.inputContainer}>
+            <Image source={require('../assets/icons/email.png')} style={styles.inputImage} />
+            <TextInput
+              style={styles.input}
+              placeholder="email"
+              value={email}
+              onChangeText={setemail}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              maxLength={15}
+              value={pass}
+              secureTextEntry
+              onChangeText={setpass}
+            />
+          </View>
+          <View style={styles.btnView}>
+            <Button title="Login" onPress={() => Authentication()} />
+          </View>
+
+          <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+            <Text>Forgot your Password</Text>
+            <TouchableOpacity style={{ marginStart: 5 }}>
+              <Text style={{ color: '#1E90FF' }}>Retrieve</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.loginFormContainer}>
+          <Text style={{ color: 'black' }}> Don&apos;t have an Account? </Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}
             onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
             <Text style={{ color: '#1E90FF' }}>Register</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+  },
+  logoContainer: { alignSelf: 'center' },
+  logo: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  loginFormContainer: {
+    backgroundColor: '#F0FFFF',
+    borderRadius: 20,
+    margin: 10,
+    padding: 15,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    paddingTop: 10,
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  inputImage: {
+    marginTop: 9,
+    marginStart: 5,
+    width: 30,
+    height: 30,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    borderColor: '#1E90FF',
+    borderWidth: 2,
+  },
+  input: { width: 200, marginStart: 5 },
+  btnView: { width: 120, marginTop: 10 },
+});
+
 export default login;
+/* Social media login
+
+
+        <View style={{ flex: 1 }}>
+          <Text style={{ alignSelf: 'center', color: 'white' }}>
+            Or use one of your social accounts
+          </Text>
+          <View
+            style={{
+              marginVertical: 30,
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignContent: 'center',
+              alignSelf: 'center',
+            }}>
+            <View
+              style={{
+                backgroundColor: '#F0FFFF',
+                marginRight: 40,
+                borderRadius: 20,
+              }}>
+              <Image
+                source={require('../assets/icons/twitter.png')}
+                style={{ width: 40, height: 40 }}
+              />
+            </View>
+
+            <View
+              style={{
+                backgroundColor: '#F0FFFF',
+                borderRadius: 20,
+              }}>
+              <Image
+                source={require('../assets/icons/gmail.png')}
+                style={{ width: 40, height: 40 }}
+              />
+            </View>
+
+            <View
+              style={{
+                backgroundColor: '#F0FFFF',
+                marginLeft: 40,
+                borderRadius: 20,
+              }}>
+              <Image
+                source={require('../assets/icons/faceb.png')}
+                style={{ width: 40, height: 40 }}
+              />
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+            <Text style={{ color: 'white' }}> Don't have an Account </Text>
+            <TouchableOpacity
+              style={{ marginStart: 5 }}
+              onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
+              <Text style={{ color: '#1E90FF' }}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+*/
