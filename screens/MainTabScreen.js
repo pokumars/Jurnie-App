@@ -10,7 +10,6 @@ import MyTripsScreen from './MyTripsScreen';
 import ProfileScreen from './ProfileScreen';
 
 import { COLOR, NAVIGATION_ROUTE } from '../constants';
-import MapViewOfTrip from './MapViewOfTrip';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,13 +48,6 @@ const MainTabScreen = ({ navigation }) => {
         component={ProfileScreen}
         options={{
           tabBarLabel: NAVIGATION_ROUTE.PROFILE,
-        }}
-      />
-      <Tab.Screen
-        name={NAVIGATION_ROUTE.MAP}
-        component={MapViewOfTrip}
-        options={{
-          tabBarLabel: NAVIGATION_ROUTE.MAP,
         }}
       />
     </Tab.Navigator>

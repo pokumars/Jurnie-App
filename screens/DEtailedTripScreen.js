@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, Button, StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Text, View, StyleSheet } from 'react-native';
+import MapViewOfTrip from './MapViewOfTrip';
 
 const Item = ({ title, onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.item}>
@@ -35,34 +36,11 @@ const DetailedScreen = ({ navigation, route }) => {
       });
   }, []);
 
-  /*const GetCurrent = () => {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser.email)
-      .collection('trips')
-      .orderBy('dateAdded', 'desc')
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        // console.log(data);
-
-        setcurrentTrip(data);
-        // console.log('kkkkk', data);
-      });
-  };*/
-
   return (
-    <View>
+    <View >
       {speTrip.length !== 0 ? (
-        <>
-          <Text style={{ fontSize: 20 }}>Mode : {speTrip.activityType}</Text>
-          <Text style={{ fontSize: 20 }}>timestart : {speTrip.timestart}</Text>
-          <Text style={{ fontSize: 20 }}>timeEnd : {speTrip.timeEnd}</Text>
-          <Text style={{ fontSize: 20 }}>distance : {speTrip.distance}</Text>
-          <Text style={{ fontSize: 20 }}>duration : {speTrip.duration}</Text>
-          <Text style={{ fontSize: 20 }}>speed : {speTrip.speed}</Text>
-        </>
+          <MapViewOfTrip polyline={speTrip.polyline}/>
+          
       ) : (
         <Text>Could not fetch from fire</Text>
       )}
@@ -71,6 +49,9 @@ const DetailedScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   item: {
     backgroundColor: '#f9c2ff',
     padding: 20,

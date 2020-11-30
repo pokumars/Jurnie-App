@@ -14,7 +14,6 @@ import {
   Emperor,
   Fire,
   Grenadier,
-  HawaiianTan,
   MangoTango,
   MineShaft,
   Rajah,
@@ -47,7 +46,7 @@ import moment from 'moment';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
 import firestore from '@react-native-firebase/firestore';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
 
@@ -104,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
         },
         (err) => {
           console.log('Tmd error', err);
-        },
+        }
       );
     } catch (e) {
       console.log('error', e.message);
@@ -286,9 +285,7 @@ const HomeScreen = ({ navigation }) => {
       <LastTripCard>
         {currentTrip.length !== 0 ? (
           <>
-            <MeansOfTransportText>
-              {currentTrip[0].activityType}
-            </MeansOfTransportText>
+            <MeansOfTransportText>{currentTrip[0].activityType}</MeansOfTransportText>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Detailed', {
@@ -366,8 +363,7 @@ const HomeScreen = ({ navigation }) => {
           <Avatar
             size={InlineXL}
             source={{
-              uri:
-                'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+              uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
             }}
           />
           <UserNameText>Test</UserNameText>
