@@ -26,10 +26,16 @@ function register({ navigation }) {
       userName: '',
       profileImgUrl: '',
       totalFeeds: 0,
+      totalfeedBacks: 0,
     });
-    firestore().collection('users').doc(name).collection('trips').doc('demo').set({
-      demo: true,
-    });
+    firestore()
+      .collection('users')
+      .doc(name)
+      .collection('trips')
+      .doc('demo')
+      .set({
+        demo: true,
+      });
   };
 
   const Authentication = () => {
@@ -55,11 +61,19 @@ function register({ navigation }) {
 
           console.error(error);
         });
-    } else if (pass.length < 8 && pass === confirmPass && (email.length > 8 || email.length < 8)) {
+    } else if (
+      pass.length < 8 &&
+      pass === confirmPass &&
+      (email.length > 8 || email.length < 8)
+    ) {
       Toast.show({
         text1: 'Password length is less than 8 characters',
       });
-    } else if (email.length < 8 && pass === confirmPass && (pass.length > 8 || pass.length < 8)) {
+    } else if (
+      email.length < 8 &&
+      pass === confirmPass &&
+      (pass.length > 8 || pass.length < 8)
+    ) {
       Toast.show({
         text1: 'Email is incorrect',
       });

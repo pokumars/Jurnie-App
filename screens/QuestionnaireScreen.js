@@ -37,6 +37,7 @@ const Questionnaire = ({ navigation, route }) => {
     exampleTripObject.activityType,
   );
   const [questionNumber, setQuestionNumber] = useState(null);
+  const [num, setnum] = useState(0);
 
   // after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({
@@ -90,7 +91,9 @@ const Questionnaire = ({ navigation, route }) => {
       '------------ we are ready to sendAnswer to firebase-------------',
       answers,
     );
+
     ChecktoFeed();
+    GetFeedsForBadges();
     navigation.dispatch(StackActions.popToTop());
   };
 
@@ -109,6 +112,7 @@ const Questionnaire = ({ navigation, route }) => {
           Update();
         } else {
           AddFeedtoFireStore();
+          //AddFeedtoFireStore();
         }
       });
   };
@@ -133,6 +137,7 @@ const Questionnaire = ({ navigation, route }) => {
           .collection('users')
           .doc(auth().currentUser.email)
           .update({
+            totalfeedBacks: firebase.firestore.FieldValue.increment(1),
             totalFeeds: firebase.firestore.FieldValue.increment(points),
           });
       });
@@ -168,6 +173,18 @@ const Questionnaire = ({ navigation, route }) => {
               totalFeeds: firebase.firestore.FieldValue.increment(1),
             });
         }
+      });
+  };
+
+  const GetFeedsForBadges = () => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.data();
+
+        console.log('TotalFeedBacks in here', data.totalfeedBacks); // data is containing totalfeedBacks!!!!!!!!!!   <<<<<
       });
   };
 
