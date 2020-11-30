@@ -126,7 +126,7 @@ const Questionnaire = ({ navigation, route }) => {
       .update({
         feed1: answers.feed1,
         feed2: answers.feed2,
-        feed2: answers.feed3,
+        feed3: answers.feed3,
         feed4: answers.feed4,
         feedGiven: true,
         img1: answers.img1,
