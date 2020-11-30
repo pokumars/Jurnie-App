@@ -56,24 +56,6 @@ const DetailedScreen = ({ navigation, route }) => {
     <View>
       {speTrip.length !== 0 ? (
         <>
-          {speTrip.feedGiven == false ? (
-            <Button
-              onPress={() =>
-                navigation.navigate('Questionnaire', {
-                  paramKey: speTrip.id,
-                })
-              }
-              title="Give feedback"></Button>
-          ) : (
-            <Button
-              onPress={() =>
-                navigation.navigate('Questionnaire', {
-                  paramKey: speTrip.id,
-                })
-              }
-              title="Update feedback"></Button>
-          )}
-
           <Text style={{ fontSize: 20 }}>Mode : {speTrip.activityType}</Text>
           <Text style={{ fontSize: 20 }}>timestart : {speTrip.timestart}</Text>
           <Text style={{ fontSize: 20 }}>timeEnd : {speTrip.timeEnd}</Text>
