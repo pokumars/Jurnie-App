@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, Button, Image, ScrollView, StyleSheet, View, Modal,Text } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
@@ -23,7 +23,7 @@ import {
   StackM,
 } from 'components/Spacing';
 import { TextM } from 'components/Text';
-
+import BadgeWonModal from '../../components/BadgeWonModal';
 import { determineBadgeIcon } from 'helpers/determineAsset';
 
 const testBadgeData = [
@@ -71,13 +71,28 @@ const testBadgeData = [
   },
 ];
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ route, navigation }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState(
     auth().currentUser.photoURL,
   );
+  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(false);
+  const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null
+
+  const toggleBadgeWonModal= (onOff) =>{
+    setBadgeWonModalVisible(onOff)
+  }
+
+  useEffect(() => {
+    // if the user is coming from having completed a survey, check whether they just won some badge
+    console.log('-------------route in profileScreen', route);
+    if (route.params !==undefined && route.params.showBadge === true) {
+      console.log('--------------------display badge won in profile---------------------')
+      setBadgeWonModalVisible(true);
+    }
+  }, [route.params]);
 
   const signOut = () => {
     auth()
@@ -87,7 +102,6 @@ const ProfileScreen = ({ navigation }) => {
         TmdApi.stopTmdService(),
         navigation.dispatch(StackActions.replace('Login')),
       );
-    console.log('Sign_out clicked');
   };
 
   const updateUsername = (newUsername) => {
@@ -95,7 +109,7 @@ const ProfileScreen = ({ navigation }) => {
     return auth()
       .currentUser.updateProfile({ displayName: newUsername })
       .then((data) => {
-        console.log('confirmation from Firebase');
+        // confirmation from Firebase
         setUsername(newUsername);
       });
   };
@@ -106,11 +120,7 @@ const ProfileScreen = ({ navigation }) => {
   const getOldProfileImageRef = () => {
     if (profilePicUrl !== null) {
       // to delete the old profile pic, we must get the ref from the url.
-      console.log('profilePicUrl---------', profilePicUrl);
-      console.log(
-        'ref from the profilePicUrl--------------',
-        profilePicUrl.split('?').shift().split('profilePics%2F').pop(),
-      );
+      // ref extracted from the profilePicUrl-------------- is profilePicUrl.split('?').shift().split('profilePics%2F').pop(),
       return profilePicUrl.split('?').shift().split('profilePics%2F').pop();
     }
     console.log('profilePicUrl--------- was null');
@@ -134,6 +144,7 @@ const ProfileScreen = ({ navigation }) => {
             btnImage={require('assets/icons/log-out.png')}
             onPress={signOut}
           />
+          
         </View>
         <ProfilePicturePickerModal
           visible={changingPicModalVisible}
@@ -162,6 +173,14 @@ const ProfileScreen = ({ navigation }) => {
           />
 
         </ProfilePictureWrapper>
+        {
+          badgeThatUserJustWon && (<BadgeWonModal
+            visible={badgeWonModalVisible}
+            text={badgeThatUserJustWon.text}
+            setVisibility={toggleBadgeWonModal}
+            badgeImage={badgeThatUserJustWon.badgeImage}
+          />)
+        }
         <View style={styles.userDetails}>
           <ProfileUserDetail
             title="Username"

@@ -64,8 +64,6 @@ const QuestionModal = ({
       nextAction(PROCEED);
       appendAnswer(`feed${questionNumber + 1}`, answer);
     }
-
-    console.log('next clicked');
   };
   return (
     <Modal

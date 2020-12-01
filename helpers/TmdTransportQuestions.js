@@ -62,6 +62,16 @@ const rateTripQuestion = {
   responseType: answerTypes.emojiRating,
 };
 
+const crowdedQuestion = {
+  question: 'Was it crowded?',
+  responseType: answerTypes.booleanUnsure,
+};
+
+const anythingUnusualQuestion = {
+  question: 'Did you notice anything unusual?',
+  responseType: answerTypes.text,
+};
+
 const thankYou = {
   question: 'Thank you for the feedback',
   responseType: answerTypes.thankYou,
@@ -74,13 +84,11 @@ const bikeQuestions = [ bikeLanesQuestion, rateTripQuestion, askForComments, fee
 
 const busQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-const walkQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const walkQuestions = [ rateTripQuestion, anythingUnusualQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
 const runQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
 const carQuestions = [ trafficQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
-
-const railQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
 const tramQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
@@ -88,7 +96,7 @@ const trainQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelS
 
 const metroQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
-const planeQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const planeQuestions = [ crowdedQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
 
 export const transportModeQuestions = {
   bicycle: bikeQuestions,
@@ -96,7 +104,6 @@ export const transportModeQuestions = {
   run: runQuestions,
   car: carQuestions,
   bus: busQuestions,
-  rail: railQuestions,
   tram: tramQuestions,
   train: trainQuestions,
   metro: metroQuestions,
