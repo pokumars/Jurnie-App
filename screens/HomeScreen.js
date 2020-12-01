@@ -64,7 +64,7 @@ const Item = ({ title, onPress }) => (
 );
 
 const HomeScreen = ({ navigation }) => {
-  const [activity, setActivity] = useState('nothing');
+  const [TmdActivity, setActivity] = useState([]);
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
@@ -102,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
           console.log('Tmd success', activities);
           getthat(activities);
 
-          setActivity(str);
+          setActivity(activities);
           // console.log('AAAAAAAAAAa', arraydata);
         },
         (err) => {
@@ -112,7 +112,7 @@ const HomeScreen = ({ navigation }) => {
     } catch (e) {
       console.log('error', e.message);
     }
-  }, []);
+  }, [TmdActivity.length]);
 
   useEffect(function Fetchcu() {
     firestore()
@@ -130,28 +130,29 @@ const HomeScreen = ({ navigation }) => {
         // console.log('kkkkk', currentTrip);
       });
   }, []);
-  useEffect(function FEtchuserInfo() {
-    firestore()
-      .collection('users')
-      .orderBy('totalFeeds', 'desc')
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        console.log(data);
-        setarray(data);
+  useEffect(
+    function FEtchuserInfo() {
+      firestore()
+        .collection('users')
+        .orderBy('totalFeeds', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => doc.data());
+          console.log(data);
+          setarray(data);
 
-        setindexUser(
-          data.findIndex((obj) => obj.email === auth().currentUser.email),
-        );
+          setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
 
-        setcurrentUser(data[indexUser].totalFeeds);
-        setFirstUser(data[0].totalFeeds - currentUser);
+          setcurrentUser(data[indexUser].totalFeeds);
+          setFirstUser(data[0].totalFeeds - currentUser);
 
-        //setFirstUser(data[0].totalFeeds);
+          // setFirstUser(data[0].totalFeeds);
 
-        console.log('kkkkk', indexUser, currentUser, firstUser);
-      });
-  }, []);
+          console.log('kkkkk', indexUser, currentUser, firstUser);
+        });
+    },
+    [TmdActivity.length]
+  );
 
   // starts/stops TMD
   const toggleTmdService = () => async () => {
@@ -395,8 +396,7 @@ const HomeScreen = ({ navigation }) => {
             <Avatar
               size={InlineXL}
               source={{
-                uri:
-                  'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+                uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
               }}
             />
             <UserNameText>{auth().currentUser.displayName}</UserNameText>

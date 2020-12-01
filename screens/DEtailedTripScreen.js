@@ -37,7 +37,7 @@ const DetailedScreen = ({ navigation, route }) => {
             <Text style={styles.item}>{trip.duration}</Text>
           </View>
           <View style={styles.tripItem2}>
-            <Text style={styles.item}>carbon print</Text>
+            <Text style={styles.item}>carbon footprint</Text>
             <Text style={styles.item}>{trip.co2}</Text>
           </View>
           <View style={styles.tripItem3}>
