@@ -1,6 +1,15 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
-import { Button, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 
 import { StackActions } from '@react-navigation/native';
@@ -23,6 +32,7 @@ function register({ navigation }) {
   const AddUserToFirestore = () => {
     const name = auth().currentUser.email;
     firestore().collection('users').doc(name).set({
+      email: name,
       userName: '',
       profileImgUrl: '',
       totalFeeds: 0,
@@ -97,16 +107,24 @@ function register({ navigation }) {
       <ScrollView>
         <View>
           <View style={styles.logoContainer}>
-            <Image source={require('../assets/moprim.png')} style={styles.logo} />
+            <Image
+              source={require('../assets/moprim.png')}
+              style={styles.logo}
+            />
           </View>
           <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
         <View style={styles.formContainer}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Create account</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+            Create account
+          </Text>
           <Text>Please fill-in your Email and Password</Text>
 
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/email.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/email.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -115,7 +133,10 @@ function register({ navigation }) {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/key.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -126,7 +147,10 @@ function register({ navigation }) {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/key.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="Confirm password"
