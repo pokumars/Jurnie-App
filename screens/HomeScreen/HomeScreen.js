@@ -132,8 +132,7 @@ const YourPosition = ({}) => (
         <Avatar
           size={InlineXL}
           source={{
-            uri:
-              'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+            uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
           }}
         />
         <UserNameText>Test</UserNameText>

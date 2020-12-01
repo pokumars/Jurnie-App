@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, Button, StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-const Item = ({ title, onPress }) => (
-  <TouchableOpacity onPress={onPress} style={styles.item}>
-    <Text style={{ fontSize: 28 }}>{title}</Text>
-  </TouchableOpacity>
-);
+import { Text, View, StyleSheet } from 'react-native';
+import { MaterialRed100, MaterialOrange100, LightPink } from '../components/Colors';
+import MapViewOfTrip from './MapViewOfTrip';
 
 const DetailedScreen = ({ navigation, route }) => {
-  const [speTrip, setspeTrip] = useState([]);
-  const [selectedId, setselectedId] = useState(null);
-
-  const renderItem = ({ item }) => (
-    <Item title={item.timeEnd} onPress={() => setselectedId(item.id)} />
-  );
+  const [trip, setTrip] = useState([]);
 
   useEffect(function Fetchtrip() {
     firestore()
@@ -30,55 +20,64 @@ const DetailedScreen = ({ navigation, route }) => {
 
         console.log(data);
 
-        setspeTrip(data);
+        setTrip(data);
         // console.log('kkkkk', currentTrip);
       });
   }, []);
 
-  /*const GetCurrent = () => {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser.email)
-      .collection('trips')
-      .orderBy('dateAdded', 'desc')
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        // console.log(data);
-
-        setcurrentTrip(data);
-        // console.log('kkkkk', data);
-      });
-  };*/
-
+  if (trip.length !== 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.map}>
+          <MapViewOfTrip trip={trip} />
+        </View>
+        <View style={styles.tripItemsContainer}>
+          <View style={styles.tripItem1}>
+            <Text style={styles.item}>Duration</Text>
+            <Text style={styles.item}>{trip.duration}</Text>
+          </View>
+          <View style={styles.tripItem2}>
+            <Text style={styles.item}>carbon print</Text>
+            <Text style={styles.item}>{trip.co2}</Text>
+          </View>
+          <View style={styles.tripItem3}>
+            <Text style={styles.item}>speed</Text>
+            <Text style={styles.item}>{trip.speed}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
   return (
     <View>
-      {speTrip.length !== 0 ? (
-        <>
-          <Text style={{ fontSize: 20 }}>Mode : {speTrip.activityType}</Text>
-          <Text style={{ fontSize: 20 }}>timestart : {speTrip.timestart}</Text>
-          <Text style={{ fontSize: 20 }}>timeEnd : {speTrip.timeEnd}</Text>
-          <Text style={{ fontSize: 20 }}>distance : {speTrip.distance}</Text>
-          <Text style={{ fontSize: 20 }}>duration : {speTrip.duration}</Text>
-          <Text style={{ fontSize: 20 }}>speed : {speTrip.speed}</Text>
-        </>
-      ) : (
-        <Text>Could not fetch from fire</Text>
-      )}
+      <Text style={styles.item}>Loading data ...</Text>
     </View>
   );
 };
 
+const tripItem = {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  backgroundColor: LightPink,
+  padding: 6,
+};
+
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  container: {
+    flex: 1,
   },
-  title: {
-    fontSize: 28,
+  map: {
+    flex: 4,
+  },
+  tripItemsContainer: {
+    flex: 1,
+    padding: 8,
+  },
+  tripItem1: { ...tripItem },
+  tripItem2: { ...tripItem, backgroundColor: MaterialOrange100 },
+  tripItem3: { ...tripItem, backgroundColor: MaterialRed100 },
+  item: {
+    fontSize: 20,
   },
 });
 

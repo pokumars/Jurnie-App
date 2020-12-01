@@ -14,7 +14,6 @@ import {
   Emperor,
   Fire,
   Grenadier,
-  HawaiianTan,
   MangoTango,
   MineShaft,
   Rajah,
@@ -47,7 +46,7 @@ import moment from 'moment';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
 import firestore from '@react-native-firebase/firestore';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
 
@@ -73,6 +72,7 @@ const HomeScreen = ({ navigation }) => {
   const [firstUser, setFirstUser] = useState();
   const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
+  const [update, setUpdate] = useState();
   const tar = [];
 
   const defaultValues = {
@@ -103,11 +103,11 @@ const HomeScreen = ({ navigation }) => {
           getthat(activities);
 
           setActivity(str);
-          console.log('AAAAAAAAAAa', arraydata);
+          // console.log('AAAAAAAAAAa', arraydata);
         },
         (err) => {
           console.log('Tmd error', err);
-        },
+        }
       );
     } catch (e) {
       console.log('error', e.message);
@@ -315,9 +315,7 @@ const HomeScreen = ({ navigation }) => {
       <LastTripCard>
         {currentTrip.length !== 0 ? (
           <>
-            <MeansOfTransportText>
-              {currentTrip[0].activityType}
-            </MeansOfTransportText>
+            <MeansOfTransportText>{currentTrip[0].activityType}</MeansOfTransportText>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Detailed', {

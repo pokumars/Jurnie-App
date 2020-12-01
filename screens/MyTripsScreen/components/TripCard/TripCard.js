@@ -6,10 +6,7 @@ import { Black, Silver, White } from 'components/Colors';
 import { InlineXS, InlineM, InlineL, Row, StackS } from 'components/Spacing';
 import { TextS } from 'components/Text';
 import TransportTile from 'components/TransportTile';
-import {
-  determineTransportBackgroundColorForDarkIcon,
-  determineTransportIcon,
-} from 'helpers';
+import { determineTransportBackgroundColorForDarkIcon, determineTransportIcon } from 'helpers';
 
 /**
  *
@@ -66,9 +63,7 @@ const MeansOfTransport = (props) => {
     <MeansOfTransportContainer>
       {meansOfTransport.map((transport, index) => (
         <TransportTile
-          backgroundColor={determineTransportBackgroundColorForDarkIcon(
-            transport.type,
-          )}
+          backgroundColor={determineTransportBackgroundColorForDarkIcon(transport.type)}
           height={InlineL}
           key={`${transport.type}-${index}`}
           source={determineTransportIcon(transport.type)}

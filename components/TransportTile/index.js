@@ -31,16 +31,8 @@ const TransportTile = (props) => {
   const iconSize = (Math.min(height, width) * 5) / 6;
   return (
     <View
-      style={[
-        styles.container,
-        { backgroundColor, height, width },
-        GLOBAL_STYLE.CENTER,
-        style,
-      ]}>
-      <FastImage
-        {...{ source, tintColor }}
-        style={{ width: iconSize, height: iconSize }}
-      />
+      style={[styles.container, { backgroundColor, height, width }, GLOBAL_STYLE.CENTER, style]}>
+      <FastImage {...{ source, tintColor }} style={{ width: iconSize, height: iconSize }} />
     </View>
   );
 };
