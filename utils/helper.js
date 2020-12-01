@@ -80,7 +80,7 @@ const getIconByMode = (mode) => {
       return require('assets/icons/tram.png');
 
     case 'motorized/rail/train':
-      return require('assets/icons/train.png');
+      return require('assets/icons/rail.png');
 
     case 'motorized/rail/metro':
       return require('assets/icons/underground.png');
