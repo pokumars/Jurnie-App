@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { DefaultCard } from '../components/Cards/Cards';
@@ -24,6 +25,8 @@ import {
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/storage';
+import BadgeWonModal from '../components/BadgeWonModal';
+import navigationRoute from '../constants/navigationRoute';
 //import firebase from '@react-native-firebase';
 
 const Questionnaire = ({ navigation, route }) => {
@@ -37,14 +40,16 @@ const Questionnaire = ({ navigation, route }) => {
     exampleTripObject.activityType,
   );
   const [questionNumber, setQuestionNumber] = useState(null);
+
   const [num, setnum] = useState(0);
+  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(false);
 
   // after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({
     feedGiven: false,
     activityType: selectedMode,
   });
-  // TODO: setpoints upon question being answered....based on question type
+ // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
 
   console.log(
@@ -53,7 +58,7 @@ const Questionnaire = ({ navigation, route }) => {
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
-    extractModeofTransport(selectedMode)------------------${extractModeofTransport(
+    extractModeofTransport------------------${extractModeofTransport(
       selectedMode,
     )}
     received answers------------------`,
@@ -97,6 +102,12 @@ const Questionnaire = ({ navigation, route }) => {
     navigation.dispatch(StackActions.popToTop());
   };
 
+  const showBadgeWon =() => {
+    // navigation.dispatch(StackActions.popToTop());
+    navigation.dispatch(StackActions.replace('Main', { checkIfBadgeWon: true }))
+    
+  }
+
   const ChecktoFeed = () => {
     firestore()
       .collection('users')
@@ -138,6 +149,7 @@ const Questionnaire = ({ navigation, route }) => {
           .doc(auth().currentUser.email)
           .update({
             totalfeedBacks: firebase.firestore.FieldValue.increment(1),
+            // totalFeeds === total points obtained from giving feedback
             totalFeeds: firebase.firestore.FieldValue.increment(points),
           });
       });
@@ -170,6 +182,7 @@ const Questionnaire = ({ navigation, route }) => {
             .collection('users')
             .doc(auth().currentUser.email)
             .update({
+              // totalFeeds === total points obtained from giving feedback 
               totalFeeds: firebase.firestore.FieldValue.increment(1),
             });
         }
@@ -187,6 +200,7 @@ const Questionnaire = ({ navigation, route }) => {
         console.log('TotalFeedBacks in here', data.totalfeedBacks); // data is containing totalfeedBacks!!!!!!!!!!   <<<<<
       });
   };
+  
 
   return (
     <View>
@@ -208,6 +222,18 @@ const Questionnaire = ({ navigation, route }) => {
           </View>
         </View>
       </DefaultCard>
+      <Button
+  onPress={showBadgeWon}
+  title="show badge"
+  color="#841584"
+  accessibilityLabel="Learn more about this purple button"
+      />
+      <BadgeWonModal
+         visible={badgeWonModalVisible}
+         text="a badge for your first feedback"
+         setVisibility={setBadgeWonModalVisible}
+         badgeImage
+      />
       {isCorrectTransportMode === false && (
         <>
           <Text> Choose the correct one and press YES</Text>

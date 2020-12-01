@@ -104,7 +104,6 @@ export const transportModeQuestions = {
   run: runQuestions,
   car: carQuestions,
   bus: busQuestions,
-  rail: railQuestions,
   tram: tramQuestions,
   train: trainQuestions,
   metro: metroQuestions,

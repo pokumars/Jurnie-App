@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, Button, Image, ScrollView, StyleSheet, View, Modal,Text } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
@@ -23,7 +23,7 @@ import {
   StackM,
 } from 'components/Spacing';
 import { TextM } from 'components/Text';
-
+import BadgeWonModal from '../../components/BadgeWonModal';
 import { determineBadgeIcon } from 'helpers/determineAsset';
 
 const testBadgeData = [
@@ -71,13 +71,27 @@ const testBadgeData = [
   },
 ];
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ route, navigation }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState(
     auth().currentUser.photoURL,
   );
+  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(true);
+
+  const toggleBadgeWonModal= (onOff) =>{
+    setBadgeWonModalVisible(onOff)
+  }
+
+  useEffect(() => {
+    // if the user is coming from having completed a survey, check whether they just won some badge
+    console.log('-------------route in profileScreen', route);
+    if (route.params !==undefined && route.params.showBadge === true) {
+      console.log('--------------------display badge won in profile---------------------')
+      setBadgeWonModalVisible(true);
+    }
+  }, [route.params]);
 
   const signOut = () => {
     auth()
@@ -134,6 +148,7 @@ const ProfileScreen = ({ navigation }) => {
             btnImage={require('assets/icons/log-out.png')}
             onPress={signOut}
           />
+          
         </View>
         <ProfilePicturePickerModal
           visible={changingPicModalVisible}
@@ -162,6 +177,12 @@ const ProfileScreen = ({ navigation }) => {
           />
 
         </ProfilePictureWrapper>
+        <BadgeWonModal
+          visible={badgeWonModalVisible}
+          text="a badge for your first feedback"
+          setVisibility={toggleBadgeWonModal}
+          badgeImage={determineBadgeIcon('trophy')}
+        />
         <View style={styles.userDetails}>
           <ProfileUserDetail
             title="Username"
