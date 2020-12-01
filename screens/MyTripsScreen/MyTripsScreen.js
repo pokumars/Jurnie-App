@@ -154,9 +154,7 @@ const MyTripsScreen = ({ navigation }) => {
     <SubtitleText>MY TRIPS</SubtitleText>
     <FlatList
       data={testTrips}
-      keyExtractor={(item, index) =>
-        `Trip-${item.origin}-${item.destination}-${index}`
-      }
+      keyExtractor={(item, index) => `Trip-${item.origin}-${item.destination}-${index}`}
       {...{ renderItem }}
     />
   </>

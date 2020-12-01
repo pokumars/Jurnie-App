@@ -19,3 +19,6 @@ export const SteelBlue = '#4A86AC';
 export const Whisper = '#F3F2F7';
 export const White = '#FFF';
 export const Zinnwaldite = '#EDADB1';
+export const MaterialOrange100 = '#FFCCBC';
+export const LightPink = '#f9c2ff';
+export const MaterialRed100 = '#FFAB91';

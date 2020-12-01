@@ -4,14 +4,7 @@ import styled from 'styled-components/native';
 import { isSameDay } from 'date-fns';
 
 import { Black, Emperor, RoyalBlue, Silver, White } from 'components/Colors';
-import {
-  Center,
-  InlineXS,
-  InlineL,
-  Row,
-  StackS,
-  StackM,
-} from 'components/Spacing';
+import { Center, InlineXS, InlineL, Row, StackS, StackM } from 'components/Spacing';
 import { BoldText, TextXXS } from 'components/Text';
 import { getWeekDays } from 'helpers';
 import { StyleSheet } from 'react-native';
@@ -38,14 +31,11 @@ const WeekCalendar = ({ currentDate, selectedDate, setSelectedDate }) => {
     <Container>
       {week.map((weekDay) => {
         const isToday = isSameDay(weekDay.date, currentDate);
-        const isSelectedDate =
-          selectedDate.getTime() === weekDay.date.getTime();
+        const isSelectedDate = selectedDate.getTime() === weekDay.date.getTime();
         return (
           <DateContainer key={weekDay.formated}>
             <DateText>{weekDay.formated}</DateText>
-            <DayButton
-              {...{ isToday, isSelectedDate, setSelectedDate, weekDay }}
-            />
+            <DayButton {...{ isToday, isSelectedDate, setSelectedDate, weekDay }} />
           </DateContainer>
         );
       })}
