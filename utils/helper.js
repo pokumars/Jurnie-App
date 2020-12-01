@@ -1,6 +1,8 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-unresolved */
 import { decode } from '@mapbox/polyline';
 
-const getDirections = async ({ polyline }) => {
+const getDirections = async (polyline) => {
   const getAddress = async (latitude, longitude) => {
     // eslint-disable-next-line no-undef
     const data = await fetch(
@@ -48,4 +50,47 @@ const getDirections = async ({ polyline }) => {
   }
 };
 
-export { getDirections as default };
+const getIconByMode = (mode) => {
+  switch (mode) {
+    case 'stationary':
+      return require('assets/icons/sitting-man.png');
+
+    case 'non-motorized/bicycle':
+      return require('assets/icons/bicycle.png');
+
+    case 'non-motorized/pedestrian':
+      return require('assets/icons/walk.png');
+
+    case 'non-motorized/pedestrian/walk':
+      return require('assets/icons/walk.png');
+
+    case 'non-motorized/pedestrian/run':
+      return require('assets/icons/run.png');
+
+    case 'motorized/road/car':
+      return require('assets/icons/car.png');
+
+    case 'motorized/road/bus':
+      return require('assets/icons/bus.png');
+
+    case 'motorized/rail':
+      return require('assets/icons/rail.png');
+
+    case 'motorized/rail/tram':
+      return require('assets/icons/tram.png');
+
+    case 'motorized/rail/train':
+      return require('assets/icons/train.png');
+
+    case 'motorized/rail/metro':
+      return require('assets/icons/underground.png');
+
+    case 'motorized/air/plane':
+      return require('assets/icons/plane.png');
+
+    default:
+      return require('assets/icons/bus.png');
+  }
+};
+
+export { getDirections as default, getIconByMode };
