@@ -9,7 +9,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import App from '../App';
 
-const sum = require('../sum');
 
 it('renders correctly', () => {
   renderer.create(<App />);

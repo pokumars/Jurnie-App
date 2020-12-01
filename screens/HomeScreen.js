@@ -67,6 +67,10 @@ const HomeScreen = ({ navigation }) => {
   const [activity, setActivity] = useState('nothing');
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
+  const [currentUser, setcurrentUser] = useState([]);
+  const [indexUser, setindexUser] = useState();
+  const [firstUser, setFirstUser] = useState();
+  const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
   const [update, setUpdate] = useState();
   const tar = [];
@@ -124,6 +128,28 @@ const HomeScreen = ({ navigation }) => {
 
         setcurrentTrip(data);
         // console.log('kkkkk', currentTrip);
+      });
+  }, []);
+  useEffect(function FEtchuserInfo() {
+    firestore()
+      .collection('users')
+      .orderBy('totalFeeds', 'desc')
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        console.log(data);
+        setarray(data);
+
+        setindexUser(
+          data.findIndex((obj) => obj.email === auth().currentUser.email),
+        );
+
+        setcurrentUser(data[indexUser].totalFeeds);
+        setFirstUser(data[0].totalFeeds - currentUser);
+
+        //setFirstUser(data[0].totalFeeds);
+
+        console.log('kkkkk', indexUser, currentUser, firstUser);
       });
   }, []);
 
@@ -224,7 +250,11 @@ const HomeScreen = ({ navigation }) => {
       });
   };
 
-  const onWriteFeedbackButtonPress = () => {};
+  const onWriteFeedbackButtonPress = () => {
+    navigation.navigate('Questionnaire', {
+      paramKey: currentTrip[0].id,
+    });
+  };
 
   const FilterMode = (activity) => {
     switch (activity) {
@@ -358,31 +388,37 @@ const HomeScreen = ({ navigation }) => {
   const YourPosition = ({}) => (
     <>
       <SubtitleText>YOUR POSITION</SubtitleText>
-      <YourPositionCard>
-        <UserInfo>
-          <Avatar
-            size={InlineXL}
-            source={{
-              uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-            }}
-          />
-          <UserNameText>Test</UserNameText>
-        </UserInfo>
-        <CompetitionInfo>
-          <RankingInfo>
-            <NumberText color={Grenadier}>23</NumberText>
-            <AnnotationText>FINNISH RANKING</AnnotationText>
-          </RankingInfo>
-          <ScoreInfo>
-            <NumberText color={Fire}>21</NumberText>
-            <AnnotationText>POINTS</AnnotationText>
-          </ScoreInfo>
-          <PointToTopTenInfo>
-            <NumberText color={Fire}>10</NumberText>
-            <AnnotationText>POINTS MORE TO TOP 10</AnnotationText>
-          </PointToTopTenInfo>
-        </CompetitionInfo>
-      </YourPositionCard>
+
+      {array.length !== 0 ? (
+        <YourPositionCard>
+          <UserInfo>
+            <Avatar
+              size={InlineXL}
+              source={{
+                uri:
+                  'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+              }}
+            />
+            <UserNameText>{auth().currentUser.displayName}</UserNameText>
+          </UserInfo>
+          <CompetitionInfo>
+            <RankingInfo>
+              <NumberText color={Grenadier}>{indexUser + 1}</NumberText>
+              <AnnotationText>FINNISH RANKING</AnnotationText>
+            </RankingInfo>
+            <ScoreInfo>
+              <NumberText color={Fire}>{currentUser}</NumberText>
+              <AnnotationText>POINTS</AnnotationText>
+            </ScoreInfo>
+            <PointToTopTenInfo>
+              <NumberText color={MangoTango}>{firstUser}</NumberText>
+              <AnnotationText>POINTS MORE TO TOP 10</AnnotationText>
+            </PointToTopTenInfo>
+          </CompetitionInfo>
+        </YourPositionCard>
+      ) : (
+        <Text>Fetching</Text>
+      )}
     </>
   );
 

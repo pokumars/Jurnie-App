@@ -31,6 +31,7 @@ import MainTabScreen from './screens/MainTabScreen';
 import DetailedScreen from './screens/DEtailedTripScreen';
 import login from './Register_Login/Login';
 import register from './Register_Login/Register';
+import Questionnaire from './screens/QuestionnaireScreen';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Splash" component={SplashLoader} />
+        <Stack.Screen name="Questionnaire" component={Questionnaire} />
         <Stack.Screen name="Login" component={login} />
         <Stack.Screen name="Register" component={register} />
         <Stack.Screen name="Main" component={MainTabScreen} />
