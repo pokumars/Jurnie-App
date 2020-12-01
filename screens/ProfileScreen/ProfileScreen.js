@@ -78,7 +78,8 @@ const ProfileScreen = ({ route, navigation }) => {
   const [profilePicUrl, setProfilePicUrl] = useState(
     auth().currentUser.photoURL,
   );
-  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(true);
+  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(false);
+  const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null
 
   const toggleBadgeWonModal= (onOff) =>{
     setBadgeWonModalVisible(onOff)
@@ -101,7 +102,6 @@ const ProfileScreen = ({ route, navigation }) => {
         TmdApi.stopTmdService(),
         navigation.dispatch(StackActions.replace('Login')),
       );
-    console.log('Sign_out clicked');
   };
 
   const updateUsername = (newUsername) => {
@@ -109,7 +109,7 @@ const ProfileScreen = ({ route, navigation }) => {
     return auth()
       .currentUser.updateProfile({ displayName: newUsername })
       .then((data) => {
-        console.log('confirmation from Firebase');
+        // confirmation from Firebase
         setUsername(newUsername);
       });
   };
@@ -120,11 +120,7 @@ const ProfileScreen = ({ route, navigation }) => {
   const getOldProfileImageRef = () => {
     if (profilePicUrl !== null) {
       // to delete the old profile pic, we must get the ref from the url.
-      console.log('profilePicUrl---------', profilePicUrl);
-      console.log(
-        'ref from the profilePicUrl--------------',
-        profilePicUrl.split('?').shift().split('profilePics%2F').pop(),
-      );
+      // ref extracted from the profilePicUrl-------------- is profilePicUrl.split('?').shift().split('profilePics%2F').pop(),
       return profilePicUrl.split('?').shift().split('profilePics%2F').pop();
     }
     console.log('profilePicUrl--------- was null');
@@ -177,12 +173,14 @@ const ProfileScreen = ({ route, navigation }) => {
           />
 
         </ProfilePictureWrapper>
-        <BadgeWonModal
-          visible={badgeWonModalVisible}
-          text="a badge for your first feedback"
-          setVisibility={toggleBadgeWonModal}
-          badgeImage={determineBadgeIcon('trophy')}
-        />
+        {
+          badgeThatUserJustWon && (<BadgeWonModal
+            visible={badgeWonModalVisible}
+            text={badgeThatUserJustWon.text}
+            setVisibility={toggleBadgeWonModal}
+            badgeImage={badgeThatUserJustWon.badgeImage}
+          />)
+        }
         <View style={styles.userDetails}>
           <ProfileUserDetail
             title="Username"

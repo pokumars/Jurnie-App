@@ -4,7 +4,6 @@ import { determineBadgeIcon } from"./determineAsset"
 // for more info on tuple https://www.tutorialspoint.com/scala_collections/scala_collections_tuple.htm 
 // or https://medium.com/better-programming/tuples-in-javascript-57ede9b1c9d2
 export const feedbackAmountMilestones = [
-  { score: 0, badgeImage: determineBadgeIcon('trophy'), text: 'the test run' },
   { score: 1, badgeImage: determineBadgeIcon('trophy'), text: 'your 1st feedback milestone badge' },
   { score: 5, badgeImage: determineBadgeIcon('trophy'), text: "a badge for your 5th feedback"},
   { score: 10, badgeImage: determineBadgeIcon('trophy'), text: "a badge for your 10th feedback"},

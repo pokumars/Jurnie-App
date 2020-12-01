@@ -10,22 +10,35 @@ import MyTripsScreen from './MyTripsScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 
 import { COLOR, NAVIGATION_ROUTE } from '../constants';
+import { feedbackAmountMilestones } from '../helpers/badgeWinning';
 
 const Tab = createBottomTabNavigator();
 
 const MainTabScreen = ({ route, navigation }) => {
-  /* when survey is done, check if they won something.  If they did, pass the name and image uri
+  /* when survey is done, check if they won something.  If they did, pass the congratulatory message and image uri
   of what they won to profile screen and let it display a modal */
+
   useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
-    console.log('-------------route in maintabscreen', route);
     if (route.params !==undefined && route.params.checkIfBadgeWon === true) {
-      console.log('--------------------display badge won ---------------------')
-      // pass in the params, the badgename, the badge image and whether they just won it
-      navigation.navigate(NAVIGATION_ROUTE.PROFILE, { showBadge: true });
+      // console.log('-----MainTabScreen display badge won ---------------------', route.params)
+
+      // this has the text of the badge and the image
+      /* NB: we need the +1 because the previous state of userObj is what is passed to MainTabScreen
+      so if it is fresh feedback, checkIfBadgeWon will be true and that is when we check whether they won something */
+      const userJustWonThisBadge = feedbackAmountMilestones.find((badgeObj) => {
+        return  badgeObj.score === (route.params.user.totalfeedBacks +1)
+      });
+
+      if (userJustWonThisBadge) {
+        // pass with the params, the badgename, the badge popup-modal text
+        navigation.navigate(NAVIGATION_ROUTE.PROFILE, {
+          showBadge: true,
+          badgeToShow: userJustWonThisBadge,
+        });
+      }
     }
   }, [route.params]);
-
 
   return (
     <Tab.Navigator
