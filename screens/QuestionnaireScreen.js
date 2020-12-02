@@ -21,9 +21,6 @@ import {
 import QuestionModal from '../components/QuestionModal';
 import { allocatePoints, transportModeQuestions } from '../helpers/TmdTransportQuestions';
 
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/storage';
 import BadgeWonModal from '../components/BadgeWonModal';
 import navigationRoute from '../constants/navigationRoute';
 import LoadingFullScreen from '../components/LoadingFullScreen';
