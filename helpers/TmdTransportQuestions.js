@@ -1,11 +1,11 @@
-import { answerTypes } from "./TmdTransportModes";
+import { answerTypes } from './TmdTransportModes';
 
 export const basicAnswerPoint = 1;
 export const imgFeedbackPoint = 2;
 // These are the fields in an answer object that are gotten from the feedback
 const expectedResponses = ['feed1', 'feed2', 'feed3', 'feed4', 'img1'];
 /**
- * 
+ *
  * @param {Object} answerObj pass the trip object or the answer object
  * @returns the number of points that the answers deserve
  */
@@ -44,7 +44,7 @@ const trafficQuestion = {
   responseType: answerTypes.booleanUnsure,
 };
 
-const bikeLanesQuestion= {
+const bikeLanesQuestion = {
   question: 'Is there adequate bike lanes?',
   responseType: answerTypes.booleanUnsure,
 };
@@ -70,25 +70,95 @@ const thankYou = {
 /* The questionnaire has been structiured so that the question 5 i.e after feed4  is the one that asks for image.
  Then after that comes the thank you. So keep the structure
  feed4 should always be the user generated text */
-const bikeQuestions = [ bikeLanesQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const bikeQuestions = [
+  bikeLanesQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const busQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const busQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const walkQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const walkQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const runQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const runQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const carQuestions = [ trafficQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const carQuestions = [
+  trafficQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const railQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const railQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const tramQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const tramQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const trainQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const trainQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const metroQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const metroQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
-const planeQuestions = [ onTimeQuestion, rateTripQuestion, askForComments, feelSafeQuestion, imageQuestion, thankYou ];
+const planeQuestions = [
+  onTimeQuestion,
+  rateTripQuestion,
+  askForComments,
+  feelSafeQuestion,
+  imageQuestion,
+  thankYou,
+];
 
 export const transportModeQuestions = {
   bicycle: bikeQuestions,

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { StackActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/storage';
 import { DefaultCard } from '../components/Cards/Cards';
 import { BoldText, TextXS } from '../components/Text/Text';
 import color from '../constants/color';
 import globalStyle from '../constants/globalStyle';
-import { Picker } from '@react-native-picker/picker';
 import {
   transportModes,
   answerTypes,
@@ -15,16 +19,9 @@ import {
   extractModeofTransport,
 } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
-import { StackActions } from '@react-navigation/native';
-import {
-  allocatePoints,
-  transportModeQuestions,
-} from '../helpers/TmdTransportQuestions';
+import { allocatePoints, transportModeQuestions } from '../helpers/TmdTransportQuestions';
 
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/storage';
-//import firebase from '@react-native-firebase';
+// import firebase from '@react-native-firebase';
 
 const Questionnaire = ({ navigation, route }) => {
   /* if feedGiven is false, then isCorrectTransportMode should be null. Because
@@ -33,9 +30,7 @@ const Questionnaire = ({ navigation, route }) => {
   the next time they come back, isCorrectTransportMode will be null so that they get the
   chance to choose the correct one */ // TODO: the above
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
-  const [selectedMode, setSelectedMode] = useState(
-    exampleTripObject.activityType,
-  );
+  const [selectedMode, setSelectedMode] = useState(exampleTripObject.activityType);
   const [questionNumber, setQuestionNumber] = useState(null);
   const [num, setnum] = useState(0);
 
@@ -53,11 +48,9 @@ const Questionnaire = ({ navigation, route }) => {
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
-    extractModeofTransport(selectedMode)------------------${extractModeofTransport(
-      selectedMode,
-    )}
+    extractModeofTransport(selectedMode)------------------${extractModeofTransport(selectedMode)}
     received answers------------------`,
-    answers,
+    answers
   );
 
   // activityTypeString is required. pass it as props or as part of the passed in trip object
@@ -87,10 +80,7 @@ const Questionnaire = ({ navigation, route }) => {
   };
 
   const sendAnswersToFirebase = () => {
-    console.log(
-      '------------ we are ready to sendAnswer to firebase-------------',
-      answers,
-    );
+    console.log('------------ we are ready to sendAnswer to firebase-------------', answers);
 
     ChecktoFeed();
     GetFeedsForBadges();
@@ -106,13 +96,13 @@ const Questionnaire = ({ navigation, route }) => {
       .get()
       .then((querySnapshot) => {
         console.log(querySnapshot.data());
-        //setgiven(querySnapshot.data().feedGiven);
-        //console.log(querySnapshot.data().feedGiven);
+        // setgiven(querySnapshot.data().feedGiven);
+        // console.log(querySnapshot.data().feedGiven);
         if (querySnapshot.data().feedGiven == true) {
           Update();
         } else {
           AddFeedtoFireStore();
-          //AddFeedtoFireStore();
+          // AddFeedtoFireStore();
         }
       });
   };
@@ -219,33 +209,27 @@ const Questionnaire = ({ navigation, route }) => {
             }}>
             {transportModes.map((mode) => {
               return (
-                <Picker.Item
-                  key={mode}
-                  label={capitaliseModeofTransport(mode)}
-                  value={mode}
-                />
+                <Picker.Item key={mode} label={capitaliseModeofTransport(mode)} value={mode} />
               );
             })}
           </Picker>
         </>
       )}
-      {transportModeQuestions[extractModeofTransport(selectedMode)].map(
-        (que, questionIndex) => {
-          return (
-            <QuestionModal
-              key={que.question}
-              answerType={que.responseType}
-              question={que.question}
-              visible={questionNumber === questionIndex}
-              nextAction={nextModalAction}
-              appendAnswer={appendAnswer}
-              questionNumber={questionIndex}
-              sendAnswers={sendAnswersToFirebase}
-              points={points}
-            />
-          );
-        },
-      )}
+      {transportModeQuestions[extractModeofTransport(selectedMode)].map((que, questionIndex) => {
+        return (
+          <QuestionModal
+            key={que.question}
+            answerType={que.responseType}
+            question={que.question}
+            visible={questionNumber === questionIndex}
+            nextAction={nextModalAction}
+            appendAnswer={appendAnswer}
+            questionNumber={questionIndex}
+            sendAnswers={sendAnswersToFirebase}
+            points={points}
+          />
+        );
+      })}
     </View>
   );
 };

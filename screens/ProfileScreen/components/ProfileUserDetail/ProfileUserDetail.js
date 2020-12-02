@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderWidth: 1,
     borderColor: color.STEEL_BLUE,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 

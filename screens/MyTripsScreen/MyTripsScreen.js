@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  View,
-  FlatList,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -130,10 +123,7 @@ const MyTripsScreen = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <WeekCalendar
-        currentDate={new Date()}
-        {...{ selectedDate, setSelectedDate }}
-      />
+      <WeekCalendar currentDate={new Date()} {...{ selectedDate, setSelectedDate }} />
       <Button title="get" onPress={() => GetCurrent()} />
       {currentTrip.length !== 0 ? (
         <FlatList
@@ -149,7 +139,7 @@ const MyTripsScreen = ({ navigation }) => {
   );
 };
 
-/*const MyTrips = () => (
+/* const MyTrips = () => (
   <>
     <SubtitleText>MY TRIPS</SubtitleText>
     <FlatList
@@ -166,7 +156,7 @@ const renderItem = ({ item }) => (
     meansOfTransport={item.meansOfTransport}
     origin={item.origin}
   />
-);*/
+); */
 
 const ScreenContainer = styled.View`
   ${DefaultContainer};

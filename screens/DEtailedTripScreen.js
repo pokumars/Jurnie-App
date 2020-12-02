@@ -5,8 +5,8 @@ import { Text, View, StyleSheet } from 'react-native';
 import { MaterialRed100, MaterialOrange100, LightPink } from '../components/Colors';
 import MapViewOfTrip from './MapViewOfTrip';
 
-const DetailedScreen = ({ navigation, route }) => {
-  const [trip, setTrip] = useState([]);
+const DetailedScreen = ({ route }) => {
+  const [trip, setTrip] = useState();
 
   useEffect(function Fetchtrip() {
     firestore()
@@ -18,14 +18,43 @@ const DetailedScreen = ({ navigation, route }) => {
       .then((querySnapshot) => {
         const data = querySnapshot.data();
 
-        console.log(data);
+        console.log('data', data);
 
         setTrip(data);
-        // console.log('kkkkk', currentTrip);
       });
   }, []);
 
-  if (trip.length !== 0) {
+  const tripItem = {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: LightPink,
+    padding: 6,
+  };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    map: {
+      flex: 4,
+    },
+    tripItemsContainer: {
+      flex: 1,
+      padding: 8,
+    },
+    tripItem1: { ...tripItem },
+    tripItem2: { ...tripItem, backgroundColor: MaterialOrange100 },
+    tripItem3: { ...tripItem, backgroundColor: MaterialRed100 },
+    item: {
+      fontSize: 20,
+    },
+    noDataView: {
+      flex: 1,
+      alignItems: 'center',
+    },
+  });
+
+  if (trip) {
     return (
       <View style={styles.container}>
         <View style={styles.map}>
@@ -49,36 +78,10 @@ const DetailedScreen = ({ navigation, route }) => {
     );
   }
   return (
-    <View>
+    <View style={styles.noDataView}>
       <Text style={styles.item}>Loading data ...</Text>
     </View>
   );
 };
-
-const tripItem = {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  backgroundColor: LightPink,
-  padding: 6,
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    flex: 4,
-  },
-  tripItemsContainer: {
-    flex: 1,
-    padding: 8,
-  },
-  tripItem1: { ...tripItem },
-  tripItem2: { ...tripItem, backgroundColor: MaterialOrange100 },
-  tripItem3: { ...tripItem, backgroundColor: MaterialRed100 },
-  item: {
-    fontSize: 20,
-  },
-});
 
 export default DetailedScreen;
