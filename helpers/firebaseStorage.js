@@ -19,7 +19,10 @@ const deleteOldProfileImage = (filename) => {
       console.log('File deleted successfully');
     })
     .catch(function (error) {
-      console.log('Uh-oh, an error occurred!-----------', error);
+      console.log(
+        'Uh-oh, an error may have occurred in deleteOldProfileImage If it says above that *File deleted successfully* then ignore this!-----------',
+        error
+      );
     });
 };
 
