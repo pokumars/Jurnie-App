@@ -98,19 +98,40 @@ const MyTripsScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <Item
-      title={item.timeEnd}
-      start={item.timestart}
-      mode={item.activityType}
-      id={item.id}
+    // <Item
+    //   title={item.timeEnd}
+    //   start={item.timestart}
+    //   mode={item.activityType}
+    //   id={item.id}
+    //   feed={item.feedGiven}
+    //   onPress={() =>
+    //     navigation.navigate('Detailed', {
+    //       paramKey: item.id,
+    //     })
+    //   }
+    // />
+    <TripCard
+      endingTime={item.timeEnd}
       feed={item.feedGiven}
-      onPress={() =>
-        navigation.navigate('Detailed', {
-          paramKey: item.id,
-        })
-      }
+      transportMode={item.activityType}
+      startingTime={item.timestart}
+      title={item.timeEnd}
+      onFeedbackButtonPress={() => onFeedbackButtonPress(item.id)}
+      onTripCardPress={() => onTripCardPress(item.id)}
     />
   );
+
+  const onFeedbackButtonPress = (id) => {
+    navigation.navigate('Questionnaire', {
+      paramKey: id,
+    });
+  };
+
+  const onTripCardPress = (id) => {
+    navigation.navigate('Detailed', {
+      paramKey: id,
+    });
+  };
 
   const GetCurrent = () => {
     firestore()
