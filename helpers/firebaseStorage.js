@@ -2,6 +2,7 @@ import 'react-native-get-random-values';
 import storage, { firebase } from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 import { generate as generateName } from './randomUsernameGenerator';
+import firestore from '@react-native-firebase/firestore';
 
 const profilePicStorageRef = firebase
   .app()
@@ -47,7 +48,9 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
     (taskSnapshot) => {
       // console.log(`snapshot: ${taskSnapshot.state}`);
       console.log(
-        `progress: ${(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100} % transferred`
+        `progress: ${
+          (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+        } % transferred`,
       );
     },
     (error) => {
@@ -58,16 +61,18 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
       storageRef.getDownloadURL().then((downloadURL) => {
         console.log('File available at', downloadURL);
         auth().currentUser.updateProfile({ photoURL: downloadURL });
+        /*firestore().collection('users').doc(auth().currentUser.email).update({
+          profileImgUrl: downloadURL,
+        });*/
         deleteOldProfileImage(oldProfileImageRef);
       });
-    }
+    },
   );
 
   return task.then((snapshot) => {
     return storageRef.getDownloadURL();
   });
 };
-
 
 /**
  *
@@ -92,7 +97,9 @@ const uploadAnnotationImage = (imageURI, originalFilename) => {
     (taskSnapshot) => {
       // console.log(`snapshot: ${taskSnapshot.state}`);
       console.log(
-        `progress: ${(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100} % transferred`
+        `progress: ${
+          (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+        } % transferred`,
       );
     },
     (error) => {
@@ -103,7 +110,7 @@ const uploadAnnotationImage = (imageURI, originalFilename) => {
       storageRef.getDownloadURL().then((downloadURL) => {
         console.log('File available at', downloadURL);
       });
-    }
+    },
   );
 
   return task.then((snapshot) => {

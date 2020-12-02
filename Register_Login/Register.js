@@ -27,13 +27,16 @@ function register({ navigation }) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
   const [confirmPass, setConfirmPass] = React.useState('');
-  const randomUsername = generateUsername();
+  const [randomUsername, setRandomusername] = React.useState(
+    generateUsername(),
+  );
 
   const AddUserToFirestore = () => {
     const name = auth().currentUser.email;
+    console.log(randomUsername);
     firestore().collection('users').doc(name).set({
       email: name,
-      userName: '',
+      userName: randomUsername,
       profileImgUrl: '',
       totalFeeds: 0,
       totalfeedBacks: 0,
@@ -55,10 +58,12 @@ function register({ navigation }) {
         .then(() => {
           // eslint-disable-next-line no-unused-expressions
           console.log('User account created & signed in!'),
-            AddUserToFirestore(),
             auth()
               .currentUser.updateProfile({ displayName: randomUsername })
-              .then(() => navigation.dispatch(StackActions.replace('Main')));
+              .then(
+                () => AddUserToFirestore(),
+                navigation.dispatch(StackActions.replace('Main')),
+              );
         })
         .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
