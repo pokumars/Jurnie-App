@@ -16,7 +16,7 @@ const QuestionModal = ({
   questionNumber,
   appendAnswer,
   sendAnswers,
-  points
+  points,
 }) => {
   // answered=== true shows btn that says next
   const [answered, setAnswered] = useState(false);
@@ -30,16 +30,47 @@ const QuestionModal = ({
   const renderResponder = () => {
     switch (answerType) {
       case answerTypes.emojiRating:
-        return <EmojiRatingResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} />;
+        return (
+          <EmojiRatingResponse
+            setAnswered={setAnswered}
+            setAnswer={setAnswer}
+            setMediaOrDone={setMediaOrDone}
+          />
+        );
       case answerTypes.mediaPhoto:
-        return <ImageResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} />;
+        return (
+          <ImageResponse
+            setAnswered={setAnswered}
+            setAnswer={setAnswer}
+            setMediaOrDone={setMediaOrDone}
+          />
+        );
       case answerTypes.text:
-        return <TextResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone}  />;
+        return (
+          <TextResponse
+            setAnswered={setAnswered}
+            setAnswer={setAnswer}
+            setMediaOrDone={setMediaOrDone}
+          />
+        );
       case answerTypes.booleanUnsure:
-        return <BooleanUnsureResponse setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} />;
+        return (
+          <BooleanUnsureResponse
+            setAnswered={setAnswered}
+            setAnswer={setAnswer}
+            setMediaOrDone={setMediaOrDone}
+          />
+        );
       case answerTypes.thankYou:
         // this component triggers the send feedback
-        return <ThankYouForFeedback setAnswered={setAnswered} setAnswer={setAnswer} setMediaOrDone={setMediaOrDone} points={points} />;
+        return (
+          <ThankYouForFeedback
+            setAnswered={setAnswered}
+            setAnswer={setAnswer}
+            setMediaOrDone={setMediaOrDone}
+            points={points}
+          />
+        );
 
       default:
         console.error('error in question modal. No question type detected');
@@ -51,7 +82,6 @@ const QuestionModal = ({
     // appendAnswer takes (keyName,value). It adds it to the tempAnswerObj to be sent to the db
     // if it is the modal where we take pictures, then append answer will be image saving. To be handled later
     if (mediaOrDone === 'done') {
-
       // if done trigger send answers
       sendAnswers();
       nextAction(ABORT);
@@ -80,18 +110,18 @@ const QuestionModal = ({
         <Text>{question}</Text>
         {renderResponder()}
         <View style={{ alignItems: 'flex-end' }}>
-        {
-          // only show the next button when user has answered
-          answered === true && (
-            <View style={styles.buttonView}>
+          {
+            // only show the next button when user has answered
+            answered === true && (
+              <View style={styles.buttonView}>
                 <Button
                   title={mediaOrDone === 'done' ? 'done' : 'next'}
                   color={color.BLACK}
                   onPress={toNextQuestionHandler}
                 />
-            </View>
-          )
-        }
+              </View>
+            )
+          }
         </View>
       </View>
     </Modal>
@@ -110,7 +140,6 @@ const styles = StyleSheet.create({
   buttonView: {
     width: '30%',
   },
-
 });
 
 export default QuestionModal;

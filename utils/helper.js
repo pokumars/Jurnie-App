@@ -11,7 +11,6 @@ const getDirections = async (polyline) => {
     return data.json();
   };
 
-  let data;
   try {
     // decodes an encoded polyline into an array of geo coordinates for a mobility route of an activity
     const points = await decode(polyline);
@@ -34,7 +33,7 @@ const getDirections = async (polyline) => {
       longitudeDelta: 0.00455555,
     };
 
-    data = {
+    const data = {
       polyline: coordinates,
       origin: origin.features[0].properties.label,
       destination: destination.features[0].properties.label,

@@ -1,11 +1,15 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { StackActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/storage';
 import { DefaultCard } from '../components/Cards/Cards';
 import { BoldText, TextXS } from '../components/Text/Text';
 import color from '../constants/color';
 import globalStyle from '../constants/globalStyle';
-import { Picker } from '@react-native-picker/picker';
 import {
   transportModes,
   ABORT,
@@ -15,11 +19,7 @@ import {
   extractModeofTransport,
 } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
-import { StackActions } from '@react-navigation/native';
-import {
-  allocatePoints,
-  transportModeQuestions,
-} from '../helpers/TmdTransportQuestions';
+import { allocatePoints, transportModeQuestions } from '../helpers/TmdTransportQuestions';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -40,6 +40,7 @@ const Questionnaire = ({ navigation, route }) => {
   const [selectedMode, setSelectedMode] = useState(
     exampleTripObject.activityType,
   );
+
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
   const [isItFreshFeedback, setIsItFreshFeedback] = useState(false)
@@ -79,6 +80,7 @@ const Questionnaire = ({ navigation, route }) => {
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
+
     extractModeofTransport------------------${extractModeofTransport(
       selectedMode,
     )}
@@ -120,7 +122,6 @@ const Questionnaire = ({ navigation, route }) => {
       navigation.dispatch(StackActions.replace('Main', { checkIfBadgeWon: isItFreshFeedback, user: updatedUser }))
       // setIsItFreshFeedback(false);
     })
-    
   };
 
 
@@ -136,6 +137,7 @@ const Questionnaire = ({ navigation, route }) => {
       .then((querySnapshot) => {
         console.log(querySnapshot.data());
         //setgiven(querySnapshot.data().feedGiven);
+
         if (querySnapshot.data().feedGiven == true) {
           
           Update();
@@ -256,33 +258,27 @@ const Questionnaire = ({ navigation, route }) => {
             }}>
             {transportModes.map((mode) => {
               return (
-                <Picker.Item
-                  key={mode}
-                  label={capitaliseModeofTransport(mode)}
-                  value={mode}
-                />
+                <Picker.Item key={mode} label={capitaliseModeofTransport(mode)} value={mode} />
               );
             })}
           </Picker>
         </>
       )}
-      {transportModeQuestions[extractModeofTransport(selectedMode)].map(
-        (que, questionIndex) => {
-          return (
-            <QuestionModal
-              key={que.question}
-              answerType={que.responseType}
-              question={que.question}
-              visible={questionNumber === questionIndex}
-              nextAction={nextModalAction}
-              appendAnswer={appendAnswer}
-              questionNumber={questionIndex}
-              sendAnswers={sendAnswersToFirebase}
-              points={points}
-            />
-          );
-        },
-      )}
+      {transportModeQuestions[extractModeofTransport(selectedMode)].map((que, questionIndex) => {
+        return (
+          <QuestionModal
+            key={que.question}
+            answerType={que.responseType}
+            question={que.question}
+            visible={questionNumber === questionIndex}
+            nextAction={nextModalAction}
+            appendAnswer={appendAnswer}
+            questionNumber={questionIndex}
+            sendAnswers={sendAnswersToFirebase}
+            points={points}
+          />
+        );
+      })}
     </View>
   );
 };
