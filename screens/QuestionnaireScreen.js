@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { StackActions } from '@react-navigation/native';
@@ -11,7 +12,6 @@ import color from '../constants/color';
 import globalStyle from '../constants/globalStyle';
 import {
   transportModes,
-  answerTypes,
   ABORT,
   PROCEED,
   exampleTripObject,
@@ -21,7 +21,13 @@ import {
 import QuestionModal from '../components/QuestionModal';
 import { allocatePoints, transportModeQuestions } from '../helpers/TmdTransportQuestions';
 
-// import firebase from '@react-native-firebase';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/storage';
+import BadgeWonModal from '../components/BadgeWonModal';
+import navigationRoute from '../constants/navigationRoute';
+import LoadingFullScreen from '../components/LoadingFullScreen';
+//import firebase from '@react-native-firebase';
 
 const Questionnaire = ({ navigation, route }) => {
   /* if feedGiven is false, then isCorrectTransportMode should be null. Because
@@ -30,28 +36,57 @@ const Questionnaire = ({ navigation, route }) => {
   the next time they come back, isCorrectTransportMode will be null so that they get the
   chance to choose the correct one */ // TODO: the above
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
-  const [selectedMode, setSelectedMode] = useState(exampleTripObject.activityType);
+  const [savingLoader, setSavingLoader] = useState(false)
+  const [selectedMode, setSelectedMode] = useState(
+    exampleTripObject.activityType,
+  );
+
   const [questionNumber, setQuestionNumber] = useState(null);
+  // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
+  const [isItFreshFeedback, setIsItFreshFeedback] = useState(false)
+  console.log('Questionnaire route', route)
   const [num, setnum] = useState(0);
+  
 
   // after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({
     feedGiven: false,
     activityType: selectedMode,
   });
-  // TODO: setpoints upon question being answered....based on question type
+ // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
+  const getTripFromFirestore = () => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('trips')
+      .doc(route.params.paramKey)
+      .get()
+      .then((querySnapshot) => {
+        if(querySnapshot.data().feedGiven === false){
+          // console.log('we are about to give fresh feedback');
+          setIsItFreshFeedback(true)
+        }
+      })
 
-  console.log(
+  }
+  useEffect(
+    getTripFromFirestore
+  , [isItFreshFeedback])
+  
+  /* console.log(
     `
     isCorrectTransportMode -------------${isCorrectTransportMode}
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
-    extractModeofTransport(selectedMode)------------------${extractModeofTransport(selectedMode)}
+
+    extractModeofTransport------------------${extractModeofTransport(
+      selectedMode,
+    )}
     received answers------------------`,
-    answers
-  );
+    answers,
+  ); */
 
   // activityTypeString is required. pass it as props or as part of the passed in trip object
   const activityTypeString = capitaliseModeofTransport(selectedMode);
@@ -70,8 +105,7 @@ const Questionnaire = ({ navigation, route }) => {
   };
 
   const appendAnswer = (key, value) => {
-    // console.log('append answers -------------key', key);
-    // console.log('append answers -------------value', value);
+
     const obj = { ...answers };
     obj[key] = value;
     setAnswers(obj);
@@ -80,15 +114,21 @@ const Questionnaire = ({ navigation, route }) => {
   };
 
   const sendAnswersToFirebase = () => {
-    console.log('------------ we are ready to sendAnswer to firebase-------------', answers);
-
-    ChecktoFeed();
-    GetFeedsForBadges();
-    navigation.dispatch(StackActions.popToTop());
+    setSavingLoader(true);
+    ChecktoFeed()
+    .then(()=> GetFeedsForBadges())
+    .then((updatedUser) => {
+      setSavingLoader(false);
+      navigation.dispatch(StackActions.replace('Main', { checkIfBadgeWon: isItFreshFeedback, user: updatedUser }))
+      // setIsItFreshFeedback(false);
+    })
   };
 
+
+
   const ChecktoFeed = () => {
-    firestore()
+    // checks to see if feedback was given already or its fresh feedback
+   return firestore()
       .collection('users')
       .doc(auth().currentUser.email)
       .collection('trips')
@@ -96,9 +136,10 @@ const Questionnaire = ({ navigation, route }) => {
       .get()
       .then((querySnapshot) => {
         console.log(querySnapshot.data());
-        // setgiven(querySnapshot.data().feedGiven);
-        // console.log(querySnapshot.data().feedGiven);
+        //setgiven(querySnapshot.data().feedGiven);
+
         if (querySnapshot.data().feedGiven == true) {
+          
           Update();
         } else {
           AddFeedtoFireStore();
@@ -107,7 +148,8 @@ const Questionnaire = ({ navigation, route }) => {
       });
   };
   const AddFeedtoFireStore = () => {
-    console.log('öööö', route.params.paramKey);
+    setIsItFreshFeedback(true);
+    console.log('AddFeedtoFireStore', route.params.paramKey);
     firestore()
       .collection('users')
       .doc(auth().currentUser.email)
@@ -128,13 +170,15 @@ const Questionnaire = ({ navigation, route }) => {
           .doc(auth().currentUser.email)
           .update({
             totalfeedBacks: firebase.firestore.FieldValue.increment(1),
+            // totalFeeds === total points obtained from giving feedback
             totalFeeds: firebase.firestore.FieldValue.increment(points),
           });
       });
   };
 
   const Update = () => {
-    console.log('awawa');
+    setIsItFreshFeedback(true);
+    // console.log('awawa');
     firestore()
       .collection('users')
       .doc(auth().currentUser.email)
@@ -143,7 +187,7 @@ const Questionnaire = ({ navigation, route }) => {
       .update({
         feed1: answers.feed1,
         feed2: answers.feed2,
-        feed2: answers.feed3,
+        feed3: answers.feed3,
         feed4: answers.feed4,
         feedGiven: true,
         img1: answers.img1,
@@ -160,6 +204,7 @@ const Questionnaire = ({ navigation, route }) => {
             .collection('users')
             .doc(auth().currentUser.email)
             .update({
+              // totalFeeds === total points obtained from giving feedback 
               totalFeeds: firebase.firestore.FieldValue.increment(1),
             });
         }
@@ -167,16 +212,17 @@ const Questionnaire = ({ navigation, route }) => {
   };
 
   const GetFeedsForBadges = () => {
-    firestore()
+    return firestore()
       .collection('users')
       .doc(auth().currentUser.email)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.data();
-
-        console.log('TotalFeedBacks in here', data.totalfeedBacks); // data is containing totalfeedBacks!!!!!!!!!!   <<<<<
+        // console.log('TotalFeedBacks in here---------', data.totalfeedBacks); // data is containing totalfeedBacks!!!!!!!!!!   <<<<<
+        return data;
       });
   };
+  
 
   return (
     <View>
@@ -198,6 +244,9 @@ const Questionnaire = ({ navigation, route }) => {
           </View>
         </View>
       </DefaultCard>
+
+      <LoadingFullScreen visible={savingLoader} text="Saving your valuable feedback" />
+
       {isCorrectTransportMode === false && (
         <>
           <Text> Choose the correct one and press YES</Text>
