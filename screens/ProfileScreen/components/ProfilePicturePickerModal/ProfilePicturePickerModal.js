@@ -23,7 +23,7 @@ const ProfilePicturePickerModal = ({
       noData: true,
     };
 
-    ImagePicker.launchCamera(options, (response) => {
+    ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
         Alert.alert('You did not select any image');
       } else if (response.error) {
