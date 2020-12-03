@@ -10,20 +10,12 @@ const BooleanUnsureResponse = (props) => {
   });
   // selectedBtn is to determine which button is selected so we can highlight it.
   const [selectedBtnText, setSelectedBtnText] = useState(null);
-  const highlightSelection = (btnText) => {
-    if (btnText === selectedBtn) {
-      return {};
-    }
-  };
 
   return (
     <View style={globalStyles.responderViewContainer}>
       <View style={styles.buttonsContainer}>
         <Pressable
-          style={[
-            styles.buttonView,
-            { backgroundColor: selectedBtnText === 'yes' ? color.STEEL_BLUE : 'white' },
-          ]}
+          style={[styles.buttonView, selectedBtnText === 'yes' ? styles.highlightedButton : null]}
           onPress={() => {
             props.setAnswered(true); // shows btn that says next
             props.setAnswer('yes'); // set answer in Questionnaire
@@ -38,8 +30,9 @@ const BooleanUnsureResponse = (props) => {
         <Pressable
           style={[
             styles.buttonView,
-            { backgroundColor: selectedBtnText === 'no' ? color.STEEL_BLUE : 'white' },
-          ]}          onPress={() => {
+            selectedBtnText === 'no' ? styles.highlightedButton : null,
+          ]}
+          onPress={() => {
             props.setAnswered(true); // shows btn that says next
             props.setAnswer('no'); // set answer in Questionnaire
             setSelectedBtnText('no') // so we know which button to highlight as selected
@@ -54,7 +47,7 @@ const BooleanUnsureResponse = (props) => {
           style={[
             styles.buttonView,
             // if this btn is selected, give the button background
-            { backgroundColor: selectedBtnText === 'not sure' ? color.STEEL_BLUE : 'white' },
+            selectedBtnText === 'not sure' ? styles.highlightedButton : null,
           ]}
           onPress={() => {
             props.setAnswered(true); // shows btn that says next
@@ -91,6 +84,9 @@ const styles = StyleSheet.create({
   btnText: {
     color: 'black',
   },
+  highlightedButton: {
+    backgroundColor: color.STEEL_BLUE 
+  }
 });
 
 export default BooleanUnsureResponse;
