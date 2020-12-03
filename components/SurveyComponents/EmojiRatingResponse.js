@@ -7,7 +7,7 @@ import globalStyles from '../../constants/globalStyle';
 const EmojiRatingResponse = (props) => {
   useEffect(() => {
     props.setMediaOrDone(null);
-  }); 
+  });
   return (
     <View style={globalStyles.responderViewContainer}>
       <View style={styles.emojisContainer}>

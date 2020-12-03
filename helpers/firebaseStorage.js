@@ -68,7 +68,6 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
   });
 };
 
-
 /**
  *
  * @param {string|any} imageURI image uri to be uploaded

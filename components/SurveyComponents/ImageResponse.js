@@ -33,9 +33,9 @@ const ImageResponse = (props) => {
         setSelectedImage(response)
       }
     })
-  }//TODO: abort vs no image
+  }// TODO: abort vs no image
   const cancelHandler = () => {
-    //if they cancel, give them option to proceed withouth having to provide image
+    // if they cancel, give them option to proceed withouth having to provide image
     props.setAnswered(true);
     props.setAnswer(null);
     setSelectedImage(null)
