@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
+import { White, MaterialRed800 } from '../components/Colors';
 import color from '../constants/color';
 import getDirections, { getIconByMode } from '../utils/helper';
 
@@ -15,6 +16,7 @@ const MapViewOfTrip = ({ trip }) => {
       const result = await getDirections(trip.polyline);
       setMapdata(result);
       console.log('results', result.polyline);
+      console.log('trip', trip);
     };
     getData();
   }, []);
@@ -25,8 +27,9 @@ const MapViewOfTrip = ({ trip }) => {
       justifyContent: 'flex-end',
       alignItems: 'center',
     },
-    makerText: { backgroundColor: 'red', padding: 4, width: 120 },
+    makerText: { backgroundColor: MaterialRed800, padding: 4, width: 120, color: White },
     makerImage: { height: 48, width: 48 },
+    text: { color: White },
   });
 
   return (
@@ -41,15 +44,15 @@ const MapViewOfTrip = ({ trip }) => {
       {mapdata.polyline && (
         <Marker coordinate={mapdata.polyline[0]}>
           <View style={styles.makerText}>
-            <Text>{mapdata.origin}</Text>
+            <Text style={styles.text}>{mapdata.origin}</Text>
           </View>
           <Image source={getIconByMode(trip.activityType)} style={styles.makerImage} />
         </Marker>
       )}
-      {mapdata.polyline && trip.activityType !== 'stationary' &&  (
-        <Marker coordinate={mapdata.polyline[1]}>
+      {mapdata.polyline && trip.activityType !== 'stationary' && (
+        <Marker coordinate={mapdata.polyline[mapdata.polyline.length - 1]}>
           <View style={styles.makerText}>
-            <Text>{mapdata.destination}</Text>
+            <Text style={styles.text}>{mapdata.destination}</Text>
           </View>
           <Image source={getIconByMode(trip.activityType)} style={styles.makerImage} />
         </Marker>

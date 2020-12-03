@@ -19,10 +19,7 @@ const deleteOldProfileImage = (filename) => {
       console.log('File deleted successfully');
     })
     .catch(function (error) {
-      console.log(
-        'Uh-oh, an error may have occurred in deleteOldProfileImage If it says above that *File deleted successfully* then ignore this!-----------',
-        error
-      );
+      console.log('Uh-oh, an error may have occurred. if *File deleted successfully* is printed above, then ignore it', error);
     });
 };
 
@@ -70,7 +67,6 @@ const uploadProfileImage = (imageURI, originalFilename, oldProfileImageRef) => {
     return storageRef.getDownloadURL();
   });
 };
-
 
 /**
  *

@@ -1,15 +1,13 @@
-//import libraries
+// import libraries
 import React, { useEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import color from '../../constants/color';
 import globalStyles from '../../constants/globalStyle';
 
-
 const BooleanUnsureResponse = (props) => {
   useEffect(() => {
     props.setMediaOrDone(null);
   });
-  
 
   return (
     <View style={globalStyles.responderViewContainer}>

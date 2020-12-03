@@ -11,7 +11,6 @@ const getDirections = async (polyline) => {
     return data.json();
   };
 
-  let data;
   try {
     // decodes an encoded polyline into an array of geo coordinates for a mobility route of an activity
     const points = await decode(polyline);
@@ -34,7 +33,7 @@ const getDirections = async (polyline) => {
       longitudeDelta: 0.00455555,
     };
 
-    data = {
+    const data = {
       polyline: coordinates,
       origin: origin.features[0].properties.label,
       destination: destination.features[0].properties.label,
@@ -80,7 +79,7 @@ const getIconByMode = (mode) => {
       return require('assets/icons/tram.png');
 
     case 'motorized/rail/train':
-      return require('assets/icons/train.png');
+      return require('assets/icons/rail.png');
 
     case 'motorized/rail/metro':
       return require('assets/icons/underground.png');

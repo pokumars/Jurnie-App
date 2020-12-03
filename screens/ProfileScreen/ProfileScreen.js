@@ -11,10 +11,6 @@ import TmdApi from 'bridge/TmdApi';
 
 import Badge from 'components/Badge';
 import { Mariner, SteelBlue } from 'components/Colors';
-import DetailUpdateModal from './components/DetailUpdateModal';
-import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
-import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
-import ProfileUserDetail from './components/ProfileUserDetail';
 import {
   Center,
   InlineXXXL,
@@ -25,6 +21,11 @@ import {
 import { TextM } from 'components/Text';
 import BadgeWonModal from '../../components/BadgeWonModal';
 import { determineBadgeIcon } from 'helpers/determineAsset';
+import DetailUpdateModal from './components/DetailUpdateModal';
+import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
+import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
+import ProfileUserDetail from './components/ProfileUserDetail';
+
 
 const testBadgeData = [
   {
