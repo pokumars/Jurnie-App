@@ -41,14 +41,9 @@ function register({ navigation }) {
       totalFeeds: 0,
       totalfeedBacks: 0,
     });
-    firestore()
-      .collection('users')
-      .doc(name)
-      .collection('trips')
-      .doc('demo')
-      .set({
-        demo: true,
-      });
+    firestore().collection('users').doc(name).collection('trips').doc('demo').set({
+      demo: true,
+    });
   };
 
   const Authentication = () => {
@@ -76,19 +71,11 @@ function register({ navigation }) {
 
           console.error(error);
         });
-    } else if (
-      pass.length < 8 &&
-      pass === confirmPass &&
-      (email.length > 8 || email.length < 8)
-    ) {
+    } else if (pass.length < 8 && pass === confirmPass && (email.length > 8 || email.length < 8)) {
       Toast.show({
         text1: 'Password length is less than 8 characters',
       });
-    } else if (
-      email.length < 8 &&
-      pass === confirmPass &&
-      (pass.length > 8 || pass.length < 8)
-    ) {
+    } else if (email.length < 8 && pass === confirmPass && (pass.length > 8 || pass.length < 8)) {
       Toast.show({
         text1: 'Email is incorrect',
       });
@@ -112,24 +99,16 @@ function register({ navigation }) {
       <ScrollView>
         <View>
           <View style={styles.logoContainer}>
-            <Image
-              source={require('../assets/moprim.png')}
-              style={styles.logo}
-            />
+            <Image source={require('../assets/moprim.png')} style={styles.logo} />
           </View>
           <Toast ref={(ref) => Toast.setRef(ref)} />
         </View>
         <View style={styles.formContainer}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Create account
-          </Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Create account</Text>
           <Text>Please fill-in your Email and Password</Text>
 
           <View style={styles.inputContainer}>
-            <Image
-              source={require('../assets/icons/email.png')}
-              style={styles.inputImage}
-            />
+            <Image source={require('../assets/icons/email.png')} style={styles.inputImage} />
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -138,10 +117,7 @@ function register({ navigation }) {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image
-              source={require('../assets/icons/key.png')}
-              style={styles.inputImage}
-            />
+            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -152,10 +128,7 @@ function register({ navigation }) {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image
-              source={require('../assets/icons/key.png')}
-              style={styles.inputImage}
-            />
+            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
             <TextInput
               style={styles.input}
               placeholder="Confirm password"

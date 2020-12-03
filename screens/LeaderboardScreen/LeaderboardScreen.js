@@ -40,85 +40,6 @@ const LeaderboardScreen = ({ navigation }) => {
   }, []);
 
   const [users, setusers] = useState();
-  const [data, setData] = useState([
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test1',
-      name: 'Very Long Long Long Name',
-      score: 123456,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test2',
-      name: 'Zakaria',
-      score: 10345,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test3',
-      name: 'Tamanji',
-      score: 1213,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test4',
-      name: 'Oheneba',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test5',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test6',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test7',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test8',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test9',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test10',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri:
-        'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test11',
-      name: 'Very Long Name',
-      score: 43,
-    },
-  ]);
 
   const onLoadMoreButtonPress = () => {};
 
@@ -136,7 +57,7 @@ const LeaderboardScreen = ({ navigation }) => {
     <ScreenContainer>
       <FlatList
         data={users}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.userName}
         {...{ renderItem }}
       />
     </ScreenContainer>
@@ -153,6 +74,7 @@ const images = [
   require('assets/icons/bear.png'),
   require('assets/icons/giraffe.png'),
 ];
+
 const imageSelector = () => {
   const randomNumber = Math.floor(Math.random() * images.length);
   const selcted = images[randomNumber];

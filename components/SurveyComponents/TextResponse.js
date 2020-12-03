@@ -18,7 +18,7 @@ const TextResponse = (props) => {
       <TextInput
         multiline
         numberOfLines={6}
-        style={{ borderColor: 'gray', borderWidth: 1, width: '100%'}}
+        style={{ borderColor: 'gray', borderWidth: 1, width: '100%' }}
         onChangeText={(text) => setTextValue(text)}
         value={textValue}
       />
@@ -28,7 +28,6 @@ const TextResponse = (props) => {
     </View>
   );
 };
-
 
 // make this component available to the app
 export default TextResponse;

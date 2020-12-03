@@ -1,9 +1,14 @@
 export const transportModes = [
-  'non-motorized/bicycle', 'non-motorized/pedestrian/walk', 
-'non-motorized/pedestrian/run', 'motorized/road/car',
-'motorized/road/bus', 'motorized/rail/tram', 'motorized/rail/train',
- 'motorized/rail/metro', 'motorized/air/plane'
-]
+  'non-motorized/bicycle',
+  'non-motorized/pedestrian/walk',
+  'non-motorized/pedestrian/run',
+  'motorized/road/car',
+  'motorized/road/bus',
+  'motorized/rail/tram',
+  'motorized/rail/train',
+  'motorized/rail/metro',
+  'motorized/air/plane',
+];
 export const answerTypes = {
   rating: 'RATING',
   booleanUnsure: 'BOOLEAN_UNSURE',
@@ -39,7 +44,6 @@ export const exampleTripObject = {
   timeEnd: '16:16',
   timestart: '15:47',
 };
-
 
 export const extractModeofTransport = (mode) => {
   return mode.split('/').pop();

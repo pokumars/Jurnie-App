@@ -1,11 +1,15 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { StackActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/storage';
 import { DefaultCard } from '../components/Cards/Cards';
 import { BoldText, TextXS } from '../components/Text/Text';
 import color from '../constants/color';
 import globalStyle from '../constants/globalStyle';
-import { Picker } from '@react-native-picker/picker';
 import {
   transportModes,
   ABORT,
@@ -15,15 +19,11 @@ import {
   extractModeofTransport,
 } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
-import { StackActions } from '@react-navigation/native';
 import {
   allocatePoints,
   transportModeQuestions,
 } from '../helpers/TmdTransportQuestions';
 
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/storage';
 import BadgeWonModal from '../components/BadgeWonModal';
 import navigationRoute from '../constants/navigationRoute';
 import LoadingFullScreen from '../components/LoadingFullScreen';
@@ -40,6 +40,7 @@ const Questionnaire = ({ navigation, route }) => {
   const [selectedMode, setSelectedMode] = useState(
     exampleTripObject.activityType,
   );
+
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
   const [isItFreshFeedback, setIsItFreshFeedback] = useState(false);
@@ -75,6 +76,7 @@ const Questionnaire = ({ navigation, route }) => {
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
+
     extractModeofTransport------------------${extractModeofTransport(
       selectedMode,
     )}
@@ -133,6 +135,7 @@ const Questionnaire = ({ navigation, route }) => {
       .then((querySnapshot) => {
         console.log(querySnapshot.data());
         //setgiven(querySnapshot.data().feedGiven);
+
         if (querySnapshot.data().feedGiven == true) {
           Update();
         } else {

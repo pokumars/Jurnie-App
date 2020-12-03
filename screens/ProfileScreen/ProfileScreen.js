@@ -20,10 +20,6 @@ import TmdApi from 'bridge/TmdApi';
 
 import Badge from 'components/Badge';
 import { Mariner, SteelBlue } from 'components/Colors';
-import DetailUpdateModal from './components/DetailUpdateModal';
-import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
-import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
-import ProfileUserDetail from './components/ProfileUserDetail';
 import {
   Center,
   InlineXXXL,
@@ -34,7 +30,13 @@ import {
 import { TextM } from 'components/Text';
 import BadgeWonModal from '../../components/BadgeWonModal';
 import { determineBadgeIcon } from 'helpers/determineAsset';
+
 import firestore from '@react-native-firebase/firestore';
+
+import DetailUpdateModal from './components/DetailUpdateModal';
+import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
+import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
+import ProfileUserDetail from './components/ProfileUserDetail';
 
 const testBadgeData = [
   {
@@ -90,12 +92,27 @@ const ProfileScreen = ({ route, navigation }) => {
   );
   const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(false);
   const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null;
+  const [BadgesFire, setBadgesFire] = useState([]);
 
   const toggleBadgeWonModal = (onOff) => {
     setBadgeWonModalVisible(onOff);
   };
 
   useEffect(() => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('badges')
+      .where('gotten', '==', true)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        setBadgesFire(data);
+        console.log(BadgesFire);
+      });
+  }, []);
+
+  /*useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
     console.log('-------------route in profileScreen', route);
     if (route.params !== undefined && route.params.showBadge === true) {
@@ -104,7 +121,7 @@ const ProfileScreen = ({ route, navigation }) => {
       );
       setBadgeWonModalVisible(true);
     }
-  }, [route.params]);
+  }, [route.params]);*/
 
   const signOut = () => {
     auth()

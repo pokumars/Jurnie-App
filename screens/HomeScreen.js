@@ -2,7 +2,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
-import { Button, Text, View, FlatList, DeviceEventEmitter } from 'react-native';
+import { Button, Text } from 'react-native';
 import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
@@ -49,6 +49,7 @@ import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
+import { getIconByMode } from '../utils/helper';
 
 const Item = ({ title, onPress }) => (
   <TouchableOpacity
@@ -129,27 +130,29 @@ const HomeScreen = ({ navigation }) => {
         setcurrentTrip(data);
         // console.log('kkkkk', currentTrip);
       });
-  }, []);
-  useEffect(function FEtchuserInfo() {
+
     firestore()
       .collection('users')
       .orderBy('totalFeeds', 'desc')
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        console.log(data);
         setarray(data);
+        console.log('data', array);
 
         setindexUser(
           data.findIndex((obj) => obj.email === auth().currentUser.email),
         );
 
-        setcurrentUser(data[indexUser].totalFeeds);
-        setFirstUser(data[0].totalFeeds - currentUser);
+        const val =
+          data[data.findIndex((obj) => obj.email === auth().currentUser.email)]
+            .totalFeeds;
 
-        //setFirstUser(data[0].totalFeeds);
+        setFirstUser(data[0].totalFeeds - val);
+        setcurrentUser(val);
+        // setFirstUser(data[0].totalFeeds);
 
-        console.log('kkkkk', indexUser, currentUser, firstUser);
+        console.log('points ranking', indexUser, val, firstUser);
       });
   }, []);
 
@@ -235,78 +238,11 @@ const HomeScreen = ({ navigation }) => {
       });
   };
 
-  const renderItem = ({ item }) => {
-    <Item title={item.timeEnd} onPress={() => setSelectedId(item.id)} />;
-  };
-
-  const GetCurrent = () => {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser.email)
-      .collection('trips')
-      .where('activityType', '!=', 'stationary')
-      .where('activityType', '!=', 'non-motorized/bicycle')
-      .where('activityType', '!=', 'non-motorized/pedestrian/walk')
-      .where('activityType', '!=', 'non-motorized/pedestrian/run')
-      .orderBy('dateAdded', 'desc')
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        // console.log(data);
-
-        setcurrentTrip(data);
-        console.log('kkkkk', data);
-      });
-  };
-
   const onWriteFeedbackButtonPress = () => {
     navigation.navigate('Questionnaire', {
       paramKey: currentTrip[0].id,
+      paramtrip: currentTrip,
     });
-  };
-
-  const FilterMode = (activity) => {
-    switch (activity) {
-      case 'stationary':
-        return require('assets/icons/sitting-man.png');
-
-      case 'non-motorized/bicycle':
-        return require('assets/icons/bicycle.png');
-
-      case 'non-motorized/pedestrian':
-        return require('assets/icons/walk.png');
-
-      case 'non-motorized/pedestrian/walk':
-        return require('assets/icons/walk.png');
-
-      case 'non-motorized/pedestrian/run':
-        return require('assets/icons/run.png');
-
-      case 'motorized/road/car':
-        return require('assets/icons/car.png');
-
-      case 'motorized/road/bus':
-        return require('assets/icons/bus.png');
-
-      case 'motorized/rail':
-        return require('assets/icons/rail.png');
-
-      case 'motorized/rail/tram':
-        return require('assets/icons/tram.png');
-
-      case 'motorized/rail/train':
-        return require('assets/icons/train.png');
-
-      case 'motorized/rail/metro':
-        return require('assets/icons/underground.png');
-
-      case 'motorized/air/plane':
-        return require('assets/icons/plane.png');
-
-      default:
-        return require('assets/icons/bus.png');
-    }
   };
 
   const ScreenContainer = styled.View`
@@ -335,7 +271,7 @@ const HomeScreen = ({ navigation }) => {
                 })
               }>
               <TransportTile
-                source={FilterMode(currentTrip[0].activityType)}
+                source={getIconByMode(currentTrip[0].activityType)}
                 backgroundColor={White}
               />
             </TouchableOpacity>
