@@ -64,7 +64,7 @@ const Item = ({ title, onPress }) => (
 );
 
 const HomeScreen = ({ navigation }) => {
-  const [TmdActivity, setActivity] = useState([]);
+  const [activity, setActivity] = useState('nothing');
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
@@ -102,17 +102,17 @@ const HomeScreen = ({ navigation }) => {
           console.log('Tmd success', activities);
           getthat(activities);
 
-          setActivity(activities);
+          setActivity(str);
           // console.log('AAAAAAAAAAa', arraydata);
         },
         (err) => {
           console.log('Tmd error', err);
-        }
+        },
       );
     } catch (e) {
       console.log('error', e.message);
     }
-  }, [TmdActivity.length]);
+  }, []);
 
   useEffect(function Fetchcu() {
     firestore()
@@ -130,29 +130,28 @@ const HomeScreen = ({ navigation }) => {
         // console.log('kkkkk', currentTrip);
       });
   }, []);
-  useEffect(
-    function FEtchuserInfo() {
-      firestore()
-        .collection('users')
-        .orderBy('totalFeeds', 'desc')
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => doc.data());
-          console.log(data);
-          setarray(data);
+  useEffect(function FEtchuserInfo() {
+    firestore()
+      .collection('users')
+      .orderBy('totalFeeds', 'desc')
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        console.log(data);
+        setarray(data);
 
-          setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
+        setindexUser(
+          data.findIndex((obj) => obj.email === auth().currentUser.email),
+        );
 
-          setcurrentUser(data[indexUser].totalFeeds);
-          setFirstUser(data[0].totalFeeds - currentUser);
+        setcurrentUser(data[indexUser].totalFeeds);
+        setFirstUser(data[0].totalFeeds - currentUser);
 
-          // setFirstUser(data[0].totalFeeds);
+        //setFirstUser(data[0].totalFeeds);
 
-          console.log('kkkkk', indexUser, currentUser, firstUser);
-        });
-    },
-    [TmdActivity.length]
-  );
+        console.log('kkkkk', indexUser, currentUser, firstUser);
+      });
+  }, []);
 
   // starts/stops TMD
   const toggleTmdService = () => async () => {
@@ -177,6 +176,13 @@ const HomeScreen = ({ navigation }) => {
       .then((querySnapshot) => {
         console.log('Total trips: ', querySnapshot.size);
         const chunks = [];
+        const activities = [
+          'stationary',
+          'non-motorized/pedestrian',
+          'non-motorized/pedestrian/walk',
+          'non-motorized/pedestrian/run',
+          'unknown',
+        ];
         const n = querySnapshot.size;
 
         if (arr.length == 0 || arr == null) {
@@ -188,8 +194,11 @@ const HomeScreen = ({ navigation }) => {
           }
           console.log(chunks); // console.log(chunks.includes('dd'));
           for (let i = 0; i < arr.length; i++) {
-            if (chunks.includes(arr[i].id)) {
-              console.log(arr[i].id, 'already');
+            if (
+              chunks.includes(arr[i].id) ||
+              activities.includes(arr[i].activityType)
+            ) {
+              console.log(arr[i].id, 'already or it is unwanted activity');
             } else {
               firestore()
                 .collection('users')
@@ -316,7 +325,9 @@ const HomeScreen = ({ navigation }) => {
       <LastTripCard>
         {currentTrip.length !== 0 ? (
           <>
-            <MeansOfTransportText>{currentTrip[0].activityType}</MeansOfTransportText>
+            <MeansOfTransportText>
+              {currentTrip[0].activityType}
+            </MeansOfTransportText>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Detailed', {
@@ -396,7 +407,8 @@ const HomeScreen = ({ navigation }) => {
             <Avatar
               size={InlineXL}
               source={{
-                uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+                uri:
+                  'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
               }}
             />
             <UserNameText>{auth().currentUser.displayName}</UserNameText>

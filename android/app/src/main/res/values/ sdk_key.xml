@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tmd_sdk_config_key">eu-central-1:6bacca17-251c-49c8-a9c1-b4ec6f317128</string>
+    <string name="tmd_sdk_config_endpoint">https://ljyzwpikl9.execute-api.eu-central-1.amazonaws.com/metro2/v1</string>
+</resources>
