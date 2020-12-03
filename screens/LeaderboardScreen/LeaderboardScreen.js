@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Avatar from 'components/Avatar';
 import { ButtonContainer, ButtonWrapper } from 'components/Button';
 import { DefaultCard } from 'components/Cards';
-import { Emperor, Fire, Grenadier } from 'components/Colors';
+import { Emperor, Fire, Grenadier, Silver } from 'components/Colors';
 import Icon from 'components/Icon';
 import {
   Center,
@@ -20,6 +20,7 @@ import {
 import { BoldText, TextXS, TextXXS } from 'components/Text';
 import { formatScore } from 'helpers';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const LeaderboardScreen = ({ navigation }) => {
   useEffect(function Fetchusers() {
@@ -103,7 +104,14 @@ const LeaderboardCard = ({ item, index }) => (
         <Avatar size={InlineL} source={{ uri: item.profileImgUrl }} />
       )}
     </AvatarContainer>
-    <NameText numberOfLines={1}>{item.userName}</NameText>
+    {item.email == auth().currentUser.email ? (
+      <NameMytext numberOfLines={1} style={{}}>
+        {item.userName} 💪 🔥
+      </NameMytext>
+    ) : (
+      <NameText numberOfLines={1}>{item.userName}</NameText>
+    )}
+
     <ScoreText>{formatScore(item.totalFeeds)}</ScoreText>
   </LeaderboardCardContainer>
 );
@@ -136,6 +144,14 @@ const AvatarContainer = styled.View`
 
 const NameText = styled(SmallText)`
   color: ${Emperor};
+  flex: 5;
+  padding-left: ${InlineM}px;
+  padding-right: ${InlineM}px;
+  text-align: left;
+`;
+
+const NameMytext = styled(SmallText)`
+  color: #dc143c;
   flex: 5;
   padding-left: ${InlineM}px;
   padding-right: ${InlineM}px;
