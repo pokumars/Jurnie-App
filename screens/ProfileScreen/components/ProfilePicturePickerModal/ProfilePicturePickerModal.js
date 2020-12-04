@@ -15,6 +15,8 @@ import globalStyles from '../../../../constants/globalStyle';
 import color from '../../../../constants/color';
 import { uploadProfileImage } from '../../../../helpers/firebaseStorage';
 import LoadingFullScreen from '../../../../components/LoadingFullScreen';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const ProfilePicturePickerModal = ({
   visible,
@@ -59,6 +61,9 @@ const ProfilePicturePickerModal = ({
       oldProfileImageRef,
     ).then((downloadUrl) => {
       // console.log('return value in modal after upload-------------------------', downloadUrl)
+      firestore().collection('users').doc(auth().currentUser.email).update({
+        ProfileImgUrl: downloadUrl,
+      });
       toggleVisibility();
       setSavingLoader(false);
       setSelectedImage(null);
