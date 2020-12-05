@@ -19,7 +19,10 @@ import {
   extractModeofTransport,
 } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
-import { allocatePoints, transportModeQuestions } from '../helpers/TmdTransportQuestions';
+import {
+  allocatePoints,
+  transportModeQuestions,
+} from '../helpers/TmdTransportQuestions';
 
 import BadgeWonModal from '../components/BadgeWonModal';
 import navigationRoute from '../constants/navigationRoute';
@@ -33,24 +36,23 @@ const Questionnaire = ({ navigation, route }) => {
   the next time they come back, isCorrectTransportMode will be null so that they get the
   chance to choose the correct one */ // TODO: the above
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
-  const [savingLoader, setSavingLoader] = useState(false)
+  const [savingLoader, setSavingLoader] = useState(false);
   const [selectedMode, setSelectedMode] = useState(
     exampleTripObject.activityType,
   );
 
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
-  const [isItFreshFeedback, setIsItFreshFeedback] = useState(false)
-  console.log('Questionnaire route', route)
+  const [isItFreshFeedback, setIsItFreshFeedback] = useState(false);
+  console.log('Questionnaire route', route.params.paramtrip);
   const [num, setnum] = useState(0);
-  
 
   // after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({
     feedGiven: false,
     activityType: selectedMode,
   });
- // setpoints upon question being answered....based on question type
+  // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
   const getTripFromFirestore = () => {
     firestore()
@@ -60,17 +62,14 @@ const Questionnaire = ({ navigation, route }) => {
       .doc(route.params.paramKey)
       .get()
       .then((querySnapshot) => {
-        if(querySnapshot.data().feedGiven === false){
+        if (querySnapshot.data().feedGiven === false) {
           // console.log('we are about to give fresh feedback');
-          setIsItFreshFeedback(true)
+          setIsItFreshFeedback(true);
         }
-      })
+      });
+  };
+  useEffect(getTripFromFirestore, [isItFreshFeedback]);
 
-  }
-  useEffect(
-    getTripFromFirestore
-  , [isItFreshFeedback])
-  
   /* console.log(
     `
     isCorrectTransportMode -------------${isCorrectTransportMode}
@@ -102,7 +101,6 @@ const Questionnaire = ({ navigation, route }) => {
   };
 
   const appendAnswer = (key, value) => {
-
     const obj = { ...answers };
     obj[key] = value;
     setAnswers(obj);
@@ -113,19 +111,22 @@ const Questionnaire = ({ navigation, route }) => {
   const sendAnswersToFirebase = () => {
     setSavingLoader(true);
     ChecktoFeed()
-    .then(()=> GetFeedsForBadges())
-    .then((updatedUser) => {
-      setSavingLoader(false);
-      navigation.dispatch(StackActions.replace('Main', { checkIfBadgeWon: isItFreshFeedback, user: updatedUser }))
-      // setIsItFreshFeedback(false);
-    })
+      .then(() => GetFeedsForBadges())
+      .then((updatedUser) => {
+        setSavingLoader(false);
+        navigation.dispatch(
+          StackActions.replace('Main', {
+            checkIfBadgeWon: isItFreshFeedback,
+            user: updatedUser,
+          }),
+        );
+        // setIsItFreshFeedback(false);
+      });
   };
-
-
 
   const ChecktoFeed = () => {
     // checks to see if feedback was given already or its fresh feedback
-   return firestore()
+    return firestore()
       .collection('users')
       .doc(auth().currentUser.email)
       .collection('trips')
@@ -136,7 +137,6 @@ const Questionnaire = ({ navigation, route }) => {
         //setgiven(querySnapshot.data().feedGiven);
 
         if (querySnapshot.data().feedGiven == true) {
-          
           Update();
         } else {
           AddFeedtoFireStore();
@@ -201,7 +201,7 @@ const Questionnaire = ({ navigation, route }) => {
             .collection('users')
             .doc(auth().currentUser.email)
             .update({
-              // totalFeeds === total points obtained from giving feedback 
+              // totalFeeds === total points obtained from giving feedback
               totalFeeds: firebase.firestore.FieldValue.increment(1),
             });
         }
@@ -219,7 +219,6 @@ const Questionnaire = ({ navigation, route }) => {
         return data;
       });
   };
-  
 
   return (
     <View>
@@ -242,7 +241,10 @@ const Questionnaire = ({ navigation, route }) => {
         </View>
       </DefaultCard>
 
-      <LoadingFullScreen visible={savingLoader} text="Saving your valuable feedback" />
+      <LoadingFullScreen
+        visible={savingLoader}
+        text="Saving your valuable feedback"
+      />
 
       {isCorrectTransportMode === false && (
         <>
@@ -255,27 +257,33 @@ const Questionnaire = ({ navigation, route }) => {
             }}>
             {transportModes.map((mode) => {
               return (
-                <Picker.Item key={mode} label={capitaliseModeofTransport(mode)} value={mode} />
+                <Picker.Item
+                  key={mode}
+                  label={capitaliseModeofTransport(mode)}
+                  value={mode}
+                />
               );
             })}
           </Picker>
         </>
       )}
-      {transportModeQuestions[extractModeofTransport(selectedMode)].map((que, questionIndex) => {
-        return (
-          <QuestionModal
-            key={que.question}
-            answerType={que.responseType}
-            question={que.question}
-            visible={questionNumber === questionIndex}
-            nextAction={nextModalAction}
-            appendAnswer={appendAnswer}
-            questionNumber={questionIndex}
-            sendAnswers={sendAnswersToFirebase}
-            points={points}
-          />
-        );
-      })}
+      {transportModeQuestions[extractModeofTransport(selectedMode)].map(
+        (que, questionIndex) => {
+          return (
+            <QuestionModal
+              key={que.question}
+              answerType={que.responseType}
+              question={que.question}
+              visible={questionNumber === questionIndex}
+              nextAction={nextModalAction}
+              appendAnswer={appendAnswer}
+              questionNumber={questionIndex}
+              sendAnswers={sendAnswersToFirebase}
+              points={points}
+            />
+          );
+        },
+      )}
     </View>
   );
 };

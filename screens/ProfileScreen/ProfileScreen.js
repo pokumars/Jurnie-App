@@ -1,7 +1,16 @@
 /* eslint-disable prettier/prettier */
 
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, Button, Image, ScrollView, StyleSheet, View, Modal,Text } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  View,
+  Modal,
+  Text,
+} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import styled from 'styled-components/native';
@@ -21,11 +30,13 @@ import {
 import { TextM } from 'components/Text';
 import BadgeWonModal from '../../components/BadgeWonModal';
 import { determineBadgeIcon } from 'helpers/determineAsset';
+
+import firestore from '@react-native-firebase/firestore';
+
 import DetailUpdateModal from './components/DetailUpdateModal';
 import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
 import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
 import ProfileUserDetail from './components/ProfileUserDetail';
-
 
 const testBadgeData = [
   {
@@ -80,20 +91,37 @@ const ProfileScreen = ({ route, navigation }) => {
     auth().currentUser.photoURL,
   );
   const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(false);
-  const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null
+  const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null;
+  const [BadgesFire, setBadgesFire] = useState([]);
 
-  const toggleBadgeWonModal= (onOff) =>{
-    setBadgeWonModalVisible(onOff)
-  }
+  const toggleBadgeWonModal = (onOff) => {
+    setBadgeWonModalVisible(onOff);
+  };
 
   useEffect(() => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('badges')
+      .where('gotten', '==', true)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        setBadgesFire(data);
+        console.log(BadgesFire);
+      });
+  }, []);
+
+  /*useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
     console.log('-------------route in profileScreen', route);
-    if (route.params !==undefined && route.params.showBadge === true) {
-      console.log('--------------------display badge won in profile---------------------')
+    if (route.params !== undefined && route.params.showBadge === true) {
+      console.log(
+        '--------------------display badge won in profile---------------------',
+      );
       setBadgeWonModalVisible(true);
     }
-  }, [route.params]);
+  }, [route.params]);*/
 
   const signOut = () => {
     auth()
@@ -111,6 +139,9 @@ const ProfileScreen = ({ route, navigation }) => {
       .currentUser.updateProfile({ displayName: newUsername })
       .then((data) => {
         // confirmation from Firebase
+        firestore().collection('users').doc(auth().currentUser.email).update({
+          userName: newUsername,
+        });
         setUsername(newUsername);
       });
   };
@@ -132,20 +163,20 @@ const ProfileScreen = ({ route, navigation }) => {
     <View style={styles.screen}>
       <ScrollView>
         <View style={styles.settingsLogoutContainer}>
-        
-          { false && (<IconTextBorderlessBtn
-            textFirst={false}
-            btnText="Settings"
-            btnImage={require('assets/icons/settings-outline.png')}
-            onPress={() => console.log('settings clicked')}
-          />)}
+          {false && (
+            <IconTextBorderlessBtn
+              textFirst={false}
+              btnText="Settings"
+              btnImage={require('assets/icons/settings-outline.png')}
+              onPress={() => console.log('settings clicked')}
+            />
+          )}
           <IconTextBorderlessBtn
             textFirst
             btnText="Logout"
             btnImage={require('assets/icons/log-out.png')}
             onPress={signOut}
           />
-          
         </View>
         <ProfilePicturePickerModal
           visible={changingPicModalVisible}
@@ -170,18 +201,16 @@ const ProfileScreen = ({ route, navigation }) => {
             title="Change Pic"
             color={SteelBlue}
             accessibilityLabel="Change profile picture"
-            
           />
-
         </ProfilePictureWrapper>
-        {
-          badgeThatUserJustWon && (<BadgeWonModal
+        {badgeThatUserJustWon && (
+          <BadgeWonModal
             visible={badgeWonModalVisible}
             text={badgeThatUserJustWon.text}
             setVisibility={toggleBadgeWonModal}
             badgeImage={badgeThatUserJustWon.badgeImage}
-          />)
-        }
+          />
+        )}
         <View style={styles.userDetails}>
           <ProfileUserDetail
             title="Username"
@@ -264,7 +293,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     // justifyContent: 'space-between', //uncomment this when we have settings
-    justifyContent: 'flex-end',  // remove this when we have settings
+    justifyContent: 'flex-end', // remove this when we have settings
     padding: 5,
   },
   profilePic: {
@@ -275,7 +304,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
 });
 
 export default ProfileScreen;

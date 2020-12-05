@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,6 +8,8 @@ import HomeScreen from './HomeScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import MyTripsScreen from './MyTripsScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import { COLOR, NAVIGATION_ROUTE } from '../constants';
 import { feedbackAmountMilestones } from '../helpers/badgeWinning';
@@ -20,18 +22,30 @@ const MainTabScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
-    if (route.params !==undefined && route.params.checkIfBadgeWon === true) {
+    if (route.params !== undefined && route.params.checkIfBadgeWon === true) {
       // console.log('-----MainTabScreen display badge won ---------------------', route.params)
 
       // this has the text of the badge and the image
       /* NB: we need the +1 because the previous state of userObj is what is passed to MainTabScreen
       so if it is fresh feedback, checkIfBadgeWon will be true and that is when we check whether they won something */
       const userJustWonThisBadge = feedbackAmountMilestones.find((badgeObj) => {
-        return  badgeObj.score === (route.params.user.totalfeedBacks +1)
+        return badgeObj.score === route.params.user.totalfeedBacks + 1;
       });
 
       if (userJustWonThisBadge) {
         // pass with the params, the badgename, the badge popup-modal text
+        firestore()
+          .collection('users')
+          .doc(auth().currentUser.email)
+          .collection('badges')
+          .doc(userJustWonThisBadge.name)
+          .set({
+            name: userJustWonThisBadge.name,
+            gotten: true,
+            score: userJustWonThisBadge.score,
+            badgeImage: userJustWonThisBadge.badgeImage,
+          });
+
         navigation.navigate(NAVIGATION_ROUTE.PROFILE, {
           showBadge: true,
           badgeToShow: userJustWonThisBadge,

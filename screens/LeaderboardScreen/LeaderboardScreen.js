@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Avatar from 'components/Avatar';
 import { ButtonContainer, ButtonWrapper } from 'components/Button';
 import { DefaultCard } from 'components/Cards';
-import { Emperor, Fire, Grenadier } from 'components/Colors';
+import { Emperor, Fire, Grenadier, Silver } from 'components/Colors';
 import Icon from 'components/Icon';
 import {
   Center,
@@ -20,6 +20,7 @@ import {
 import { BoldText, TextXS, TextXXS } from 'components/Text';
 import { formatScore } from 'helpers';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const LeaderboardScreen = ({ navigation }) => {
   useEffect(function Fetchusers() {
@@ -40,74 +41,6 @@ const LeaderboardScreen = ({ navigation }) => {
   }, []);
 
   const [users, setusers] = useState();
-  const [data, setData] = useState([
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test1',
-      name: 'Very Long Long Long Name',
-      score: 123456,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test2',
-      name: 'Zakaria',
-      score: 10345,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test3',
-      name: 'Tamanji',
-      score: 1213,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test4',
-      name: 'Oheneba',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test5',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test6',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test7',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test8',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test9',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test10',
-      name: 'Very Long Name',
-      score: 43,
-    },
-    {
-      avatarUri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      id: 'test11',
-      name: 'Very Long Name',
-      score: 43,
-    },
-  ]);
 
   const onLoadMoreButtonPress = () => {};
 
@@ -123,7 +56,11 @@ const LeaderboardScreen = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <FlatList data={users} keyExtractor={(item) => item.userName} {...{ renderItem }} />
+      <FlatList
+        data={users}
+        keyExtractor={(item) => item.userName}
+        {...{ renderItem }}
+      />
     </ScreenContainer>
   );
 };
@@ -145,7 +82,8 @@ const imageSelector = () => {
   return selcted;
 };
 
-const avatarUri = 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg';
+const avatarUri =
+  'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg';
 
 const ScreenContainer = styled.View`
   ${DefaultContainer};
@@ -157,12 +95,23 @@ const LeaderboardCard = ({ item, index }) => (
     <RankingText>{index + 1}</RankingText>
     <AvatarContainer>
       {item.profileImgUrl == '' ? (
-        <Image size={InlineL} style={{ width: 40, height: 40 }} source={imageSelector()} />
+        <Image
+          size={InlineL}
+          style={{ width: 40, height: 40 }}
+          source={imageSelector()}
+        />
       ) : (
         <Avatar size={InlineL} source={{ uri: item.profileImgUrl }} />
       )}
     </AvatarContainer>
-    <NameText numberOfLines={1}>{item.userName}</NameText>
+    {item.email == auth().currentUser.email ? (
+      <NameMytext numberOfLines={1} style={{}}>
+        {item.userName} 💪 🔥
+      </NameMytext>
+    ) : (
+      <NameText numberOfLines={1}>{item.userName}</NameText>
+    )}
+
     <ScoreText>{formatScore(item.totalFeeds)}</ScoreText>
   </LeaderboardCardContainer>
 );
@@ -195,6 +144,14 @@ const AvatarContainer = styled.View`
 
 const NameText = styled(SmallText)`
   color: ${Emperor};
+  flex: 5;
+  padding-left: ${InlineM}px;
+  padding-right: ${InlineM}px;
+  text-align: left;
+`;
+
+const NameMytext = styled(SmallText)`
+  color: #dc143c;
   flex: 5;
   padding-left: ${InlineM}px;
   padding-right: ${InlineM}px;

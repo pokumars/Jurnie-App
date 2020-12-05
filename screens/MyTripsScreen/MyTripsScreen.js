@@ -45,14 +45,15 @@ const MyTripsScreen = ({ navigation }) => {
       transportMode={item.activityType}
       startingTime={item.timestart}
       title={item.timeEnd}
-      onFeedbackButtonPress={() => onFeedbackButtonPress(item.id)}
+      onFeedbackButtonPress={() => onFeedbackButtonPress(item.id, item)}
       onTripCardPress={() => onTripCardPress(item.id)}
     />
   );
 
-  const onFeedbackButtonPress = (id) => {
+  const onFeedbackButtonPress = (id, item) => {
     navigation.navigate('Questionnaire', {
       paramKey: id,
+      paramtrip: item,
     });
   };
 

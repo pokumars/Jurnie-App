@@ -1,11 +1,22 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, Button, Alert, Modal, ActivityIndicator, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Button,
+  Alert,
+  Modal,
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import globalStyles from '../../../../constants/globalStyle';
 import color from '../../../../constants/color';
 import { uploadProfileImage } from '../../../../helpers/firebaseStorage';
 import LoadingFullScreen from '../../../../components/LoadingFullScreen';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const ProfilePicturePickerModal = ({
   visible,
@@ -15,7 +26,7 @@ const ProfilePicturePickerModal = ({
 }) => {
   // selectedImage is an object with properties "fileName", "fileSize", height, isVertical, "originalRotation", width, path, type
   const [selectedImage, setSelectedImage] = useState(null);
-  const [savingLoader, setSavingLoader] = useState(false)
+  const [savingLoader, setSavingLoader] = useState(false);
 
   const pickImageHandler = () => {
     const options = {
@@ -23,7 +34,7 @@ const ProfilePicturePickerModal = ({
       noData: true,
     };
 
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         Alert.alert('You did not select any image');
       } else if (response.error) {
@@ -42,7 +53,7 @@ const ProfilePicturePickerModal = ({
   const saveImageHandler = () => {
     /* TODO: when the image is saving to firebase, we should have a 
     loading screen so that it doesnt appear unresponive to the user while it waits */
-    setSavingLoader(true)
+    setSavingLoader(true);
 
     uploadProfileImage(
       selectedImage.uri,
@@ -50,9 +61,14 @@ const ProfilePicturePickerModal = ({
       oldProfileImageRef,
     ).then((downloadUrl) => {// downloadUrl is the url of the newly uploaded image in firebase storage
       // console.log('return value in modal after upload-------------------------', downloadUrl)
+
+      firestore().collection('users').doc(auth().currentUser.email).update({
+        ProfileImgUrl: downloadUrl,
+      });
       toggleVisibility();// close the modal for picking image
       setSavingLoader(false); // close the modal that says saving image
       setSelectedImage(null); 
+
       update(downloadUrl);
     });
   };
@@ -93,7 +109,7 @@ const ProfilePicturePickerModal = ({
                     onPress={saveImageHandler}
                   />
                 </View>
-                
+
                 <View style={styles.button}>
                   <Button
                     style={styles.button}
