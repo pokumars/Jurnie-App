@@ -2,14 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  ActivityIndicator,
   Button,
   Image,
   ScrollView,
   StyleSheet,
   View,
-  Modal,
-  Text,
 } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
@@ -29,7 +26,6 @@ import {
 } from 'components/Spacing';
 import { TextM } from 'components/Text';
 import BadgeWonModal from '../../components/BadgeWonModal';
-import { determineBadgeIcon } from 'helpers/determineAsset';
 
 import firestore from '@react-native-firebase/firestore';
 
@@ -38,51 +34,6 @@ import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
 import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
 import ProfileUserDetail from './components/ProfileUserDetail';
 
-const testBadgeData = [
-  {
-    id: 'badge1',
-    isReachievable: true,
-    numberOfBadge: 12,
-    symbol: 'camera',
-  },
-  {
-    id: 'badge2',
-    isReachievable: false,
-    numberOfBadge: 1,
-    symbol: 'medal',
-  },
-  {
-    id: 'badge3',
-    isReachievable: true,
-    numberOfBadge: 123,
-    symbol: 'target',
-  },
-  {
-    id: 'badge4',
-    isReachievable: true,
-    numberOfBadge: 7908,
-    symbol: 'trophy',
-  },
-  {
-    id: 'badge5',
-    isReachievable: true,
-    numberOfBadge: 7908,
-    symbol: 'trophy',
-  },
-  {
-    id: 'badge6',
-    isReachievable: true,
-    numberOfBadge: 7908,
-    symbol: 'trophy',
-  },
-  {
-    id: 'badge7',
-    isReachievable: true,
-    numberOfBadge: 7908,
-    symbol: 'trophy',
-  },
-];
-
 const ProfileScreen = ({ route, navigation }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
@@ -90,14 +41,15 @@ const ProfileScreen = ({ route, navigation }) => {
   const [profilePicUrl, setProfilePicUrl] = useState(
     auth().currentUser.photoURL,
   );
-  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(false);
+  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(route.params.showBadge);
   const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null;
-  const [BadgesFire, setBadgesFire] = useState([]);
+  const [myBadgesInFirebase, setMyBadgesInFirebase] = useState([]);
 
   const toggleBadgeWonModal = (onOff) => {
     setBadgeWonModalVisible(onOff);
   };
-
+  console.log('myBadgesInFirebase   ',myBadgesInFirebase);
+  console.log('badgeThatUserJustWon   ',badgeThatUserJustWon);
   useEffect(() => {
     firestore()
       .collection('users')
@@ -107,8 +59,8 @@ const ProfileScreen = ({ route, navigation }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        setBadgesFire(data);
-        console.log(BadgesFire);
+        setMyBadgesInFirebase(data);
+        //console.log(myBadgesInFirebase);
       });
   }, []);
 
@@ -231,13 +183,14 @@ const ProfileScreen = ({ route, navigation }) => {
           <BadgesContainer
             style={{
               justifyContent:
-                testBadgeData.length <= 5 ? 'space-between' : 'flex-start',
+              myBadgesInFirebase.length <= 5 ? 'space-between' : 'flex-start',
             }}>
-            {testBadgeData.map((badge) => (
+            {myBadgesInFirebase.map((badge) => (
               <Badge
-                badgeImage={determineBadgeIcon(badge.symbol)}
+                badgeImage={badge.badgeImage}
                 isReachievable={badge.isReachievable}
-                key={badge.id}
+                key={badge.name}
+                badgeName={badge.name}
                 numberOfTheSameBadge={badge.numberOfBadge}
               />
             ))}

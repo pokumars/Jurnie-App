@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 // gets the badge image urls from firebase storage
 const badgeIconURLs = {
   trophy: 'https://firebasestorage.googleapis.com/v0/b/journeyapplicatio.appspot.com/o/badges%2Fbadge-trophy.png?alt=media&token=a01cd3f1-5601-477c-bc1d-aada300dd0b6',
@@ -13,37 +14,37 @@ export const feedbackAmountMilestones = [
   {
     score: 1,
     badgeImage: badgeIconURLs.trophy,
-    text: 'your 1st feedback milestone badge',
-    name: '1st feedback',
+    text: 'your 1st feedback milestone badge', // congratulatory text
+    name: '1st feedback'
   },
   {
     score: 5,
     badgeImage: badgeIconURLs.trophy,
-    text: 'a badge for your 5th feedback',
+    text: 'a badge for your 5th feedback', // congratulatory text
     name: '5 feedbacks',
   },
   {
     score: 10,
     badgeImage: badgeIconURLs.trophy,
-    text: 'a badge for your 10th feedback',
+    text: 'a badge for your 10th feedback', // congratulatory text
     name: '10 feedbacks',
   },
   {
     score: 20,
     badgeImage: badgeIconURLs.trophy,
-    text: 'a badge for your 20th feedback',
+    text: 'a badge for your 20th feedback', // congratulatory text
     name: '20 feedbacks',
   },
   {
     score: 50,
     badgeImage: badgeIconURLs.trophy,
-    text: 'a badge for your 50th feedback',
+    text: 'a badge for your 50th feedback', // congratulatory text
     name: '50 feedbacks',
   },
   {
     score: 100,
     badgeImage: badgeIconURLs.trophy,
-    text: 'a badge for your 100th feedback',
+    text: 'a badge for your 100th feedback', // congratulatory text
     name: '100 feedbacks',
   },
 ];

@@ -23,7 +23,7 @@ const MainTabScreen = ({ route, navigation }) => {
   useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
     if (route.params !== undefined && route.params.checkIfBadgeWon === true) {
-      // console.log('-----MainTabScreen display badge won ---------------------', route.params)
+      console.log('-----MainTabScreen route params---------------------', route.params)
 
       // this has the text of the badge and the image
       /* NB: we need the +1 because the previous state of userObj is what is passed to MainTabScreen
@@ -34,7 +34,7 @@ const MainTabScreen = ({ route, navigation }) => {
 
       if (userJustWonThisBadge) {
         // pass with the params, the badgename, the badge popup-modal text
-        
+
         firestore()
           .collection('users')
           .doc(auth().currentUser.email)
@@ -45,13 +45,15 @@ const MainTabScreen = ({ route, navigation }) => {
             gotten: true,
             score: userJustWonThisBadge.score,
             badgeImage: userJustWonThisBadge.badgeImage,
+          })
+          .then((result) => {
+            console.log(result);
+            // go to profile page and show them the modal that says they just won something
+            navigation.navigate(NAVIGATION_ROUTE.PROFILE, {
+              showBadge: true,
+              badgeToShow: userJustWonThisBadge,
+            });
           });
-
-          //go to profile page and show them the modal that says they just won something
-        navigation.navigate(NAVIGATION_ROUTE.PROFILE, {
-          showBadge: true,
-          badgeToShow: userJustWonThisBadge,
-        });
       }
     }
   }, [route.params]);
