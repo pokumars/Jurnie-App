@@ -41,7 +41,7 @@ const ProfileScreen = ({ route, navigation }) => {
   const [profilePicUrl, setProfilePicUrl] = useState(
     auth().currentUser.photoURL,
   );
-  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(route.params.showBadge);
+  const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(null);
   const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null;
   const [myBadgesInFirebase, setMyBadgesInFirebase] = useState([]);
 
@@ -62,6 +62,9 @@ const ProfileScreen = ({ route, navigation }) => {
         setMyBadgesInFirebase(data);
         //console.log(myBadgesInFirebase);
       });
+      if (route.params !== undefined && route.params.showBadge === true ) {
+        setBadgeWonModalVisible(route.params.showBadge);
+      }
   }, []);
 
   /*useEffect(() => {
