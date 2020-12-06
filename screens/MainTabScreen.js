@@ -34,6 +34,7 @@ const MainTabScreen = ({ route, navigation }) => {
 
       if (userJustWonThisBadge) {
         // pass with the params, the badgename, the badge popup-modal text
+        
         firestore()
           .collection('users')
           .doc(auth().currentUser.email)
@@ -46,6 +47,7 @@ const MainTabScreen = ({ route, navigation }) => {
             badgeImage: userJustWonThisBadge.badgeImage,
           });
 
+          //go to profile page and show them the modal that says they just won something
         navigation.navigate(NAVIGATION_ROUTE.PROFILE, {
           showBadge: true,
           badgeToShow: userJustWonThisBadge,
