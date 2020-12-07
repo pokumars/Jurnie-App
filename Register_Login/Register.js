@@ -62,7 +62,7 @@ function register({ navigation }) {
   const Authentication = () => {
     if (pass === confirmPass && email.length > 8) {
       auth()
-        .createUserWithEmailAndPassword(email, pass)
+        .createUserWithEmailAndPassword(email.trim(), pass)
         .then(() => {
           // eslint-disable-next-line no-unused-expressions
           console.log('User account created & signed in!'),
@@ -75,14 +75,21 @@ function register({ navigation }) {
         })
         .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
+            Toast.show({
+              text1: 'That email address is already in use!',
+            });
             console.log('That email address is already in use!');
-          }
-
-          if (error.code === 'auth/invalid-email') {
+          } else if (error.code === 'auth/invalid-email') {
+            Toast.show({
+              text1: 'That email address is invalid!',
+            });
             console.log('That email address is invalid!');
+          } else {
+            Toast.show({
+              text1: 'something went wrong!',
+            });
+            console.error(error);
           }
-
-          console.error(error);
         });
     } else if (
       pass.length < 8 &&

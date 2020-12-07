@@ -198,10 +198,7 @@ const HomeScreen = ({ navigation }) => {
           }
           console.log(chunks); // console.log(chunks.includes('dd'));
           for (let i = 0; i < arr.length; i++) {
-            if (
-              chunks.includes(arr[i].id) ||
-              activities.includes(arr[i].activityType)
-            ) {
+            if (chunks.includes(arr[i].id)) {
               console.log(arr[i].id, 'already or it is unwanted activity');
             } else {
               firestore()
