@@ -116,7 +116,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     }
     
     @ReactMethod
-    public void fetchTmdData(final Callback successCallback, final Callback errorCallback) {
+    public void fetchTmdData(Promise promise) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
             protected void doInBackgroundGuarded(Void ...params) {
@@ -164,17 +164,22 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                             activityMap.putString("decodedPolyline", decodedPolyline.toString());
                             activitiesArray.pushMap(activityMap);
                         }
+                        activitiesArray.pushString(activityToString);
+
+                        promise.resolve(activitiesArray);
+
+                    } else if (downloadResult.getResult().isEmpty()) {
+                        promise.resolve(activityToString);
                     }
 
                     if (downloadResult.hasError()) {
                         error = downloadResult.getError().name();
                     }
-
+                    
                 } catch(Exception e) {
-                    errorCallback.invoke(String.format(Locale.ENGLISH, "%s:  %s", error, e.getMessage()));
+                    promise.reject(String.format(Locale.ENGLISH, "%s:  %s", error, e.getMessage()));
                 }
 
-                successCallback.invoke(activitiesArray, activityToString);
             }
         }.execute();
     }

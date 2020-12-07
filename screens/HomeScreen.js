@@ -97,22 +97,18 @@ const HomeScreen = ({ navigation }) => {
   const [tmdStatus, setTmdStatus] = useState();
 
   useEffect(() => {
-    try {
-      TmdApi.fetchTmdData(
-        (activities, str) => {
-          console.log('Tmd success', activities);
-          getthat(activities);
-
-          setActivity(str);
-          // console.log('AAAAAAAAAAa', arraydata);
-        },
-        (err) => {
-          console.log('Tmd error', err);
-        },
-      );
-    } catch (e) {
-      console.log('error', e.message);
-    }
+    const getTmdData = async () => {
+      try {
+        const tmd = await TmdApi.fetchTmdData();
+        console.log('Tmd success', tmd);
+        if (Array.isArray(tmd)) {
+          getthat(tmd);
+        } else getthat([]);
+      } catch (e) {
+        console.error('error', e.message);
+      }
+    };
+    getTmdData();
   }, []);
 
   useEffect(function Fetchcu() {
