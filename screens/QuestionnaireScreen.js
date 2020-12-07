@@ -37,9 +37,11 @@ const Questionnaire = ({ navigation, route }) => {
   chance to choose the correct one */ // TODO: the above
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
   const [savingLoader, setSavingLoader] = useState(false);
+
   const [selectedMode, setSelectedMode] = useState(
-    exampleTripObject.activityType,
+    exampleTripObject.activityType
   );
+  
 
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
@@ -52,9 +54,25 @@ const Questionnaire = ({ navigation, route }) => {
     feedGiven: false,
     activityType: selectedMode,
   });
+
+  const getTripFromRouteParams = () => {
+    if(route.params !== undefined && route.params.paramtrip !== undefined){
+      setSelectedMode(route.params.paramtrip.activityType);
+      // if it is fresh feedback update state to reflect that
+      if (route.params.paramtrip.feedGiven === false) {
+        // console.log('we are about to give fresh feedback');
+        setIsItFreshFeedback(true);
+      }
+    }
+    // console.log('route.params',route.params)
+    // console.log('typeof route.params.paramtrip',typeof(route.params.paramtrip))
+    console.log('route.params.paramtrip.activityType',route.params.paramtrip.activityType)
+  };
+
+  useEffect(getTripFromRouteParams, [isItFreshFeedback]);
   // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
-  const getTripFromFirestore = () => {
+  /* const getTripFromFirestore = () => {
     firestore()
       .collection('users')
       .doc(auth().currentUser.email)
@@ -67,8 +85,8 @@ const Questionnaire = ({ navigation, route }) => {
           setIsItFreshFeedback(true);
         }
       });
-  };
-  useEffect(getTripFromFirestore, [isItFreshFeedback]);
+  }; */
+
 
   /* console.log(
     `
