@@ -164,7 +164,6 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                             activityMap.putString("decodedPolyline", decodedPolyline.toString());
                             activitiesArray.pushMap(activityMap);
                         }
-                        activitiesArray.pushString(activityToString);
 
                         promise.resolve(activitiesArray);
 
@@ -257,7 +256,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @Override
     public void onHostResume() {
-        if(!(isLocationPermissionsGranted() || isPhysicalActivityPermissionsGranted())) {
+        if(!isLocationPermissionsGranted() || !isPhysicalActivityPermissionsGranted()) {
             TMD.stop(reactContext);
         }
     }

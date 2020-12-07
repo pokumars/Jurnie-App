@@ -103,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
         console.log('Tmd success', tmd);
         if (Array.isArray(tmd)) {
           getthat(tmd);
-        } else getthat([]);
+        }
       } catch (e) {
         console.error('error', e.message);
       }
@@ -194,8 +194,7 @@ const HomeScreen = ({ navigation }) => {
           console.log(chunks); // console.log(chunks.includes('dd'));
           for (let i = 0; i < arr.length; i++) {
             if (
-              chunks.includes(arr[i].id) ||
-              activities.includes(arr[i].activityType)
+              chunks.includes(arr[i].id)
             ) {
               console.log(arr[i].id, 'already or it is unwanted activity');
             } else {
