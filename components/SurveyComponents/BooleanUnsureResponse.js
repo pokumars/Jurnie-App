@@ -1,6 +1,6 @@
 // import libraries
-import React, { useEffect } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Button, StyleSheet, Pressable, Text } from 'react-native';
 import color from '../../constants/color';
 import globalStyles from '../../constants/globalStyle';
 
@@ -8,60 +8,85 @@ const BooleanUnsureResponse = (props) => {
   useEffect(() => {
     props.setMediaOrDone(null);
   });
+  // selectedBtn is to determine which button is selected so we can highlight it.
+  const [selectedBtnText, setSelectedBtnText] = useState(null);
 
   return (
     <View style={globalStyles.responderViewContainer}>
       <View style={styles.buttonsContainer}>
-        <View style={styles.buttonView}>
-          <Button
-            title="yes"
-            color={color.STEEL_BLUE}
-            onPress={() => {
-              // show btn that says next
-              props.setAnswered(true);
-              props.setAnswer('yes');
-              console.log('yes clicked');
-            }}
-          />
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-            title="no"
-            color={color.STEEL_BLUE}
-            onPress={() => {
-              // show btn that says next
-              props.setAnswered(true);
-              props.setAnswer('no');
-              console.log('no clicked');
-            }}
-          />
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-            title="not sure"
-            color={color.RAJAH}
-            onPress={() => {
-              // show btn that says next
-              props.setAnswered(true);
-              props.setAnswer('not sure');
-              console.log('not sure clicked');
-            }}
-          />
-        </View>
+        <Pressable
+          style={[styles.buttonView, selectedBtnText === 'yes' ? styles.highlightedButton : null]}
+          onPress={() => {
+            props.setAnswered(true); // shows btn that says next
+            props.setAnswer('yes'); // set answer in Questionnaire
+            setSelectedBtnText('yes') // so we know which button to highlight as selected
+            console.log('yes clicked');
+          }}>
+          <Text style={[styles.btnText, { color: selectedBtnText === 'yes' ? 'white' : 'black' }]}>
+            Yes
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={[
+            styles.buttonView,
+            selectedBtnText === 'no' ? styles.highlightedButton : null,
+          ]}
+          onPress={() => {
+            props.setAnswered(true); // shows btn that says next
+            props.setAnswer('no'); // set answer in Questionnaire
+            setSelectedBtnText('no') // so we know which button to highlight as selected
+            console.log('no clicked');
+          }}>
+          <Text style={[styles.btnText, { color: selectedBtnText === 'no' ? 'white' : 'black' }]}>
+            No
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={[
+            styles.buttonView,
+            // if this btn is selected, give the button background
+            selectedBtnText === 'not sure' ? styles.highlightedButton : null,
+          ]}
+          onPress={() => {
+            props.setAnswered(true); // shows btn that says next
+            props.setAnswer('not sure'); // set answer in Questionnaire
+            setSelectedBtnText('not sure'); // so we know which button to highlight as selected
+            console.log('not sure clicked');
+          }}>
+          <Text style={[styles.btnText, { color: selectedBtnText === 'not sure' ? 'white' : 'black' }]}>
+            Not Sure
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
 };
+const btnHeight = 35;
 
 const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     width: '90%',
     justifyContent: 'space-around',
+    padding: 5,
   },
   buttonView: {
     width: '30%',
+    height: btnHeight,
+    borderWidth: 2,
+    borderColor: color.STEEL_BLUE,
+    borderRadius: btnHeight / 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  btnText: {
+    color: 'black',
+  },
+  highlightedButton: {
+    backgroundColor: color.STEEL_BLUE 
+  }
 });
 
 export default BooleanUnsureResponse;
