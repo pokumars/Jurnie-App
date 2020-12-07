@@ -47,6 +47,7 @@ import moment from 'moment';
 import { MEANS_OF_TRANSPORT } from 'app-constants';
 import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { extractModeofTransport } from '../helpers/TmdTransportModes';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
 import { getIconByMode } from '../utils/helper';
@@ -262,7 +263,7 @@ const HomeScreen = ({ navigation }) => {
         {currentTrip.length !== 0 ? (
           <>
             <MeansOfTransportText>
-              {currentTrip[0].activityType}
+              {extractModeofTransport(currentTrip[0].activityType)}
             </MeansOfTransportText>
             <TouchableOpacity
               onPress={() =>
