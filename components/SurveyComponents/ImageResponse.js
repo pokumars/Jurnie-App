@@ -104,7 +104,7 @@ const ImageResponse = (props) => {
     // yes or no buttons
     }
     <View style= {[styles.wideBtn, {marginTop: 20}]}>
-      <Button title="cancel"
+      <Button title="skip"
        onPress= {cancelHandler}
        color={color.ERR_RED}
       />

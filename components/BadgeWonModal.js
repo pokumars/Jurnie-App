@@ -16,7 +16,7 @@ import { COLOR } from '../constants';
  *
  */
 const BadgeWonModal = ({ visible, text, setVisibility, badgeImage }) => {
-  console.log('BadgeWonModal ------------badge should be visible now');
+  console.log('BadgeWonModal ------------badge should be visible now. Visible ===', visible);
   return (
     <Modal
       animationType="fade"
@@ -28,7 +28,7 @@ const BadgeWonModal = ({ visible, text, setVisibility, badgeImage }) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <TitleText> Congratulations !</TitleText>
-          <FastImage source={badgeImage} style={styles.badgeImage} />
+          <FastImage source={{uri: badgeImage}} style={styles.badgeImage} />
           <Text>You have earned {text || 'a badge'}</Text>
           <View style={styles.buttonView}>
           <Button

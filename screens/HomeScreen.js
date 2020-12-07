@@ -241,7 +241,7 @@ const HomeScreen = ({ navigation }) => {
   const onWriteFeedbackButtonPress = () => {
     navigation.navigate('Questionnaire', {
       paramKey: currentTrip[0].id,
-      paramtrip: currentTrip,
+      paramtrip: currentTrip[0],
     });
   };
 
