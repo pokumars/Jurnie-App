@@ -230,11 +230,6 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
 
   const LastTrip = ({ onWriteFeedbackButtonPress }) => (
     <LastTripContainer>
-      <Button
-        title={tmdStatus ? 'stop TMD' : 'start TMD'}
-        onPress={toggleTmdService()}
-        color={tmdStatus ? SteelBlue : MangoTango}
-      />
       <SubtitleText>LAST TRIP</SubtitleText>
       <LastTripCard>
         {currentTrip.length !== 0 ? (
@@ -263,7 +258,7 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
   );
 
   const LastTripContainer = styled.View`
-    margin-bottom: ${InlineL}px;
+    margin: ${InlineL}px 0;
   `;
 
   const LastTripCard = styled(DefaultCard)`
@@ -391,6 +386,11 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
 
   return (
     <ScreenContainer>
+      <Button
+        title={tmdStatus ? 'stop TMD' : 'start TMD'}
+        onPress={toggleTmdService()}
+        color={tmdStatus ? SteelBlue : MangoTango}
+      />
       <LastTrip {...{ onWriteFeedbackButtonPress }} />
       <YourPosition />
     </ScreenContainer>
