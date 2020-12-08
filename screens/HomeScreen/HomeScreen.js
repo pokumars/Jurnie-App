@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
@@ -39,18 +39,29 @@ import {
 import TransportTile from 'components/TransportTile';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
+import auth from '@react-native-firebase/auth';
 
 const HomeScreen = ({ navigation }) => {
+
+  const [profilePicUrl, setProfilePicUrl] = useState(auth().currentUser.photoURL);
+  const fetchProfilePic = () => {
+    return auth().currentUser.photoURL
+  };
+  useEffect(() => {
+    setProfilePicUrl(fetchProfilePic());
+  }, []);
+  console.log('profilePicUrl---------------------', profilePicUrl);
+  
   const defaultValues = {
     meansOfTransport: MEANS_OF_TRANSPORT.BUS,
   };
-
+  
   const onWriteFeedbackButtonPress = () => {};
 
   return (
     <ScreenContainer>
       <LastTrip {...{ onWriteFeedbackButtonPress }} />
-      <YourPosition />
+      <YourPosition profilePic={profilePicUrl} />
     </ScreenContainer>
   );
 };
@@ -124,7 +135,7 @@ const FeedbackButtonContainer = styled(ButtonContainer)`
   width: ${FeedbackButtonSize}px;
 `;
 
-const YourPosition = ({}) => (
+const YourPosition = ({profilePic}) => (
   <>
     <SubtitleText>YOUR POSITION</SubtitleText>
     <YourPositionCard>
@@ -132,7 +143,7 @@ const YourPosition = ({}) => (
         <Avatar
           size={InlineXL}
           source={{
-            uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+            uri: profilePic || 'https://firebasestorage.googleapis.com/v0/b/journeyapplicatio.appspot.com/o/badges%2Fbadge-trophy.png?alt=media&token=a01cd3f1-5601-477c-bc1d-aada300dd0b6',
           }}
         />
         <UserNameText>Test</UserNameText>

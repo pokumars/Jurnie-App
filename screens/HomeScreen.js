@@ -47,6 +47,7 @@ import moment from 'moment';
 import { MEANS_OF_TRANSPORT } from 'app-constants';
 import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { extractModeofTransport } from '../helpers/TmdTransportModes';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
 import { getIconByMode } from '../helpers/tmdHelpers';
@@ -232,7 +233,7 @@ const HomeScreen = ({ navigation }) => {
   const onWriteFeedbackButtonPress = () => {
     navigation.navigate('Questionnaire', {
       paramKey: currentTrip[0].id,
-      paramtrip: currentTrip,
+      paramtrip: currentTrip[0],
     });
   };
 
@@ -252,7 +253,9 @@ const HomeScreen = ({ navigation }) => {
       <LastTripCard>
         {currentTrip.length !== 0 ? (
           <>
-            <MeansOfTransportText>{currentTrip[0].activityType}</MeansOfTransportText>
+            <MeansOfTransportText>
+              {extractModeofTransport(currentTrip[0].activityType)}
+            </MeansOfTransportText>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Detailed', {

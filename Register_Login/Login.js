@@ -77,13 +77,17 @@ function login({ navigation }) {
           <View style={styles.btnView}>
             <Button title="Login" onPress={() => Authentication()} />
           </View>
+          {// we dont have the retrieve password
+          /*
+                      <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+                      <Text>Forgot your Password</Text>
+                      <TouchableOpacity style={{ marginStart: 5 }}>
+                        <Text style={{ color: '#1E90FF' }}>Retrieve</Text>
+                      </TouchableOpacity>
+                    </View>
+                    */
+          }
 
-          <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-            <Text>Forgot your Password</Text>
-            <TouchableOpacity style={{ marginStart: 5 }}>
-              <Text style={{ color: '#1E90FF' }}>Retrieve</Text>
-            </TouchableOpacity>
-          </View>
         </View>
         <View style={styles.loginFormContainer}>
           <Text style={{ color: 'black' }}> Don&apos;t have an Account? </Text>
