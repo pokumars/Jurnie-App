@@ -4,7 +4,7 @@ import { View, Image, Text, StyleSheet } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { White, MaterialRed800 } from '../components/Colors';
 import color from '../constants/color';
-import getDirections, { getIconByMode } from '../utils/helper';
+import getDirections, { getIconByMode } from '../helpers/tmdHelpers';
 
 const MapViewOfTrip = ({ trip }) => {
   const [mapdata, setMapdata] = useState({});
