@@ -56,11 +56,7 @@ const LeaderboardScreen = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <FlatList
-        data={users}
-        keyExtractor={(item) => item.userName}
-        {...{ renderItem }}
-      />
+      <FlatList data={users} keyExtractor={(item) => item.userName} {...{ renderItem }} />
     </ScreenContainer>
   );
 };
@@ -82,8 +78,7 @@ const imageSelector = () => {
   return selcted;
 };
 
-const avatarUri =
-  'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg';
+const avatarUri = 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg';
 
 const ScreenContainer = styled.View`
   ${DefaultContainer};
@@ -95,11 +90,7 @@ const LeaderboardCard = ({ item, index }) => (
     <RankingText>{index + 1}</RankingText>
     <AvatarContainer>
       {item.profileImgUrl == '' ? (
-        <Image
-          size={InlineL}
-          style={{ width: 40, height: 40 }}
-          source={imageSelector()}
-        />
+        <Image size={InlineL} style={{ width: 40, height: 40 }} source={imageSelector()} />
       ) : (
         <Avatar size={InlineL} source={{ uri: item.profileImgUrl }} />
       )}

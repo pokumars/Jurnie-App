@@ -4,12 +4,12 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TabBar from 'components/TabBar';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import HomeScreen from './HomeScreen';
 import LeaderboardScreen from './LeaderboardScreen';
 import MyTripsScreen from './MyTripsScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 
 import { COLOR, NAVIGATION_ROUTE } from '../constants';
 import { feedbackAmountMilestones } from '../helpers/badgeWinning';
@@ -23,7 +23,7 @@ const MainTabScreen = ({ route, navigation }) => {
   useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
     if (route.params !== undefined && route.params.checkIfBadgeWon === true) {
-      console.log('-----MainTabScreen route params---------------------', route.params)
+      console.log('-----MainTabScreen route params---------------------', route.params);
 
       // this has the text of the badge and the image
       /* NB: we need the +1 because the previous state of userObj is what is passed to MainTabScreen

@@ -8,7 +8,6 @@ export const transportModes = [
   'non-motorized/pedestrian/walk',
   'non-motorized/pedestrian/run',
   'motorized/road/car',
-  
 ];
 export const answerTypes = {
   rating: 'RATING',
@@ -47,8 +46,8 @@ export const exampleTripObject = {
 };
 
 /**
- * 
- * @param {string} mode it takes this kind of string 'motorized/road/car' and returns 'car'. 
+ *
+ * @param {string} mode it takes this kind of string 'motorized/road/car' and returns 'car'.
  * If there are no / it returns the word e.g stationary returns just stationary.
  */
 export const extractModeofTransport = (mode) => {
@@ -56,7 +55,7 @@ export const extractModeofTransport = (mode) => {
 };
 
 /**
- * 
+ *
  * @param {string} mode it takes this kind of string 'motorized/road/car' and returns 'Car'.
  * If there are no / it returns the word e.g stationary returns just Stationary
  */

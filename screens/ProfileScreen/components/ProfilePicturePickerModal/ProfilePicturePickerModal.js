@@ -11,12 +11,12 @@ import {
   Text,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import globalStyles from '../../../../constants/globalStyle';
 import color from '../../../../constants/color';
 import { uploadProfileImage } from '../../../../helpers/firebaseStorage';
 import LoadingFullScreen from '../../../../components/LoadingFullScreen';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 
 const ProfilePicturePickerModal = ({
   visible,

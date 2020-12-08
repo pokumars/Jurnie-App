@@ -15,11 +15,7 @@ import { RoyalBlue } from 'components/Colors';
 const Avatar = ({ size, source, style = null }) => (
   <FastImage
     {...{ source }}
-    style={[
-      { width: size, height: size, borderRadius: size / 2 },
-      styles.image,
-      { ...style },
-    ]}
+    style={[{ width: size, height: size, borderRadius: size / 2 }, styles.image, { ...style }]}
   />
 );
 
