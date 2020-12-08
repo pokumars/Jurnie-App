@@ -46,8 +46,7 @@ const Questionnaire = ({ navigation, route }) => {
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
   const [isItFreshFeedback, setIsItFreshFeedback] = useState(false);
-  console.log('Questionnaire route', route.params.paramtrip);
-  const [num, setnum] = useState(0);
+  // console.log('Questionnaire route', route.params.paramtrip);
 
   // after each question is done, the answer is set. Pass in things like id, origin and polyline as props when the user clicks on the questionnaire
   const [answers, setAnswers] = useState({
@@ -65,28 +64,12 @@ const Questionnaire = ({ navigation, route }) => {
       }
     }
     // console.log('route.params',route.params)
-    // console.log('typeof route.params.paramtrip',typeof(route.params.paramtrip))
-    console.log('route.params.paramtrip.activityType',route.params.paramtrip.activityType)
+    // console.log('route.params.paramtrip.activityType',route.params.paramtrip.activityType)
   };
 
   useEffect(getTripFromRouteParams, [isItFreshFeedback]);
   // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
-  /* const getTripFromFirestore = () => {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser.email)
-      .collection('trips')
-      .doc(route.params.paramKey)
-      .get()
-      .then((querySnapshot) => {
-        if (querySnapshot.data().feedGiven === false) {
-          // console.log('we are about to give fresh feedback');
-          setIsItFreshFeedback(true);
-        }
-      });
-  }; */
-
 
   /* console.log(
     `
@@ -164,7 +147,7 @@ const Questionnaire = ({ navigation, route }) => {
   };
   const AddFeedtoFireStore = () => {
     setIsItFreshFeedback(true);
-    console.log('AddFeedtoFireStore', route.params.paramKey);
+    // console.log('AddFeedtoFireStore', route.params.paramKey);
     firestore()
       .collection('users')
       .doc(auth().currentUser.email)
