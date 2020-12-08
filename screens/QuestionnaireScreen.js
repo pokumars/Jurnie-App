@@ -24,8 +24,6 @@ import {
   transportModeQuestions,
 } from '../helpers/TmdTransportQuestions';
 
-import BadgeWonModal from '../components/BadgeWonModal';
-import navigationRoute from '../constants/navigationRoute';
 import LoadingFullScreen from '../components/LoadingFullScreen';
 //import firebase from '@react-native-firebase';
 
