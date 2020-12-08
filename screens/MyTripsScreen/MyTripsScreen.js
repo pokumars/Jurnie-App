@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Text,
-  View,
   FlatList,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -13,9 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { MEANS_OF_TRANSPORT } from 'app-constants';
 import { DefaultContainer, StackM } from 'components/Spacing';
-import { SubtitleText } from 'components/Text';
 import TripCard from './components/TripCard';
 import WeekCalendar from './components/WeekCalendar';
 
@@ -23,7 +17,6 @@ const MyTripsScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const [currentTrip, setcurrentTrip] = useState([]);
-  const [selectedId, setselectedId] = useState(null);
 
   useEffect(() => {
     firestore()

@@ -1,4 +1,5 @@
 export const transportModes = [
+  
   'non-motorized/bicycle',
   'non-motorized/pedestrian/walk',
   'non-motorized/pedestrian/run',
@@ -8,6 +9,7 @@ export const transportModes = [
   'motorized/rail/train',
   'motorized/rail/metro',
   'motorized/air/plane',
+  
 ];
 export const answerTypes = {
   rating: 'RATING',

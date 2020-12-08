@@ -110,4 +110,5 @@ export const transportModeQuestions = {
   train: trainQuestions,
   metro: metroQuestions,
   plane: planeQuestions,
+  stationary: bikeQuestions,
 };
