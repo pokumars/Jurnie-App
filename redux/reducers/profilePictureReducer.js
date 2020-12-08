@@ -1,7 +1,9 @@
 import { REDUX_ACTION_TYPE } from 'app-constants';
 
+import auth from '@react-native-firebase/auth';
+
 const initialState = {
-  profilePictureUrl: '',
+  profilePictureUrl: auth().currentUser.photoURL || '',
 };
 
 export default (state = initialState, action) => {

@@ -3,13 +3,17 @@
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
 import { Button, Text } from 'react-native';
+
+import auth from '@react-native-firebase/auth';
+import { connect } from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
 import { ButtonContainer, ButtonWrapper } from 'components/Button';
 import { DefaultCard } from 'components/Cards';
 
-import auth from '@react-native-firebase/auth';
 import {
   Emperor,
   Fire,
@@ -42,15 +46,14 @@ import {
   StackM,
 } from 'components/Spacing';
 import TransportTile from 'components/TransportTile';
-import moment from 'moment';
 
 import { MEANS_OF_TRANSPORT } from 'app-constants';
-import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { extractModeofTransport } from '../helpers/TmdTransportModes';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
 import { getIconByMode } from '../helpers/tmdHelpers';
+import actions from 'redux-core/actions';
 
 const Item = ({ title, onPress }) => (
   <TouchableOpacity
@@ -65,7 +68,7 @@ const Item = ({ title, onPress }) => (
   </TouchableOpacity>
 );
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, profilePictureUrl }) => {
   const [activity, setActivity] = useState('nothing');
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
@@ -75,9 +78,7 @@ const HomeScreen = ({ navigation }) => {
   const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
   const [update, setUpdate] = useState();
-  const [profilePicUrl, setProfilePicUrl] = useState(
-    auth().currentUser.photoURL,
-  );
+
   const tar = [];
 
   const defaultValues = {
@@ -341,8 +342,8 @@ const HomeScreen = ({ navigation }) => {
             <Avatar
               size={InlineXL}
               source={
-                profilePicUrl
-                  ? { uri: profilePicUrl }
+                profilePictureUrl
+                  ? { uri: profilePictureUrl }
                   : require('assets/icons/profile.png')
               }
             />
@@ -417,4 +418,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-export default HomeScreen;
+export default connect((state) => ({
+  profilePictureUrl: state.profilePictureReducer.profilePictureUrl,
+}))(HomeScreen);
