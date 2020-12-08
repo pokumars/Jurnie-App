@@ -19,7 +19,7 @@ const BooleanUnsureResponse = (props) => {
           onPress={() => {
             props.setAnswered(true); // shows btn that says next
             props.setAnswer('yes'); // set answer in Questionnaire
-            setSelectedBtnText('yes') // so we know which button to highlight as selected
+            setSelectedBtnText('yes'); // so we know which button to highlight as selected
             console.log('yes clicked');
           }}>
           <Text style={[styles.btnText, { color: selectedBtnText === 'yes' ? 'white' : 'black' }]}>
@@ -28,14 +28,11 @@ const BooleanUnsureResponse = (props) => {
         </Pressable>
 
         <Pressable
-          style={[
-            styles.buttonView,
-            selectedBtnText === 'no' ? styles.highlightedButton : null,
-          ]}
+          style={[styles.buttonView, selectedBtnText === 'no' ? styles.highlightedButton : null]}
           onPress={() => {
             props.setAnswered(true); // shows btn that says next
             props.setAnswer('no'); // set answer in Questionnaire
-            setSelectedBtnText('no') // so we know which button to highlight as selected
+            setSelectedBtnText('no'); // so we know which button to highlight as selected
             console.log('no clicked');
           }}>
           <Text style={[styles.btnText, { color: selectedBtnText === 'no' ? 'white' : 'black' }]}>
@@ -55,7 +52,8 @@ const BooleanUnsureResponse = (props) => {
             setSelectedBtnText('not sure'); // so we know which button to highlight as selected
             console.log('not sure clicked');
           }}>
-          <Text style={[styles.btnText, { color: selectedBtnText === 'not sure' ? 'white' : 'black' }]}>
+          <Text
+            style={[styles.btnText, { color: selectedBtnText === 'not sure' ? 'white' : 'black' }]}>
             Not Sure
           </Text>
         </Pressable>
@@ -85,8 +83,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   highlightedButton: {
-    backgroundColor: color.STEEL_BLUE 
-  }
+    backgroundColor: color.STEEL_BLUE,
+  },
 });
 
 export default BooleanUnsureResponse;

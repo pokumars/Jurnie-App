@@ -6,7 +6,7 @@ const getDirections = async (polyline) => {
   const getAddress = async (latitude, longitude) => {
     // eslint-disable-next-line no-undef
     const data = await fetch(
-      `http://api.digitransit.fi/geocoding/v1/reverse?point.lat=${latitude}&point.lon=${longitude}&size=1`,
+      `http://api.digitransit.fi/geocoding/v1/reverse?point.lat=${latitude}&point.lon=${longitude}&size=1`
     );
     return data.json();
   };
@@ -25,10 +25,7 @@ const getDirections = async (polyline) => {
     const coordsDestination = points[points.length - 1];
 
     const origin = await getAddress(coordsOrigin[0], coordsOrigin[1]);
-    const destination = await getAddress(
-      coordsDestination[0],
-      coordsDestination[1],
-    );
+    const destination = await getAddress(coordsDestination[0], coordsDestination[1]);
     console.log('address', destination.features[0].properties.label);
 
     // parameters to specify the area over which a geo map is drawn

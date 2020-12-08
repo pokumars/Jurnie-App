@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { View, StyleSheet, Modal, Text, Button } from 'react-native';
-import { StackS } from './Spacing';
-import { TextM } from './Text';
 import { InlineXXL, StackXS, StackXXS } from 'components/Spacing';
 import FastImage from 'react-native-fast-image';
+import { StackS } from './Spacing';
+import { TextM } from './Text';
 import { COLOR } from '../constants';
 
 /**
@@ -28,17 +28,17 @@ const BadgeWonModal = ({ visible, text, setVisibility, badgeImage }) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <TitleText> Congratulations !</TitleText>
-          <FastImage source={{uri: badgeImage}} style={styles.badgeImage} />
+          <FastImage source={{ uri: badgeImage }} style={styles.badgeImage} />
           <Text>You have earned {text || 'a badge'}</Text>
           <View style={styles.buttonView}>
-          <Button
-            title="close"
-            color={COLOR.ERR_RED}
-            onPress={() => {
-              setVisibility(false);
-            }}
-          />
-        </View>
+            <Button
+              title="close"
+              color={COLOR.ERR_RED}
+              onPress={() => {
+                setVisibility(false);
+              }}
+            />
+          </View>
         </View>
       </View>
     </Modal>

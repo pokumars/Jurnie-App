@@ -21,9 +21,9 @@ import {
   StackM,
 } from 'components/Spacing';
 import { TextM } from 'components/Text';
+import actions from 'redux-core/actions';
 import BadgeWonModal from '../../components/BadgeWonModal';
 
-import actions from 'redux-core/actions';
 
 import DetailUpdateModal from './components/DetailUpdateModal';
 import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
@@ -58,14 +58,14 @@ const ProfileScreen = ({
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         setMyBadgesInFirebase(data);
-        //console.log(myBadgesInFirebase);
+        // console.log(myBadgesInFirebase);
       });
     if (route.params !== undefined && route.params.showBadge === true) {
       setBadgeWonModalVisible(route.params.showBadge);
     }
   }, []);
 
-  /*useEffect(() => {
+  /* useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
     console.log('-------------route in profileScreen', route);
     if (route.params !== undefined && route.params.showBadge === true) {
@@ -74,7 +74,7 @@ const ProfileScreen = ({
       );
       setBadgeWonModalVisible(true);
     }
-  }, [route.params]);*/
+  }, [route.params]); */
 
   const signOut = () => {
     auth()

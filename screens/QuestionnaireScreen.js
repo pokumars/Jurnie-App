@@ -25,7 +25,7 @@ import {
 } from '../helpers/TmdTransportQuestions';
 
 import LoadingFullScreen from '../components/LoadingFullScreen';
-//import firebase from '@react-native-firebase';
+// import firebase from '@react-native-firebase';
 
 const Questionnaire = ({ navigation, route }) => {
   /* if feedGiven is false, then isCorrectTransportMode should be null. Because
@@ -135,7 +135,7 @@ const Questionnaire = ({ navigation, route }) => {
       .get()
       .then((querySnapshot) => {
         console.log(querySnapshot.data());
-        //setgiven(querySnapshot.data().feedGiven);
+        // setgiven(querySnapshot.data().feedGiven);
 
         if (querySnapshot.data().feedGiven == true) {
           Update();

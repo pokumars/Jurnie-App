@@ -52,10 +52,11 @@ import TransportTile from 'components/TransportTile';
 import { extractModeofTransport } from 'helpers/TmdTransportModes';
 import TmdApi from 'bridge/TmdApi';
 import { getIconByMode } from 'helpers/tmdHelpers';
+import { nonEssentialModes } from '../../constants/transport';
 
 const HomeScreen = ({ navigation, profilePictureUrl }) => {
   // const [activity, setActivity] = useState('nothing');
-  // const [arraydata, setarraydata] = useState([]);
+  const [tmdSize, setTmdSize] = useState(0);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [firstUser, setFirstUser] = useState();
@@ -85,6 +86,7 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
     const getTmdData = async () => {
       try {
         const tmd = await TmdApi.fetchTmdData();
+        setTmdSize(tmd.length);
         console.log('Tmd success', tmd);
         if (Array.isArray(tmd)) {
           getthat(tmd);
@@ -96,46 +98,47 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
     getTmdData();
   });
 
-  useEffect(function Fetchcu() {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser.email)
-      .collection('trips')
-      .orderBy('dateAdded', 'desc')
-      .limit(1)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        console.log(data);
+  useEffect(
+    function Fetchcu() {
+      firestore()
+        .collection('users')
+        .doc(auth().currentUser.email)
+        .collection('trips')
+        .orderBy('dateAdded', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs
+            .map((doc) => doc.data())
+            .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
+          console.log(data);
 
-        setcurrentTrip(data);
-        // console.log('kkkkk', currentTrip);
-      });
+          setcurrentTrip(data);
+          // console.log('kkkkk', currentTrip);
+        });
 
-    firestore()
-      .collection('users')
-      .orderBy('totalFeeds', 'desc')
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        setarray(data);
-        console.log('data', array);
+      firestore()
+        .collection('users')
+        .orderBy('totalFeeds', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => doc.data());
+          setarray(data);
+          console.log('data', array);
 
-        setindexUser(
-          data.findIndex((obj) => obj.email === auth().currentUser.email),
-        );
+          setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
 
-        const val =
-          data[data.findIndex((obj) => obj.email === auth().currentUser.email)]
-            .totalFeeds;
+          const val =
+            data[data.findIndex((obj) => obj.email === auth().currentUser.email)].totalFeeds;
 
-        setFirstUser(data[0].totalFeeds - val);
-        setcurrentUser(val);
-        // setFirstUser(data[0].totalFeeds);
+          setFirstUser(data[0].totalFeeds - val);
+          setcurrentUser(val);
+          // setFirstUser(data[0].totalFeeds);
 
-        console.log('points ranking', indexUser, val, firstUser);
-      });
-  }, []);
+          console.log('points ranking', indexUser, val, firstUser);
+        });
+    },
+    [tmdSize]
+  );
 
   // starts/stops TMD
   const toggleTmdService = () => async () => {
@@ -160,13 +163,6 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
       .then((querySnapshot) => {
         console.log('Total trips: ', querySnapshot.size);
         const chunks = [];
-        const activities = [
-          'stationary',
-          'non-motorized/pedestrian',
-          'non-motorized/pedestrian/walk',
-          'non-motorized/pedestrian/run',
-          'unknown',
-        ];
         const n = querySnapshot.size;
 
         if (arr.length == 0 || arr == null) {
@@ -316,9 +312,7 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
             <Avatar
               size={InlineXL}
               source={
-                profilePictureUrl
-                  ? { uri: profilePictureUrl }
-                  : require('assets/icons/profile.png')
+                profilePictureUrl ? { uri: profilePictureUrl } : require('assets/icons/profile.png')
               }
             />
             <UserNameText>{auth().currentUser.displayName}</UserNameText>

@@ -12,7 +12,8 @@ const EmojiRatingResponse = (props) => {
   return (
     <View style={globalStyles.responderViewContainer}>
       <View style={styles.emojisContainer}>
-        <View style={[
+        <View
+          style={[
             styles.emojiView,
             selectedEmojiText === '4_happy' ? styles.highlightedEmoji : null,
           ]}>
@@ -30,7 +31,8 @@ const EmojiRatingResponse = (props) => {
             />
           </Pressable>
         </View>
-        <View style={[
+        <View
+          style={[
             styles.emojiView,
             selectedEmojiText === '3_smile' ? styles.highlightedEmoji : null,
           ]}>
@@ -67,7 +69,8 @@ const EmojiRatingResponse = (props) => {
             />
           </Pressable>
         </View>
-        <View style={[
+        <View
+          style={[
             styles.emojiView,
             selectedEmojiText === '1_angry' ? styles.highlightedEmoji : null,
           ]}>
@@ -122,8 +125,8 @@ const styles = StyleSheet.create({
     borderColor: color.JUMBO,
     borderRadius: emojiDimension / 5,
     padding: 2,
-    //backgroundColor: color.JUMBO,
-  }
+    // backgroundColor: color.JUMBO,
+  },
 });
 
 export default EmojiRatingResponse;
