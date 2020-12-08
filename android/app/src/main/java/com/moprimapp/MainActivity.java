@@ -12,6 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 
 public class MainActivity extends ReactActivity {
   private static final int TMD_PERMISSIONS_REQUEST_LOCATION = 0202;
@@ -20,10 +22,13 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-     requestPhysicalActivityPermission();
-    requestLocationPermission();
-   
-
+      if (!isLocationPermissionsGranted()) {
+          // Request for GPS if not included
+          requestLocationPermission();
+      }
+      else if(!isPhysicalActivityPermissionsGranted()) {
+          requestPhysicalActivityPermission();
+      }
     super.onCreate(savedInstanceState);
   }
 
@@ -36,7 +41,29 @@ public class MainActivity extends ReactActivity {
     return "moprimApp";
   }
 
-  public void requestPhysicalActivityPermission() {
+    private boolean isPhysicalActivityPermissionsGranted() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            return ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else {
+            return true;
+        }
+    }
+
+    private boolean isLocationPermissionsGranted() {
+        boolean granted = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (granted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else {
+            return granted;
+        }
+    }
+
+    public void requestPhysicalActivityPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACTIVITY_RECOGNITION)) {
         // Show an explanation to the user *asynchronously* -- don't block

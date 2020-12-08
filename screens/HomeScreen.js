@@ -50,7 +50,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { extractModeofTransport } from '../helpers/TmdTransportModes';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
-import { getIconByMode } from '../utils/helper';
+import { getIconByMode } from '../helpers/tmdHelpers';
 
 const Item = ({ title, onPress }) => (
   <TouchableOpacity
@@ -98,23 +98,20 @@ const HomeScreen = ({ navigation }) => {
   const [tmdStatus, setTmdStatus] = useState();
 
   useEffect(() => {
-    try {
-      TmdApi.fetchTmdData(
-        (activities, str) => {
-          console.log('Tmd success', activities);
-          getthat(activities);
-
-          setActivity(str);
-          // console.log('AAAAAAAAAAa', arraydata);
-        },
-        (err) => {
-          console.log('Tmd error', err);
-        },
-      );
-    } catch (e) {
-      console.log('error', e.message);
-    }
-  }, []);
+    // fetch mobility data from TMD SDK 
+    const getTmdData = async () => {
+      try {
+        const tmd = await TmdApi.fetchTmdData();
+        console.log('Tmd success', tmd);
+        if (Array.isArray(tmd)) {
+          getthat(tmd);
+        }
+      } catch (e) {
+        console.error('error', e.message);
+      }
+    };
+    getTmdData();
+  });
 
   useEffect(function Fetchcu() {
     firestore()
@@ -141,13 +138,10 @@ const HomeScreen = ({ navigation }) => {
         setarray(data);
         console.log('data', array);
 
-        setindexUser(
-          data.findIndex((obj) => obj.email === auth().currentUser.email),
-        );
+        setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
 
         const val =
-          data[data.findIndex((obj) => obj.email === auth().currentUser.email)]
-            .totalFeeds;
+          data[data.findIndex((obj) => obj.email === auth().currentUser.email)].totalFeeds;
 
         setFirstUser(data[0].totalFeeds - val);
         setcurrentUser(val);
@@ -341,8 +335,7 @@ const HomeScreen = ({ navigation }) => {
             <Avatar
               size={InlineXL}
               source={{
-                uri:
-                  'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+                uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
               }}
             />
             <UserNameText>{auth().currentUser.displayName}</UserNameText>

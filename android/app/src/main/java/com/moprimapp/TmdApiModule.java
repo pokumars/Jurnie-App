@@ -29,6 +29,11 @@ import android.util.Log;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import 	android.app.Activity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,8 +66,9 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     private Notification notification;
 
     private static ReactApplicationContext reactContext;
+    private static Activity context;
 
-    // process intent to restart TMD service
+    // process intent to start TMD service
     private BroadcastReceiver startTmdReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -85,6 +91,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     }
 
     @Override
+    // required override: provide the name of the Native module
     public String getName() {
         return CLASS_NAME;
     }
@@ -107,6 +114,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @ReactMethod
     private void isTmdRunning(Promise promise) {
+        // verifying TMD status; on/off
         try {
             Boolean tmdIsRunning = TMD.isTmdRunning();
             promise.resolve(tmdIsRunning);
@@ -116,7 +124,8 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
     }
     
     @ReactMethod
-    public void fetchTmdData(final Callback successCallback, final Callback errorCallback) {
+    // fetched mobility data is passed as a JS promise to React Native layer
+    public void fetchTmdData(Promise promise) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
             protected void doInBackgroundGuarded(Void ...params) {
@@ -164,17 +173,21 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                             activityMap.putString("decodedPolyline", decodedPolyline.toString());
                             activitiesArray.pushMap(activityMap);
                         }
+
+                        promise.resolve(activitiesArray);
+
+                    } else if (downloadResult.getResult().isEmpty()) {
+                        promise.resolve(activityToString);
                     }
 
                     if (downloadResult.hasError()) {
                         error = downloadResult.getError().name();
                     }
-
+                    
                 } catch(Exception e) {
-                    errorCallback.invoke(String.format(Locale.ENGLISH, "%s:  %s", error, e.getMessage()));
+                    promise.reject(String.format(Locale.ENGLISH, "%s:  %s", error, e.getMessage()));
                 }
 
-                successCallback.invoke(activitiesArray, activityToString);
             }
         }.execute();
     }
@@ -250,9 +263,86 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
         }
     }
 
+    public void requestPhysicalActivityPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.ACTIVITY_RECOGNITION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.title_physical_activity_needed)
+                        .setMessage(R.string.physical_activity_permission_required)
+                        .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                            //Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(context,
+                                    new String[]{ Manifest.permission.ACTIVITY_RECOGNITION },
+                                    TMD_PERMISSION_REQUEST_ACTIVITY);
+                        })
+                        .create()
+                        .show();
+            }
+            else {
+                ActivityCompat.requestPermissions(context,
+                        new String[]{ Manifest.permission.ACTIVITY_RECOGNITION },
+                        TMD_PERMISSION_REQUEST_ACTIVITY);
+            }
+        }
+    }
+
+    private void requestLocationPermission() {
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            // Show an explanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.title_location_permission)
+                    .setMessage(R.string.text_location_permission)
+                    .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                        //Prompt the user once explanation has been shown
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            ActivityCompat.requestPermissions(context,
+                                    new String[]{
+                                            Manifest.permission.ACCESS_FINE_LOCATION,
+                                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                                    },
+                                    TMD_PERMISSIONS_REQUEST_LOCATION);
+                        }
+                        else {
+                            ActivityCompat.requestPermissions(context,
+                                    new String[]{
+                                            Manifest.permission.ACCESS_FINE_LOCATION
+                                    },
+                                    TMD_PERMISSIONS_REQUEST_LOCATION);
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            // No explanation needed, we can request the permission.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ActivityCompat.requestPermissions(context,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        },
+                        TMD_PERMISSIONS_REQUEST_LOCATION);
+            }
+            else {
+                ActivityCompat.requestPermissions(context,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                        },
+                        TMD_PERMISSIONS_REQUEST_LOCATION);
+            }
+        }
+    }
+
     @Override
     public void onHostResume() {
-        if(!(isLocationPermissionsGranted() || isPhysicalActivityPermissionsGranted())) {
+        if(!isLocationPermissionsGranted() || !isPhysicalActivityPermissionsGranted()) {
             TMD.stop(reactContext);
         }
     }
@@ -264,6 +354,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
 
     @Override
     public void onHostDestroy() {
+        // unregister receiver when app goes to the background or the activity is destroyed; freeing system resources
         reactContext.unregisterReceiver(startTmdReceiver);
     }
 
