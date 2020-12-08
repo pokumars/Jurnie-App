@@ -51,6 +51,7 @@ import { extractModeofTransport } from '../helpers/TmdTransportModes';
 import color from '../constants/color';
 import TmdApi from '../bridge/TmdApi';
 import { getIconByMode } from '../helpers/tmdHelpers';
+import { nonEssentialModes } from '../constants/transport';
 
 const Item = ({ title, onPress }) => (
   <TouchableOpacity
@@ -67,15 +68,11 @@ const Item = ({ title, onPress }) => (
 
 const HomeScreen = ({ navigation }) => {
   const [activity, setActivity] = useState('nothing');
-  const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [indexUser, setindexUser] = useState();
   const [firstUser, setFirstUser] = useState();
-  const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
-  const [update, setUpdate] = useState();
-  const tar = [];
 
   const defaultValues = {
     meansOfTransport: MEANS_OF_TRANSPORT.BUS,
@@ -87,9 +84,9 @@ const HomeScreen = ({ navigation }) => {
       try {
         const isRunning = await TmdApi.isTmdRunning();
         setTmdStatus(isRunning);
-        console.log('tmdstatus', tmdStatus);
+        // console.log('tmdstatus', tmdStatus);
       } catch (e) {
-        console.log('tmdIsRunning error', e.message);
+        // console.log('tmdIsRunning error', e.message);
       }
     };
     isTmdRunning();
@@ -98,7 +95,8 @@ const HomeScreen = ({ navigation }) => {
   const [tmdStatus, setTmdStatus] = useState();
 
   useEffect(() => {
-    // fetch mobility data from TMD SDK 
+    // fetch mobility data from TMD SDK
+
     const getTmdData = async () => {
       try {
         const tmd = await TmdApi.fetchTmdData();
@@ -119,14 +117,14 @@ const HomeScreen = ({ navigation }) => {
       .doc(auth().currentUser.email)
       .collection('trips')
       .orderBy('dateAdded', 'desc')
-      .limit(1)
       .get()
       .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        console.log(data);
+        const data = querySnapshot.docs
+          .map((doc) => doc.data())
+          .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
+        console.log('current', data);
 
         setcurrentTrip(data);
-        // console.log('kkkkk', currentTrip);
       });
 
     firestore()
@@ -136,7 +134,7 @@ const HomeScreen = ({ navigation }) => {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         setarray(data);
-        console.log('data', array);
+        // console.log('data', array);
 
         setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
 
@@ -145,7 +143,6 @@ const HomeScreen = ({ navigation }) => {
 
         setFirstUser(data[0].totalFeeds - val);
         setcurrentUser(val);
-        // setFirstUser(data[0].totalFeeds);
 
         console.log('points ranking', indexUser, val, firstUser);
       });
@@ -156,11 +153,11 @@ const HomeScreen = ({ navigation }) => {
     if (!tmdStatus) {
       setTmdStatus(true);
       TmdApi.startTmdService();
-      console.log('tmdstatus', 1);
+      // console.log('tmdstatus', 1);
     } else {
       setTmdStatus(false);
       TmdApi.stopTmdService();
-      console.log('tmdstatus', 0);
+      // console.log('tmdstatus', 0);
     }
   };
 
@@ -172,15 +169,8 @@ const HomeScreen = ({ navigation }) => {
       .collection('trips')
       .get()
       .then((querySnapshot) => {
-        console.log('Total trips: ', querySnapshot.size);
+        // console.log('Total trips: ', querySnapshot.size);
         const chunks = [];
-        const activities = [
-          'stationary',
-          'non-motorized/pedestrian',
-          'non-motorized/pedestrian/walk',
-          'non-motorized/pedestrian/run',
-          'unknown',
-        ];
         const n = querySnapshot.size;
 
         if (arr.length == 0 || arr == null) {
@@ -190,7 +180,7 @@ const HomeScreen = ({ navigation }) => {
             const data = querySnapshot.docs[i].id;
             chunks.push(data);
           }
-          console.log(chunks); // console.log(chunks.includes('dd'));
+          // console.log(chunks); // console.log(chunks.includes('dd'));
           for (let i = 0; i < arr.length; i++) {
             if (chunks.includes(arr[i].id)) {
               console.log(arr[i].id, 'already or it is unwanted activity');

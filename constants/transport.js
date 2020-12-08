@@ -6,4 +6,12 @@ const MeansOfTransport = Object.freeze({
   WALK: 4,
 });
 
-export default MeansOfTransport;
+const nonEssentialModes = [
+  'stationary',
+  'non-motorized/pedestrian',
+  'non-motorized/pedestrian/walk',
+  'non-motorized/pedestrian/run',
+  'unknown',
+];
+
+export { MeansOfTransport as default, nonEssentialModes };
