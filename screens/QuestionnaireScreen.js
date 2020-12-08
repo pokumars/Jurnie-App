@@ -55,6 +55,7 @@ const Questionnaire = ({ navigation, route }) => {
   const getTripFromRouteParams = () => {
     if(route.params !== undefined && route.params.paramtrip !== undefined){
       setSelectedMode(route.params.paramtrip.activityType);
+      setSelectedMode(route.params.paramtrip.activityType);
       // if it is fresh feedback update state to reflect that
       if (route.params.paramtrip.feedGiven === false) {
         // console.log('we are about to give fresh feedback');
@@ -65,11 +66,11 @@ const Questionnaire = ({ navigation, route }) => {
     // console.log('route.params.paramtrip.activityType',route.params.paramtrip.activityType)
   };
 
-  useEffect(getTripFromRouteParams, [isItFreshFeedback]);
+  useEffect(getTripFromRouteParams, []);
   // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
 
-  /* console.log(
+  console.log(
     `
     isCorrectTransportMode -------------${isCorrectTransportMode}
     selectedMode------------------${selectedMode}
@@ -81,13 +82,14 @@ const Questionnaire = ({ navigation, route }) => {
     )}
     received answers------------------`,
     answers,
-  ); */
+  );
 
   // activityTypeString is required. pass it as props or as part of the passed in trip object
   const activityTypeString = capitaliseModeofTransport(selectedMode);
   const correctTransportModeHandler = () => {
     setIsCorrectTransportMode(true);
     setQuestionNumber(0);
+    setAnswers({...answers,activityType: selectedMode})
   };
 
   const nextModalAction = (abortOrProceed) => {
