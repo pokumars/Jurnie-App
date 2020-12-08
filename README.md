@@ -38,6 +38,8 @@ feelings based outside the vehicle
   - Firestore
   - Storage
 - [Figma Prototyping](https://www.figma.com)
+- [Redux](https://redux.js.org/)
+- [React-Redux](https://react-redux.js.org/)
 - React Native - Java Bridge
 - Circle-ci
 - Scrum

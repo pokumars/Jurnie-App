@@ -6,19 +6,15 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
-
-import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { StyleSheet } from 'react-native';
+
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+
+import { initStore } from 'redux-core';
+
 import SplashLoader from './Register_Login/Splash';
 import MainTabScreen from './screens/MainTabScreen';
 import DetailedScreen from './screens/DEtailedTripScreen';
@@ -30,16 +26,18 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Splash" component={SplashLoader} />
-        <Stack.Screen name="Questionnaire" component={Questionnaire} />
-        <Stack.Screen name="Login" component={login} />
-        <Stack.Screen name="Register" component={register} />
-        <Stack.Screen name="Main" component={MainTabScreen} />
-        <Stack.Screen name="Detailed" component={DetailedScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={initStore()}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Splash" component={SplashLoader} />
+          <Stack.Screen name="Questionnaire" component={Questionnaire} />
+          <Stack.Screen name="Login" component={login} />
+          <Stack.Screen name="Register" component={register} />
+          <Stack.Screen name="Main" component={MainTabScreen} />
+          <Stack.Screen name="Detailed" component={DetailedScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

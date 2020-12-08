@@ -1,15 +1,11 @@
 /* eslint-disable prettier/prettier */
 
 import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Button, Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
+import { connect } from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 import styled from 'styled-components/native';
 import { StackActions } from '@react-navigation/native';
 
@@ -27,20 +23,22 @@ import {
 import { TextM } from 'components/Text';
 import BadgeWonModal from '../../components/BadgeWonModal';
 
-import firestore from '@react-native-firebase/firestore';
+import actions from 'redux-core/actions';
 
 import DetailUpdateModal from './components/DetailUpdateModal';
 import IconTextBorderlessBtn from './components/IconTextBorderlessBtn';
 import ProfilePicturePickerModal from './components/ProfilePicturePickerModal';
 import ProfileUserDetail from './components/ProfileUserDetail';
 
-const ProfileScreen = ({ route, navigation }) => {
+const ProfileScreen = ({
+  route,
+  navigation,
+  profilePictureUrl,
+  setProfilePictureUrl,
+}) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [username, setUsername] = useState(auth().currentUser.displayName);
   const [changingPicModalVisible, setChangingPicModalVisible] = useState(false);
-  const [profilePicUrl, setProfilePicUrl] = useState(
-    auth().currentUser.photoURL,
-  );
   const [badgeWonModalVisible, setBadgeWonModalVisible] = useState(null);
   const badgeThatUserJustWon = route.params ? route.params.badgeToShow : null;
   const [myBadgesInFirebase, setMyBadgesInFirebase] = useState([]);
@@ -48,8 +46,8 @@ const ProfileScreen = ({ route, navigation }) => {
   const toggleBadgeWonModal = (onOff) => {
     setBadgeWonModalVisible(onOff);
   };
-  console.log('myBadgesInFirebase   ',myBadgesInFirebase);
-  console.log('badgeThatUserJustWon   ',badgeThatUserJustWon);
+  console.log('myBadgesInFirebase   ', myBadgesInFirebase);
+  console.log('badgeThatUserJustWon   ', badgeThatUserJustWon);
   useEffect(() => {
     firestore()
       .collection('users')
@@ -62,9 +60,9 @@ const ProfileScreen = ({ route, navigation }) => {
         setMyBadgesInFirebase(data);
         //console.log(myBadgesInFirebase);
       });
-      if (route.params !== undefined && route.params.showBadge === true ) {
-        setBadgeWonModalVisible(route.params.showBadge);
-      }
+    if (route.params !== undefined && route.params.showBadge === true) {
+      setBadgeWonModalVisible(route.params.showBadge);
+    }
   }, []);
 
   /*useEffect(() => {
@@ -102,15 +100,15 @@ const ProfileScreen = ({ route, navigation }) => {
   };
   const renderNewProfilePic = (newPicUrl) => {
     console.log('setNewProfilePic---------', newPicUrl);
-    setProfilePicUrl(newPicUrl);
+    setProfilePictureUrl(newPicUrl);
   };
   const getOldProfileImageRef = () => {
-    if (profilePicUrl !== null) {
+    if (profilePictureUrl !== null) {
       // to delete the old profile pic, we must get the ref from the url.
-      // ref extracted from the profilePicUrl-------------- is profilePicUrl.split('?').shift().split('profilePics%2F').pop(),
-      return profilePicUrl.split('?').shift().split('profilePics%2F').pop();
+      // ref extracted from the profilePictureUrl-------------- is profilePictureUrl.split('?').shift().split('profilePics%2F').pop(),
+      return profilePictureUrl.split('?').shift().split('profilePics%2F').pop();
     }
-    console.log('profilePicUrl--------- was null');
+    console.log('profilePictureUrl--------- was null');
     return '';
   };
 
@@ -145,8 +143,8 @@ const ProfileScreen = ({ route, navigation }) => {
             <Image
               style={styles.profilePic}
               source={
-                profilePicUrl
-                  ? { uri: profilePicUrl }
+                profilePictureUrl
+                  ? { uri: profilePictureUrl }
                   : require('assets/icons/profile.png')
               }
             />
@@ -186,7 +184,7 @@ const ProfileScreen = ({ route, navigation }) => {
           <BadgesContainer
             style={{
               justifyContent:
-              myBadgesInFirebase.length <= 5 ? 'space-between' : 'flex-start',
+                myBadgesInFirebase.length <= 5 ? 'space-between' : 'flex-start',
             }}>
             {myBadgesInFirebase.map((badge) => (
               <Badge
@@ -262,4 +260,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default connect(
+  (state) => ({
+    profilePictureUrl: state.profilePictureReducer.profilePictureUrl,
+  }),
+  { setProfilePictureUrl: actions.setProfilePictureUrl },
+)(ProfileScreen);
