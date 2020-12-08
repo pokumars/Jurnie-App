@@ -1,6 +1,8 @@
 import React from 'react';
-import Image from 'react-native';
+import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
+
+import { RoyalBlue } from 'components/Colors';
 
 /**
  *
@@ -13,8 +15,19 @@ import FastImage from 'react-native-fast-image';
 const Avatar = ({ size, source, style = null }) => (
   <FastImage
     {...{ source }}
-    style={{ width: size, height: size, borderRadius: size / 2, ...style }}
+    style={[
+      { width: size, height: size, borderRadius: size / 2 },
+      styles.image,
+      { ...style },
+    ]}
   />
 );
+
+const styles = StyleSheet.create({
+  image: {
+    borderWidth: 1,
+    borderColor: RoyalBlue,
+  },
+});
 
 export default Avatar;

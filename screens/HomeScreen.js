@@ -70,11 +70,14 @@ const HomeScreen = ({ navigation }) => {
   const [arraydata, setarraydata] = useState([]);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
-  const [indexUser, setindexUser] = useState();
   const [firstUser, setFirstUser] = useState();
+  const [indexUser, setindexUser] = useState();
   const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
   const [update, setUpdate] = useState();
+  const [profilePicUrl, setProfilePicUrl] = useState(
+    auth().currentUser.photoURL,
+  );
   const tar = [];
 
   const defaultValues = {
@@ -98,7 +101,7 @@ const HomeScreen = ({ navigation }) => {
   const [tmdStatus, setTmdStatus] = useState();
 
   useEffect(() => {
-    // fetch mobility data from TMD SDK 
+    // fetch mobility data from TMD SDK
     const getTmdData = async () => {
       try {
         const tmd = await TmdApi.fetchTmdData();
@@ -138,10 +141,13 @@ const HomeScreen = ({ navigation }) => {
         setarray(data);
         console.log('data', array);
 
-        setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
+        setindexUser(
+          data.findIndex((obj) => obj.email === auth().currentUser.email),
+        );
 
         const val =
-          data[data.findIndex((obj) => obj.email === auth().currentUser.email)].totalFeeds;
+          data[data.findIndex((obj) => obj.email === auth().currentUser.email)]
+            .totalFeeds;
 
         setFirstUser(data[0].totalFeeds - val);
         setcurrentUser(val);
@@ -334,9 +340,11 @@ const HomeScreen = ({ navigation }) => {
           <UserInfo>
             <Avatar
               size={InlineXL}
-              source={{
-                uri: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-              }}
+              source={
+                profilePicUrl
+                  ? { uri: profilePicUrl }
+                  : require('assets/icons/profile.png')
+              }
             />
             <UserNameText>{auth().currentUser.displayName}</UserNameText>
           </UserInfo>
