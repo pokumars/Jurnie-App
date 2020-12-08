@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Text,
-  FlatList,
-} from 'react-native';
+import { Text, FlatList } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -12,6 +9,7 @@ import moment from 'moment';
 import { DefaultContainer, StackM } from 'components/Spacing';
 import TripCard from './components/TripCard';
 import WeekCalendar from './components/WeekCalendar';
+import { nonEssentialModes } from '../../constants/transport';
 
 const MyTripsScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -26,7 +24,13 @@ const MyTripsScreen = ({ navigation }) => {
       .where('datefortrips', '==', moment(selectedDate).format('DD/MM/YYYY'))
       .get()
       .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
+        const data = querySnapshot.docs
+          .map((doc) => doc.data())
+          .filter(
+            (transportMode) =>
+              nonEssentialModes[0] !== transportMode.activityType ||
+              nonEssentialModes[0] !== transportMode.activityType
+          );
         setcurrentTrip(data);
       });
   }, [selectedDate]);
@@ -58,10 +62,7 @@ const MyTripsScreen = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <WeekCalendar
-        currentDate={new Date()}
-        {...{ selectedDate, setSelectedDate }}
-      />
+      <WeekCalendar currentDate={new Date()} {...{ selectedDate, setSelectedDate }} />
       {currentTrip.length !== 0 ? (
         <FlatList
           data={currentTrip}

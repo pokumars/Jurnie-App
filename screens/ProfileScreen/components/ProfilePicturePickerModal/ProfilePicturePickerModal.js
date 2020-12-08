@@ -63,7 +63,7 @@ const ProfilePicturePickerModal = ({
       // console.log('return value in modal after upload-------------------------', downloadUrl)
 
       firestore().collection('users').doc(auth().currentUser.email).update({
-        ProfileImgUrl: downloadUrl,
+        profileImgUrl: downloadUrl,
       });
       toggleVisibility();// close the modal for picking image
       setSavingLoader(false); // close the modal that says saving image
