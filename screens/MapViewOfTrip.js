@@ -44,7 +44,7 @@ const MapViewOfTrip = ({ trip }) => {
       {mapdata.polyline && (
         <Marker coordinate={mapdata.polyline[0]}>
           <View style={styles.makerText}>
-            <Text style={styles.text}>{mapdata.origin}</Text>
+            <Text style={styles.text}>{`Origin:\n${mapdata.origin}`}</Text>
           </View>
           <Image source={getIconByMode(trip.activityType)} style={styles.makerImage} />
         </Marker>
@@ -52,7 +52,7 @@ const MapViewOfTrip = ({ trip }) => {
       {mapdata.polyline && trip.activityType !== 'stationary' && (
         <Marker coordinate={mapdata.polyline[mapdata.polyline.length - 1]}>
           <View style={styles.makerText}>
-            <Text style={styles.text}>{mapdata.destination}</Text>
+            <Text style={styles.text}>{`Destination:\n${mapdata.destination}`}</Text>
           </View>
           <Image source={getIconByMode(trip.activityType)} style={styles.makerImage} />
         </Marker>
