@@ -25,7 +25,10 @@ const TripCard = ({
   return (
     <TripCardContainer onPress={onTripCardPress}>
       <TripInfo {...{ endingTime, startingTime, transportMode }} />
-      <FeedbackButton label={feed ? 'update feed' : 'feedback'} onPress={onFeedbackButtonPress} />
+      <FeedbackButton
+        label={feed ? 'Edit feedback' : 'feedback'}
+        onPress={onFeedbackButtonPress}
+      />
     </TripCardContainer>
   );
 };
@@ -42,7 +45,9 @@ const TripCardContainer = styled.TouchableOpacity`
 const TripInfo = ({ endingTime, startingTime, transportMode }) => (
   <TripInfoContainer>
     <StartingTimeText>{startingTime}</StartingTimeText>
-    <MeansOfTransportText>{getMeansOfTransport(transportMode)}</MeansOfTransportText>
+    <MeansOfTransportText>
+      {getMeansOfTransport(transportMode)}
+    </MeansOfTransportText>
     <EndingTimeText>{endingTime}</EndingTimeText>
   </TripInfoContainer>
 );

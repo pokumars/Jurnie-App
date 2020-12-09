@@ -1,10 +1,20 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
-import { Button, Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import {
+  Button,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  ToastAndroid,
+} from 'react-native';
 import React from 'react';
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { ScrollView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 
 const user = auth().currentUser;
 
@@ -15,7 +25,7 @@ function login({ navigation }) {
 
   const Authentication = () => {
     auth()
-      .signInWithEmailAndPassword(email, pass)
+      .signInWithEmailAndPassword(email.trim(), pass)
       .then(() => {
         // eslint-disable-next-line no-unused-expressions
         console.log('User account created & signed in!');
@@ -25,14 +35,21 @@ function login({ navigation }) {
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
+          ToastAndroid.show(
+            'That email address is already in use!',
+            ToastAndroid.LONG,
+          );
           console.log('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
+        } else if (error.code === 'auth/invalid-email') {
+          ToastAndroid.show(
+            'That email address is invalid!',
+            ToastAndroid.LONG,
+          );
           console.log('That email address is invalid!');
+        } else {
+          console.error(error);
+          ToastAndroid.show('Something went wrong!', ToastAndroid.LONG);
         }
-
-        console.error(error);
       });
   };
 
@@ -49,13 +66,18 @@ function login({ navigation }) {
           </View>
         </View>
         <View style={styles.loginFormContainer}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5 }}>Welcome back</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5 }}>
+            Welcome back
+          </Text>
           <Text style={{ marginBottom: 10 }}>
             Use your credentials below and login to your account
           </Text>
 
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/email.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/email.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="email"
@@ -64,7 +86,10 @@ function login({ navigation }) {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/key.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -93,7 +118,9 @@ function login({ navigation }) {
           <Text style={{ color: 'black' }}> Don&apos;t have an Account? </Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}
-            onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
+            onPress={() =>
+              navigation.dispatch(StackActions.replace('Register'))
+            }>
             <Text style={{ color: '#1E90FF' }}>Register</Text>
           </TouchableOpacity>
         </View>
