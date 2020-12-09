@@ -45,18 +45,19 @@ function login({ navigation }) {
         if (error.code === 'auth/email-already-in-use') {
           errorText = 'That email address is already in use!'
           ToastAndroid.show(errorText, ToastAndroid.LONG);
-          setErrorMessage()
+          setErrorMessage(errorText);
           console.log('That email address is already in use!');
 
         } else if (error.code === 'auth/invalid-email') {
           errorText = 'That email address is invalid!'
           ToastAndroid.show(errorText, ToastAndroid.LONG);
           console.log('That email address is invalid!');
-
+          setErrorMessage(errorText);
         } else {
-          errorText = 'Something went wrong!'
+          errorText = 'Something went wrong!.'
           console.error(error);
           ToastAndroid.show(errorText, ToastAndroid.LONG);
+          setErrorMessage(errorText);
         }
       });
   };
