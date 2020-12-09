@@ -17,8 +17,10 @@ import {
   exampleTripObject,
   capitaliseModeofTransport,
   extractModeofTransport,
+  uncertainTransportModeTypes
 } from '../helpers/TmdTransportModes';
 import QuestionModal from '../components/QuestionModal';
+
 import {
   allocatePoints,
   transportModeQuestions,
@@ -34,13 +36,17 @@ const Questionnaire = ({ navigation, route }) => {
   the next time they come back, isCorrectTransportMode will be null so that they get the
   chance to choose the correct one */ // TODO: the above
   const [isCorrectTransportMode, setIsCorrectTransportMode] = useState(null);
+  /* unclear transport modes include 'unknown', 'motorized/road' etc. when we have those,
+   the user HAS to select a correct mode of transport before proceeding. This state is so 
+   we can ask them to do that */
+  const [isUnclearTransportMode, setIsUnclearTransportMode] = useState(null);
+
   const [savingLoader, setSavingLoader] = useState(false);
 
   const [selectedMode, setSelectedMode] = useState(
     exampleTripObject.activityType
   );
   
-
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
   const [isItFreshFeedback, setIsItFreshFeedback] = useState(false);
@@ -67,6 +73,22 @@ const Questionnaire = ({ navigation, route }) => {
   };
 
   useEffect(getTripFromRouteParams, []);
+
+  const checkIfModeIsUnclear = () => {
+    if(route.params !== undefined && route.params.paramtrip !== undefined){
+      const unclearTansportMode = uncertainTransportModeTypes.findIndex(unwantedMode => unwantedMode === selectedMode);
+      console.log('unclearTansportMode',unclearTansportMode)
+      if (unclearTansportMode >= 0) { // greater than or equal to 0 means it is in that array and is not wanted
+        // when the current mode is not in the unwanted modes
+        setIsUnclearTransportMode(true);
+        setIsCorrectTransportMode(false);
+      }
+    }
+
+  };
+  console.log('setIsUnclearTransportMode',isUnclearTransportMode)
+  useEffect(checkIfModeIsUnclear, [selectedMode]);
+
   // setpoints upon question being answered....based on question type
   const [points, setPoints] = useState(0);
 
@@ -76,7 +98,6 @@ const Questionnaire = ({ navigation, route }) => {
     selectedMode------------------${selectedMode}
     questionNumber------------------${questionNumber}
     points------------------${points}
-
     extractModeofTransport------------------${extractModeofTransport(
       selectedMode,
     )}
@@ -221,13 +242,29 @@ const Questionnaire = ({ navigation, route }) => {
       });
   };
 
-  return (
-    <View>
-      <DefaultCard style={styles.card}>
+  const renderModeConfirmationQuestion = () => {
+    //if the mode of transport is unclear e.g unknown, make the user pick one clear one
+    const goodTransportModeQuestion = (
+      <>
         <Text style={[{ fontSize: TextXS }]}>
           Your mode of transport was <BoldText>{activityTypeString}</BoldText>.
         </Text>
         <Text style={[{ fontSize: TextXS }]}>Is this correct?</Text>
+      </>
+    )
+    const unclearTransportModeQuestion = (
+      <>
+      <Text style={[{ fontSize: TextXS }]}>
+        Your mode of transport was unclear.
+      </Text>
+      <Text style={[{ fontSize: TextXS }]}>Can you select the correct one?</Text>
+    </>
+    )
+    return isUnclearTransportMode === true? unclearTransportModeQuestion : goodTransportModeQuestion
+  }
+  const renderModeConfirmationButtons = () => {
+    const unclearTransportButtons = (
+      <>
         <View style={globalStyle.buttonsSideBySideContainer}>
           <View style={globalStyle.sideBySideButtonView}>
             <Button title="yes" onPress={correctTransportModeHandler} />
@@ -240,6 +277,16 @@ const Questionnaire = ({ navigation, route }) => {
             />
           </View>
         </View>
+      </>
+    )
+    return isUnclearTransportMode=== true? null :  unclearTransportButtons
+  }
+
+  return (
+    <View>
+      <DefaultCard style={styles.card}>
+      {renderModeConfirmationQuestion()}
+      {renderModeConfirmationButtons()}
       </DefaultCard>
 
       <LoadingFullScreen
@@ -254,6 +301,7 @@ const Questionnaire = ({ navigation, route }) => {
             selectedValue={selectedMode}
             onValueChange={(itemValue) => {
               setSelectedMode(itemValue);
+              setIsUnclearTransportMode(false);
               appendAnswer('activityType', itemValue);
             }}>
             {transportModes.map((mode) => {

@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.List;
+import java.util.Arrays;
 import org.json.JSONArray;
 import java.lang.Exception;
 
@@ -122,7 +123,17 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
             promise.reject(TMD_IS_RUNNING_ERROR, e.getMessage());
         }
     }
-    
+
+    public String labelAsMotorized(String label) {
+        // labels non specific motorized activity types as motorized which can then be corrected by
+        // the user
+        String[] motorized = new String[]{"motorized/road", "motorized/rail"};
+        if (Arrays.asList(motorized).contains(label)) {
+            return "motorized";
+        }
+        else return label;
+    }
+
     @ReactMethod
     // fetched mobility data is passed as a JS promise to React Native layer
     public void fetchTmdData(Promise promise) {
@@ -157,7 +168,7 @@ public class TmdApiModule extends ReactContextBaseJavaModule implements Lifecycl
                                     SIMPLE_DATE_FORMAT.format(new Date(timeEnd))));
                             activityMap.putString("duration", String.format(Locale.ENGLISH, "%s",
                                     TmdUtils.getDuration((timeEnd - timeStart) / 1000.)));
-                            activityMap.putString("activityType", activity);
+                            activityMap.putString("activityType", labelAsMotorized(activity));
                             activityMap.putDouble("co2", tmdActivity.getCo2());
                             activityMap.putDouble("distance", tmdActivity.getDistance());
                             activityMap.putString("destination", tmdActivity.getDestination());

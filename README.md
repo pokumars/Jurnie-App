@@ -2,7 +2,8 @@
 React Native application for Detecting types of mobility and collecting feedback
 
 ### [Demo - To be released soon]()
-### [Download APK- To be released soon]()
+### APK
+[Click this link to download APK](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_2.apk)
 
 ### Work Challenge
 - Build an app that allows the commuter to easily annotate their journeys with
@@ -14,15 +15,10 @@ feelings based outside the vehicle
 ## How to run
 - ```git clone git@github.com:pokumars/Jurnie-App.git```
 - ```cd Jurnie-App && npm install```
-- In Android
+- On Android
   - ```npm start```
   - Open the `android` directory using Android Studio
   - Run the project in Android Studio
-- In iOS
-  - ```cd ios && pod install```
-  - ```cd .. && npm start```
-  - Open the `ios/MoprimRN.xcworkspace` file using Xcode
-  - Run the project in Xcode
 
 ## Technologies/Methhodologies Used
 - [React Native](https://reactnative.dev)

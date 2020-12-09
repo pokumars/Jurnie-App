@@ -89,6 +89,11 @@ const bikeQuestions = [
   imageQuestion,
   thankYou,
 ];
+const stationaryQuestions = [
+  askForComments,
+  imageQuestion,
+  thankYou,
+];
 
 const busQuestions = [
   onTimeQuestion,

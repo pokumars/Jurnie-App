@@ -12,6 +12,7 @@ const nonEssentialModes = [
   'non-motorized/pedestrian/walk',
   'non-motorized/pedestrian/run',
   'unknown',
+  'non-motorized',
 ];
 
 export { MeansOfTransport as default, nonEssentialModes };

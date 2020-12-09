@@ -1,10 +1,20 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
-import { Button, Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import {
+  Button,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  ToastAndroid,
+} from 'react-native';
 import React from 'react';
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { ScrollView } from 'react-native-gesture-handler';
+
 
 const user = auth().currentUser;
 
@@ -12,10 +22,17 @@ console.log('User info for provider: ', user);
 function login({ navigation }) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState(null)
 
   const Authentication = () => {
+    if (email.trim().length === 0 || pass.trim().length === 0) {
+      const emptyFieldsWarning = 'The email or password field is empty';
+      setErrorMessage(emptyFieldsWarning);
+      ToastAndroid.show(emptyFieldsWarning, ToastAndroid.LONG);
+      return;
+    }
     auth()
-      .signInWithEmailAndPassword(email, pass)
+      .signInWithEmailAndPassword(email.trim(), pass)
       .then(() => {
         // eslint-disable-next-line no-unused-expressions
         console.log('User account created & signed in!');
@@ -24,15 +41,24 @@ function login({ navigation }) {
         // navigation.dispatch(StackActions.replace('Profile'));
       })
       .catch((error) => {
+        let errorText = '';
         if (error.code === 'auth/email-already-in-use') {
+          errorText = 'That email address is already in use!'
+          ToastAndroid.show(errorText, ToastAndroid.LONG);
+          setErrorMessage(errorText);
           console.log('That email address is already in use!');
-        }
 
-        if (error.code === 'auth/invalid-email') {
+        } else if (error.code === 'auth/invalid-email') {
+          errorText = 'That email address is invalid!'
+          ToastAndroid.show(errorText, ToastAndroid.LONG);
           console.log('That email address is invalid!');
+          setErrorMessage(errorText);
+        } else {
+          errorText = 'Something went wrong!.'
+          console.error(error);
+          ToastAndroid.show(errorText, ToastAndroid.LONG);
+          setErrorMessage(errorText);
         }
-
-        console.error(error);
       });
   };
 
@@ -49,13 +75,18 @@ function login({ navigation }) {
           </View>
         </View>
         <View style={styles.loginFormContainer}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5 }}>Welcome back</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5 }}>
+            Welcome back
+          </Text>
           <Text style={{ marginBottom: 10 }}>
             Use your credentials below and login to your account
           </Text>
-
+          <Text style={[styles.errorMessage]}>{errorMessage}</Text>
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/email.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/email.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="email"
@@ -64,7 +95,10 @@ function login({ navigation }) {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image source={require('../assets/icons/key.png')} style={styles.inputImage} />
+            <Image
+              source={require('../assets/icons/key.png')}
+              style={styles.inputImage}
+            />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -93,7 +127,9 @@ function login({ navigation }) {
           <Text style={{ color: 'black' }}> Don&apos;t have an Account? </Text>
           <TouchableOpacity
             style={{ marginStart: 5 }}
-            onPress={() => navigation.dispatch(StackActions.replace('Register'))}>
+            onPress={() =>
+              navigation.dispatch(StackActions.replace('Register'))
+            }>
             <Text style={{ color: '#1E90FF' }}>Register</Text>
           </TouchableOpacity>
         </View>
@@ -140,6 +176,10 @@ const styles = StyleSheet.create({
   },
   input: { width: 200, marginStart: 5 },
   btnView: { width: 120, marginTop: 10 },
+  errorMessage: {
+    color: '#e52d27',
+    marginBottom: 5,
+  }
 });
 
 export default login;

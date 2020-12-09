@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import auth from '@react-native-firebase/auth';
 import { connect } from 'react-redux';
+import actions from 'redux-core/actions';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -55,15 +56,13 @@ import { getIconByMode } from 'helpers/tmdHelpers';
 import { nonEssentialModes } from '../../constants/transport';
 
 const HomeScreen = ({ navigation, profilePictureUrl }) => {
-  // const [activity, setActivity] = useState('nothing');
-  const [tmdSize, setTmdSize] = useState(0);
+  const [tmdSize, setTmdSize] = useState();
+
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [firstUser, setFirstUser] = useState();
   const [indexUser, setindexUser] = useState();
-  // const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
-  // const [update, setUpdate] = useState();
 
   // checks if TMD service is running
   useEffect(() => {
@@ -97,25 +96,19 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
     };
     getTmdData();
   });
-
+  
+   const fetchProfilePicAtFirstLogin = () => {
+    /* the first time a user installs and lofs in, the profile pic doesnt load
+    This is a fallback for that scenario */
+    if (profilePictureUrl === null || profilePictureUrl === '') {
+      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
+      setProfilePictureUrl(fetchedUrl);
+    }
+  };
+  useEffect(fetchProfilePicAtFirstLogin, []);
+  
   useEffect(
     function Fetchcu() {
-      firestore()
-        .collection('users')
-        .doc(auth().currentUser.email)
-        .collection('trips')
-        .orderBy('dateAdded', 'desc')
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.docs
-            .map((doc) => doc.data())
-            .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
-          console.log(data);
-
-          setcurrentTrip(data);
-          // console.log('kkkkk', currentTrip);
-        });
-
       firestore()
         .collection('users')
         .orderBy('totalFeeds', 'desc')
@@ -137,8 +130,26 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
           console.log('points ranking', indexUser, val, firstUser);
         });
     },
-    [tmdSize]
+    []
   );
+
+  useEffect( () => {
+    firestore()
+        .collection('users')
+        .doc(auth().currentUser.email)
+        .collection('trips')
+        .orderBy('dateAdded', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs
+            .map((doc) => doc.data())
+            .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
+          console.log(data);
+
+          setcurrentTrip(data);
+          // console.log('kkkkk', currentTrip);
+    }   );
+  },[tmdSize]);
 
   // starts/stops TMD
   const toggleTmdService = () => async () => {
@@ -381,7 +392,7 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
   return (
     <ScreenContainer>
       <Button
-        title={tmdStatus ? 'stop TMD' : 'start TMD'}
+        title={tmdStatus ? 'stop mobility detection' : 'start mobility detection'}
         onPress={toggleTmdService()}
         color={tmdStatus ? SteelBlue : MangoTango}
       />
@@ -391,6 +402,12 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
   );
 };
 
-export default connect((state) => ({
+/* export default connect((state) => ({
   profilePictureUrl: state.profilePictureReducer.profilePictureUrl,
-}))(HomeScreen);
+}))(HomeScreen); */
+export default connect(
+  (state) => ({
+    profilePictureUrl: state.profilePictureReducer.profilePictureUrl,
+  }),
+  { setProfilePictureUrl: actions.setProfilePictureUrl },
+)(HomeScreen);
