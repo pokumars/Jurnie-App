@@ -9,6 +9,19 @@ export const transportModes = [
   'non-motorized/pedestrian/run',
   'motorized/road/car',
 ];
+
+/* if the activityType received is any of these uncertainTransportModeTypes,
+the user has to choose a proper/correct transport mode before they can proceed 
+with the questionnaire */
+export const uncertainTransportModeTypes = [
+  'unknown',
+  'non-motorized',
+  'motorized',
+  'motorized/road',
+  'motorized/rail',
+];
+
+
 export const answerTypes = {
   rating: 'RATING',
   booleanUnsure: 'BOOLEAN_UNSURE',
@@ -40,7 +53,7 @@ export const exampleTripObject = {
   img4: '',
   origin: '',
   polyline: '{gnnJmgkwCC@',
-  speed: 0.0000012154339272753793,
+  speed: 37,
   timeEnd: '16:16',
   timestart: '15:47',
 };
