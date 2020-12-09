@@ -2,7 +2,8 @@
 React Native application for Detecting types of mobility and collecting feedback
 
 ### [Demo - To be released soon]()
-### [Download APK- To be released soon]()
+### APK
+[Click this link to download APK](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk.apk)
 
 ### Work Challenge
 - Build an app that allows the commuter to easily annotate their journeys with
