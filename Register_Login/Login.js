@@ -26,7 +26,7 @@ function login({ navigation }) {
 
   const Authentication = () => {
     if (email.trim().length === 0 || pass.trim().length === 0) {
-      const emptyFieldsWarning = 'The email or password field is empty'
+      const emptyFieldsWarning = 'The email or password field is empty';
       setErrorMessage(emptyFieldsWarning);
       ToastAndroid.show(emptyFieldsWarning, ToastAndroid.LONG);
       return;
