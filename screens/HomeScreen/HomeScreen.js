@@ -55,7 +55,11 @@ import TmdApi from 'bridge/TmdApi';
 import { getIconByMode } from 'helpers/tmdHelpers';
 import { nonEssentialModes } from '../../constants/transport';
 
-const HomeScreen = ({ navigation, profilePictureUrl }) => {
+const HomeScreen = ({
+  navigation,
+  profilePictureUrl,
+  setProfilePictureUrl,
+}) => {
   const [tmdSize, setTmdSize] = useState();
 
   const [currentTrip, setcurrentTrip] = useState([]);
@@ -96,60 +100,65 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
     };
     getTmdData();
   });
-  
-   const fetchProfilePicAtFirstLogin = () => {
+
+  const fetchProfilePicAtFirstLogin = () => {
     /* the first time a user installs and lofs in, the profile pic doesnt load
     This is a fallback for that scenario */
     if (profilePictureUrl === null || profilePictureUrl === '') {
-      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
+      const fetchedUrl = auth().currentUser
+        ? auth().currentUser.photoURL || ''
+        : '';
       setProfilePictureUrl(fetchedUrl);
     }
   };
   useEffect(fetchProfilePicAtFirstLogin, []);
-  
-  useEffect(
-    function Fetchcu() {
-      firestore()
-        .collection('users')
-        .orderBy('totalFeeds', 'desc')
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => doc.data());
-          setarray(data);
-          console.log('data', array);
 
-          setindexUser(data.findIndex((obj) => obj.email === auth().currentUser.email));
-
-          const val =
-            data[data.findIndex((obj) => obj.email === auth().currentUser.email)].totalFeeds;
-
-          setFirstUser(data[0].totalFeeds - val);
-          setcurrentUser(val);
-          // setFirstUser(data[0].totalFeeds);
-
-          console.log('points ranking', indexUser, val, firstUser);
-        });
-    },
-    []
-  );
-
-  useEffect( () => {
+  useEffect(function Fetchcu() {
     firestore()
-        .collection('users')
-        .doc(auth().currentUser.email)
-        .collection('trips')
-        .orderBy('dateAdded', 'desc')
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.docs
-            .map((doc) => doc.data())
-            .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
-          console.log(data);
+      .collection('users')
+      .orderBy('totalFeeds', 'desc')
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        setarray(data);
+        console.log('data', array);
 
-          setcurrentTrip(data);
-          // console.log('kkkkk', currentTrip);
-    }   );
-  },[tmdSize]);
+        setindexUser(
+          data.findIndex((obj) => obj.email === auth().currentUser.email),
+        );
+
+        const val =
+          data[data.findIndex((obj) => obj.email === auth().currentUser.email)]
+            .totalFeeds;
+
+        setFirstUser(data[0].totalFeeds - val);
+        setcurrentUser(val);
+        // setFirstUser(data[0].totalFeeds);
+
+        console.log('points ranking', indexUser, val, firstUser);
+      });
+  }, []);
+
+  useEffect(() => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.email)
+      .collection('trips')
+      .orderBy('dateAdded', 'desc')
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs
+          .map((doc) => doc.data())
+          .filter(
+            (transportMode) =>
+              !nonEssentialModes.includes(transportMode.activityType),
+          );
+        console.log(data);
+
+        setcurrentTrip(data);
+        // console.log('kkkkk', currentTrip);
+      });
+  }, [tmdSize]);
 
   // starts/stops TMD
   const toggleTmdService = () => async () => {
@@ -323,7 +332,9 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
             <Avatar
               size={InlineXL}
               source={
-                profilePictureUrl ? { uri: profilePictureUrl } : require('assets/icons/profile.png')
+                profilePictureUrl
+                  ? { uri: profilePictureUrl }
+                  : require('assets/icons/profile.png')
               }
             />
             <UserNameText>{auth().currentUser.displayName}</UserNameText>
@@ -392,7 +403,9 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
   return (
     <ScreenContainer>
       <Button
-        title={tmdStatus ? 'stop mobility detection' : 'start mobility detection'}
+        title={
+          tmdStatus ? 'stop mobility detection' : 'start mobility detection'
+        }
         onPress={toggleTmdService()}
         color={tmdStatus ? SteelBlue : MangoTango}
       />
