@@ -57,7 +57,7 @@ https://github.com/pokumars/ionicLostAndFound/edit/master/README.md
 
 | Walking trip feedback   | Train trip feedback |
 |------------|-------------| 
-|  ![Walking trip feedback](https://lh6.googleusercontent.com/5ATsY87VaQN4NHUTSZt3ImrpoH_ZO2qPkLlLUH4h6zAFtvHMXPTOVgyOgFE0h_76NVK49O7SDtR18ctAvN7U=w3840-h2132-rw)|![Train trip feedback](https://lh3.googleusercontent.com/fife/ABSRlIq4aFBg2Xa4akB_M08fP1MOu7BLZjQ4rNGiZfYnuEJcpOUVLw54Nqw0BXgwuqlUon_Ob7J7O6XP6YABb85R324Q334YN3NXQTkAU3Q03vrso0BjN-XV5qxoNs5nIlc6JTb_DN3LDulgHLB56efWUJGgVlJFGkamhJJLeFkROIlCIDvCDpsZ8NzTij30mgEMexT8d2oQYnMyvuN_7AYeutsJA5VVyI2PAqHcJZ5crpcB4-g3o_KMEg7zg0YBrhU1WhofuA93u52lJ3ZvUhLe9CYS56_s8z6V8aLc7ggXpUROtiGZ2VlNWuJr6qrAcHvJfS4vkqTOhLW_xseEUxbMtxIkx6EnAhiusFs5aMeuXp-cfjcKsKo939vR14ICMDdLdqiyykj1qopOIHKCFCT0kjP_15xyuw5ZY6zrOjmlno00gU40mo8DAUo9zseiRa0hhv5_n5lalIND2GvlMwwJXCaiXyokT0lI8_Qk6Z23FLFx15GIdvqfYXp3rHtLZbM9eGkrwM2q204F4ce_kYhb2uPwYg3Bu8AcJ5rJC5ct6BwsW5TU5FpnJkPVEp1zQ5KlS-OA1t2BCmxzkv8OSJtrAwDttPjx_87RiX7Lt8jtbl817Lni6auvm0VGYZGR_O926lMXluT28eyr_olbp9oq0mKgueaG7tYY7i0ujvHuOZO_eAQOeFc8QU-Efz73wIBxFP5MPrHpmHp7QBma1TGZ0ucZldDx5653Mms=w3840-h2132-ft) |
+|  ![Walking trip feedback](https://media.giphy.com/media/gIMG9F9EXwUkF9blK4/giphy.gif)|![Train trip feedback](https://media.giphy.com/media/kPt1OcfTJ1etyrWJYA/giphy.gif) |
 
 | Badge Winning | Leaderboard |
 |------------|-------------| 
