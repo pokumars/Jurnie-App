@@ -143,7 +143,8 @@ const HomeScreen = ({ navigation, profilePictureUrl, setProfilePictureUrl }) => 
     /* the first time a user installs and lofs in, the profile pic doesnt load
     This is a fallback for that scenario */
     if (profilePictureUrl === null || profilePictureUrl === '') {
-      setProfilePictureUrl(auth().currentUser.photoURL);
+      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
+      setProfilePictureUrl(fetchedUrl);
     }
   };
   useEffect(fetchProfilePicAtFirstLogin, []);
@@ -388,7 +389,7 @@ const HomeScreen = ({ navigation, profilePictureUrl, setProfilePictureUrl }) => 
   return (
     <ScreenContainer>
       <Button
-        title={tmdStatus ? 'stop TMD' : 'start TMD'}
+        title={tmdStatus ? 'stop mobility detection' : 'start mobility detection'}
         onPress={toggleTmdService()}
         color={tmdStatus ? SteelBlue : MangoTango}
       />

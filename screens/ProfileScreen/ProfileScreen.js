@@ -68,7 +68,8 @@ const ProfileScreen = ({
     /* the first time a user installs and lofs in, the profile pic doesnt load
     This is a fallback for that scenario */
     if (profilePictureUrl === null|| profilePictureUrl=== ''){
-      setProfilePictureUrl(auth().currentUser.photoURL);
+      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
+      setProfilePictureUrl(fetchedUrl);
     }
   }
   useEffect(fetchProfilePicAtFirstLogin,[])
