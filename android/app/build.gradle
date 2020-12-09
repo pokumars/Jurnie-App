@@ -157,6 +157,8 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            manifestPlaceholders = [ google_map_key:"AIzaSyCIRJEP1SHV3AZ4WilthQAihU73ra5r0qs"]
+
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -164,6 +166,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            manifestPlaceholders = [ google_map_key:"AIzaSyCIRJEP1SHV3AZ4WilthQAihU73ra5r0qs"]
         }
     }
 
