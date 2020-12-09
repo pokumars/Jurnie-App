@@ -14,7 +14,7 @@ import React from 'react';
 import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { ScrollView } from 'react-native-gesture-handler';
-import Toast from 'react-native-toast-message';
+
 
 const user = auth().currentUser;
 
@@ -22,8 +22,15 @@ console.log('User info for provider: ', user);
 function login({ navigation }) {
   const [email, setemail] = React.useState('');
   const [pass, setpass] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState(null)
 
   const Authentication = () => {
+    if (email.trim().length === 0 || pass.trim().length === 0) {
+      const emptyFieldsWarning = 'The email or password field is empty'
+      setErrorMessage(emptyFieldsWarning);
+      ToastAndroid.show(emptyFieldsWarning, ToastAndroid.LONG);
+      return;
+    }
     auth()
       .signInWithEmailAndPassword(email.trim(), pass)
       .then(() => {
@@ -34,21 +41,22 @@ function login({ navigation }) {
         // navigation.dispatch(StackActions.replace('Profile'));
       })
       .catch((error) => {
+        let errorText = '';
         if (error.code === 'auth/email-already-in-use') {
-          ToastAndroid.show(
-            'That email address is already in use!',
-            ToastAndroid.LONG,
-          );
+          errorText = 'That email address is already in use!'
+          ToastAndroid.show(errorText, ToastAndroid.LONG);
+          setErrorMessage()
           console.log('That email address is already in use!');
+
         } else if (error.code === 'auth/invalid-email') {
-          ToastAndroid.show(
-            'That email address is invalid!',
-            ToastAndroid.LONG,
-          );
+          errorText = 'That email address is invalid!'
+          ToastAndroid.show(errorText, ToastAndroid.LONG);
           console.log('That email address is invalid!');
+
         } else {
+          errorText = 'Something went wrong!'
           console.error(error);
-          ToastAndroid.show('Something went wrong!', ToastAndroid.LONG);
+          ToastAndroid.show(errorText, ToastAndroid.LONG);
         }
       });
   };
@@ -72,7 +80,7 @@ function login({ navigation }) {
           <Text style={{ marginBottom: 10 }}>
             Use your credentials below and login to your account
           </Text>
-
+          <Text style={[styles.errorMessage]}>{errorMessage}</Text>
           <View style={styles.inputContainer}>
             <Image
               source={require('../assets/icons/email.png')}
@@ -167,6 +175,10 @@ const styles = StyleSheet.create({
   },
   input: { width: 200, marginStart: 5 },
   btnView: { width: 120, marginTop: 10 },
+  errorMessage: {
+    color: '#e52d27',
+    marginBottom: 5,
+  }
 });
 
 export default login;
