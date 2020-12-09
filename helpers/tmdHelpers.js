@@ -90,8 +90,12 @@ const getIconByMode = (mode) => {
     case 'motorized/air/plane':
       return require('assets/icons/plane.png');
 
+    case 'motorized':
+      return require('assets/icons/bus.png');
+
     default:
       return require('assets/icons/unknown.png');
+      
   }
 };
 

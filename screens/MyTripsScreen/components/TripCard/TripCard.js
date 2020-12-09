@@ -101,6 +101,9 @@ const getMeansOfTransport = (activity) => {
     case 'motorized/air/plane':
       return 'plain';
 
+    case 'motorized':
+      return 'motorized'; 
+
     default:
       return 'unknown';
   }

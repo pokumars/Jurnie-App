@@ -28,8 +28,7 @@ const MyTripsScreen = ({ navigation }) => {
           .map((doc) => doc.data())
           .filter(
             (transportMode) =>
-              nonEssentialModes[0] !== transportMode.activityType ||
-              nonEssentialModes[0] !== transportMode.activityType
+               ![nonEssentialModes[0], nonEssentialModes[5]].includes(transportMode.activityType)
           );
         setcurrentTrip(data);
       });

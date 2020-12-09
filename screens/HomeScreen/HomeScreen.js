@@ -55,9 +55,9 @@ import TmdApi from 'bridge/TmdApi';
 import { getIconByMode } from 'helpers/tmdHelpers';
 import { nonEssentialModes } from '../../constants/transport';
 
-const HomeScreen = ({ navigation, profilePictureUrl, setProfilePictureUrl }) => {
-  // const [activity, setActivity] = useState('nothing');
-  const [tmdSize, setTmdSize] = useState(0);
+const HomeScreen = ({ navigation, profilePictureUrl }) => {
+  const [tmdSize, setTmdSize] = useState();
+
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [firstUser, setFirstUser] = useState();
@@ -96,25 +96,19 @@ const HomeScreen = ({ navigation, profilePictureUrl, setProfilePictureUrl }) => 
     };
     getTmdData();
   });
-
+  
+   const fetchProfilePicAtFirstLogin = () => {
+    /* the first time a user installs and lofs in, the profile pic doesnt load
+    This is a fallback for that scenario */
+    if (profilePictureUrl === null || profilePictureUrl === '') {
+      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
+      setProfilePictureUrl(fetchedUrl);
+    }
+  };
+  useEffect(fetchProfilePicAtFirstLogin, []);
+  
   useEffect(
     function Fetchcu() {
-      firestore()
-        .collection('users')
-        .doc(auth().currentUser.email)
-        .collection('trips')
-        .orderBy('dateAdded', 'desc')
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.docs
-            .map((doc) => doc.data())
-            .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
-          console.log(data);
-
-          setcurrentTrip(data);
-          // console.log('kkkkk', currentTrip);
-        });
-
       firestore()
         .collection('users')
         .orderBy('totalFeeds', 'desc')
@@ -136,18 +130,27 @@ const HomeScreen = ({ navigation, profilePictureUrl, setProfilePictureUrl }) => 
           console.log('points ranking', indexUser, val, firstUser);
         });
     },
-    [tmdSize]
+    []
   );
 
-  const fetchProfilePicAtFirstLogin = () => {
-    /* the first time a user installs and lofs in, the profile pic doesnt load
-    This is a fallback for that scenario */
-    if (profilePictureUrl === null || profilePictureUrl === '') {
-      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
-      setProfilePictureUrl(fetchedUrl);
-    }
-  };
-  useEffect(fetchProfilePicAtFirstLogin, []);
+  useEffect( () => {
+    firestore()
+        .collection('users')
+        .doc(auth().currentUser.email)
+        .collection('trips')
+        .orderBy('dateAdded', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs
+            .map((doc) => doc.data())
+            .filter((transportMode) => !nonEssentialModes.includes(transportMode.activityType));
+          console.log(data);
+
+          setcurrentTrip(data);
+          // console.log('kkkkk', currentTrip);
+    }   );
+  },[tmdSize]);
+
   // starts/stops TMD
   const toggleTmdService = () => async () => {
     if (!tmdStatus) {
