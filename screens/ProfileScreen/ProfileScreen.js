@@ -64,6 +64,15 @@ const ProfileScreen = ({
       setBadgeWonModalVisible(route.params.showBadge);
     }
   }, []);
+  const fetchProfilePicAtFirstLogin =() => {
+    /* the first time a user installs and lofs in, the profile pic doesnt load
+    This is a fallback for that scenario */
+    if (profilePictureUrl === null|| profilePictureUrl=== ''){
+      const fetchedUrl = auth().currentUser ? auth().currentUser.photoURL || '' : ''
+      setProfilePictureUrl(fetchedUrl);
+    }
+  }
+  useEffect(fetchProfilePicAtFirstLogin,[])
 
   /* useEffect(() => {
     // if the user is coming from having completed a survey, check whether they just won some badge
@@ -99,6 +108,7 @@ const ProfileScreen = ({
       });
   };
   const renderNewProfilePic = (newPicUrl) => {
+    // when user changes profilepic, set the new profile pic immediately
     console.log('setNewProfilePic---------', newPicUrl);
     setProfilePictureUrl(newPicUrl);
   };
