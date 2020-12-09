@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import auth from '@react-native-firebase/auth';
 import { connect } from 'react-redux';
+import actions from 'redux-core/actions';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -54,16 +55,14 @@ import TmdApi from 'bridge/TmdApi';
 import { getIconByMode } from 'helpers/tmdHelpers';
 import { nonEssentialModes } from '../../constants/transport';
 
-const HomeScreen = ({ navigation, profilePictureUrl }) => {
+const HomeScreen = ({ navigation, profilePictureUrl, setProfilePictureUrl }) => {
   // const [activity, setActivity] = useState('nothing');
   const [tmdSize, setTmdSize] = useState(0);
   const [currentTrip, setcurrentTrip] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [firstUser, setFirstUser] = useState();
   const [indexUser, setindexUser] = useState();
-  // const [points, setpoints] = useState();
   const [array, setarray] = useState([]);
-  // const [update, setUpdate] = useState();
 
   // checks if TMD service is running
   useEffect(() => {
@@ -140,6 +139,14 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
     [tmdSize]
   );
 
+  const fetchProfilePicAtFirstLogin = () => {
+    /* the first time a user installs and lofs in, the profile pic doesnt load
+    This is a fallback for that scenario */
+    if (profilePictureUrl === null || profilePictureUrl === '') {
+      setProfilePictureUrl(auth().currentUser.photoURL);
+    }
+  };
+  useEffect(fetchProfilePicAtFirstLogin, []);
   // starts/stops TMD
   const toggleTmdService = () => async () => {
     if (!tmdStatus) {
@@ -391,6 +398,12 @@ const HomeScreen = ({ navigation, profilePictureUrl }) => {
   );
 };
 
-export default connect((state) => ({
+/* export default connect((state) => ({
   profilePictureUrl: state.profilePictureReducer.profilePictureUrl,
-}))(HomeScreen);
+}))(HomeScreen); */
+export default connect(
+  (state) => ({
+    profilePictureUrl: state.profilePictureReducer.profilePictureUrl,
+  }),
+  { setProfilePictureUrl: actions.setProfilePictureUrl },
+)(HomeScreen);
