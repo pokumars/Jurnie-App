@@ -350,7 +350,7 @@ const HomeScreen = ({
             </ScoreInfo>
             <PointToTopTenInfo>
               <NumberText color={MangoTango}>{firstUser}</NumberText>
-              <AnnotationText>POINTS MORE TO TOP 10</AnnotationText>
+              <AnnotationText>POINTS MORE TO FIRST</AnnotationText>
             </PointToTopTenInfo>
           </CompetitionInfo>
         </YourPositionCard>
