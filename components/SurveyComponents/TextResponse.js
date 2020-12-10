@@ -28,9 +28,13 @@ const TextResponse = (props) => {
         onChangeText={(text) => setTextValue(text)}
         value={textValue}
       />
-      <View style={[globalStyles.sideBySideButtonView, { marginTop: 15 }]}>
-        <Button title="submit" onPress={submitText} />
-        <Button title="skip" onPress={skipText} color={COLOR.ERR_RED} />
+      <View style={[globalStyles.buttonsSideBySideContainer, { marginTop: 15 }]}>
+        <View style={globalStyles.sideBySideButtonView}>
+          <Button title="submit" onPress={submitText} />
+        </View>
+        <View style={globalStyles.sideBySideButtonView}>
+          <Button title="skip" onPress={skipText} color={COLOR.ERR_RED} />
+        </View>
       </View>
     </View>
   );
