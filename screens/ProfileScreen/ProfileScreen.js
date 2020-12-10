@@ -94,7 +94,6 @@ const ProfileScreen = ({
         navigation.dispatch(StackActions.replace('Login')),
       );
       setProfilePictureUrl(null);
-
   };
 
   const updateUsername = (newUsername) => {

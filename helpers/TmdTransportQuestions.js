@@ -73,7 +73,7 @@ const anythingUnusualQuestion = {
 };
 
 const thankYou = {
-  question: 'Thank you for the feedback',
+  question: 'Thank you for the feedback.',
   responseType: answerTypes.thankYou,
 };
 
@@ -89,11 +89,7 @@ const bikeQuestions = [
   imageQuestion,
   thankYou,
 ];
-const stationaryQuestions = [
-  askForComments,
-  imageQuestion,
-  thankYou,
-];
+const stationaryQuestions = [askForComments, imageQuestion, thankYou];
 
 const busQuestions = [
   onTimeQuestion,
@@ -177,5 +173,5 @@ export const transportModeQuestions = {
   train: trainQuestions,
   metro: metroQuestions,
   plane: planeQuestions,
-  stationary: bikeQuestions,
+  stationary: stationaryQuestions,
 };
