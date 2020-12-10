@@ -3,7 +3,8 @@ React Native application for Detecting types of mobility and collecting feedback
 
 ### [Demo - To be released soon]()
 ### APK
-[Click this link to download APK](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_2.apk)
+[Click this link to download APK](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_4.apk)
+
 
 ### Work Challenge
 - Build an app that allows the commuter to easily annotate their journeys with
@@ -70,4 +71,10 @@ https://github.com/pokumars/ionicLostAndFound/edit/master/README.md
 | Profile Screen| Change profile pic |
 |------------|-------------| 
 |  ![Profile Screen](https://lh3.googleusercontent.com/fife/ABSRlIoZeVzDb6xLIhaQbr5AMqwUbaQ27vaWn_9objv-QdzXHJw4MqLIoTnATk_VXr4rpsuqrTIJTjZ0RGtHu6ewty2XdULFRMpwsSZG0tG8vO5FD7h74v3uU1YqVmqc9hepBNJYxt9A9Bg3_9LRVk60Wv__qyfkRuYTxFNg9ArhJ7uTOCClPueAIXeC25WTWbJWVm5Ave5K0S_b6R177FNwkMrkJ9mpoenlYaNXO3eUE-eDWhNFr9RI9x8h-4dd0PMG7TFzb8MA0m8aC4-qpp3DPQlQNt40wAMU3Dj_23YD8oS3MTmScVFGcdCG0B9grll62o3sjWOdH90C8DQLlUUIznLmtJX9_iKNk0EdTO8xEZS6QcvKn9DH1KDGWvORNizbuUeY5zB3Z3hxW0VcedZvnMDzrB3iV6kDz0RdUpFQhFmNSmY33TJEaf3NT9GwjtsR-mAdBVdgnXu8_Jf3nu_kU1xx54z2gRvWMLEr4-JJhQG74LUx_fpS_rI4Gibsk0ng9fssIRjZCzdKKboK18vWz1b7Ph8dTZzMKauzO-7juThEBYwRr2hA4u9eIfcX2AD4DqfUEAhp2TMoH4B8aGa7OX_P6FG1Wrkj_9goYoGMGP2OqPF1kkqZlMMyjivF9D7sHuluNyFU_wV98gfsy-Q39_1XcCj2RxlnPPPcHrhyYBSWR4dut0tC9ms3H9295KAcJlV9gjMRiVZUZj-9RAzZ3txGccNQlXZNWCQ=w270-h2132-ft) | ![Change profile pic](https://media.giphy.com/media/hdQLJ8ngxCJQsjHxyv/giphy.gif) |
+
+
+
+[Click this link to download APK V2](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_2.apk)
+[Click this link to download APK V3](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_3.apk)
+[Click this link to download APK V4](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_4.apk)
 
