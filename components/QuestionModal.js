@@ -26,6 +26,7 @@ const QuestionModal = ({
   // when we enter a new question, set it. When exiting set to null. It should be null for all except done and image modals
   const [mediaOrDone, setMediaOrDone] = useState(null);
   // console.log('mediaOrDone------------',mediaOrDone)
+  
 
   const renderResponder = () => {
     switch (answerType) {
@@ -43,6 +44,7 @@ const QuestionModal = ({
             setAnswered={setAnswered}
             setAnswer={setAnswer}
             setMediaOrDone={setMediaOrDone}
+            forceToNextQuestion={toNextQuestionHandler}
           />
         );
       case answerTypes.text:

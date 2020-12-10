@@ -93,6 +93,7 @@ const ProfileScreen = ({
         TmdApi.stopTmdService(),
         navigation.dispatch(StackActions.replace('Login')),
       );
+      setProfilePictureUrl(null);
   };
 
   const updateUsername = (newUsername) => {
