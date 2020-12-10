@@ -3,7 +3,7 @@ React Native application for Detecting types of mobility and collecting feedback
 
 ### [Demo - To be released soon]()
 ### APK
-[Click this link to download APK](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_2.apk)
+[Click this link to download APK](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_4.apk)
 
 
 ### Work Challenge
@@ -76,4 +76,5 @@ https://github.com/pokumars/ionicLostAndFound/edit/master/README.md
 
 [Click this link to download APK V2](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_2.apk)
 [Click this link to download APK V3](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_3.apk)
+[Click this link to download APK V4](https://ohe-test-image-upload-1.s3.eu-central-1.amazonaws.com/jurnie_apk_4.apk)
 
