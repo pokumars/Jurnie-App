@@ -67,11 +67,11 @@ const DetailedScreen = ({ route }) => {
           </View>
           <View style={styles.tripItem2}>
             <Text style={styles.item}>Carbon footprint</Text>
-            <Text style={styles.item}>{trip.co2} grams</Text>
+            <Text style={styles.item}>{(trip.co2).toFixed(1)} grams</Text>
           </View>
           <View style={styles.tripItem3}>
             <Text style={styles.item}>Distance</Text>
-            <Text style={styles.item}>{trip.distance / 1000} km</Text>
+            <Text style={styles.item}>{(trip.distance / 1000).toFixed(1)} km</Text>
           </View>
         </View>
       </View>
