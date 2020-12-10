@@ -46,7 +46,12 @@ const Questionnaire = ({ navigation, route }) => {
   const [selectedMode, setSelectedMode] = useState(
     exampleTripObject.activityType
   );
-  
+
+  /* if selectedMode is not a clear transport mode, then it isnt an accepted type and should not render QuestionModal
+  nor should it let the user proceed. It should make them confirm the mode through the picker before proceeding.
+  This check is important because if e.g activityType is 'unknown' or 'motorized',
+  app will crash while trying to find that selected mode's questions from the  transportModeQuestions array */
+  const unclearTansportMode = uncertainTransportModeTypes.findIndex(unwantedMode => unwantedMode === selectedMode);
   const [questionNumber, setQuestionNumber] = useState(null);
   // if it is fresh feedbac, then check if they won some badge if not, dont check. The check happens in MainTab
   const [isItFreshFeedback, setIsItFreshFeedback] = useState(false);
@@ -71,12 +76,11 @@ const Questionnaire = ({ navigation, route }) => {
     // console.log('route.params',route.params)
     // console.log('route.params.paramtrip.activityType',route.params.paramtrip.activityType)
   };
-
+  
   useEffect(getTripFromRouteParams, []);
 
   const checkIfModeIsUnclear = () => {
     if(route.params !== undefined && route.params.paramtrip !== undefined){
-      const unclearTansportMode = uncertainTransportModeTypes.findIndex(unwantedMode => unwantedMode === selectedMode);
       console.log('unclearTansportMode',unclearTansportMode)
       if (unclearTansportMode >= 0) { // greater than or equal to 0 means it is in that array and is not wanted
         // when the current mode is not in the unwanted modes
@@ -316,23 +320,25 @@ const Questionnaire = ({ navigation, route }) => {
           </Picker>
         </>
       )}
-      {transportModeQuestions[extractModeofTransport(selectedMode)].map(
-        (que, questionIndex) => {
-          return (
-            <QuestionModal
-              key={que.question}
-              answerType={que.responseType}
-              question={que.question}
-              visible={questionNumber === questionIndex}
-              nextAction={nextModalAction}
-              appendAnswer={appendAnswer}
-              questionNumber={questionIndex}
-              sendAnswers={sendAnswersToFirebase}
-              points={points}
-            />
-          );
-        },
-      )}
+      { unclearTansportMode === -1 && (
+        transportModeQuestions[extractModeofTransport(selectedMode)].map(
+          (que, questionIndex) => {
+            return (
+              <QuestionModal
+                key={que.question}
+                answerType={que.responseType}
+                question={que.question}
+                visible={questionNumber === questionIndex}
+                nextAction={nextModalAction}
+                appendAnswer={appendAnswer}
+                questionNumber={questionIndex}
+                sendAnswers={sendAnswersToFirebase}
+                points={points}
+              />
+            );
+          },
+        )
+      ) }
     </View>
   );
 };

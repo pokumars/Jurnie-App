@@ -1,9 +1,9 @@
 export const transportModes = [
+  'motorized/air/plane',
   'motorized/road/bus',
   'motorized/rail/tram',
   'motorized/rail/train',
   'motorized/rail/metro',
-  'motorized/air/plane',
   'non-motorized/bicycle',
   'non-motorized/pedestrian/walk',
   'non-motorized/pedestrian/run',
@@ -35,7 +35,7 @@ export const ABORT = 'ABORT';
 export const PROCEED = 'PROCEED';
 
 export const exampleTripObject = {
-  activityType: 'motorized/road/car',
+  activityType: 'motorized/air/plane',
   co2: 0,
   dateAdded: 'November 22, 2020 at 7:20:19 PM UTC+2',
   destination: '',
