@@ -10,7 +10,8 @@ const ThankYouForFeedback = (props) => {
 
   return (
     <View style={globalStyles.responderViewContainer}>
-      <Text>See you soon.</Text>
+      
+      <Text>Press done to save</Text>
       <Text> +{props.points} points</Text>
     </View>
   );

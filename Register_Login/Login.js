@@ -54,7 +54,7 @@ function login({ navigation }) {
           console.log('That email address is invalid!');
           setErrorMessage(errorText);
         } else {
-          errorText = 'Something went wrong!.'
+          errorText = 'Something went wrong!. Possibly wrong password.'
           console.error(error);
           ToastAndroid.show(errorText, ToastAndroid.LONG);
           setErrorMessage(errorText);

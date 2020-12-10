@@ -57,6 +57,7 @@ const ImageResponse = (props) => {
         // true means next button appears
         props.setAnswered(true)
         setSavingLoader(false)
+        props.forceToNextQuestion()
       })
       
   }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button, TextInput } from 'react-native';
+import { COLOR } from '../../constants';
 import globalStyles from '../../constants/globalStyle';
 
 const TextResponse = (props) => {
@@ -8,6 +9,11 @@ const TextResponse = (props) => {
   useEffect(() => {
     props.setMediaOrDone(null);
   });
+  
+  const skipText = () => {
+    props.setAnswered(true);
+    props.setAnswer('');
+  };
 
   const submitText = () => {
     props.setAnswered(true);
@@ -22,8 +28,13 @@ const TextResponse = (props) => {
         onChangeText={(text) => setTextValue(text)}
         value={textValue}
       />
-      <View style={[globalStyles.sideBySideButtonView, { marginTop: 15 }]}>
-        <Button title="submit" onPress={submitText} />
+      <View style={[globalStyles.buttonsSideBySideContainer, { marginTop: 15 }]}>
+        <View style={globalStyles.sideBySideButtonView}>
+          <Button title="submit" onPress={submitText} />
+        </View>
+        <View style={globalStyles.sideBySideButtonView}>
+          <Button title="skip" onPress={skipText} color={COLOR.ERR_RED} />
+        </View>
       </View>
     </View>
   );
